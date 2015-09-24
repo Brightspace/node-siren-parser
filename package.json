@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "check-style": "jscs . && jshint .",
+    "test": "npm run check-style && npm run test-unit",
+    "test-unit": "export NODE_ENV=test; istanbul cover --source-map --dir ./coverage/unit --root src/ node_modules/.bin/_mocha -- --recursive ./test",
+    "posttest": "istanbul report text-summary lcov"
+  },
+  "devDependencies": {
+    "chai": "^3.3.0",
+    "istanbul": "git+https://github.com/omsmith/istanbul.git#source-map-errors",
+    "jscs": "^2.1.1",
+    "jshint": "^2.8.0",
+    "mocha": "^2.3.3",
+    "sinon": "^1.17.0",
+    "sinon-chai": "^2.8.0"
+  }
+}

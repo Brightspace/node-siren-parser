@@ -1,0 +1,84 @@
+{
+  "esnext": true,
+  "excludeFiles": [
+    "node_modules",
+    "coverage"
+  ],
+  "verbose": true,
+
+  "disallowEmptyBlocks": true,
+  "disallowKeywordsOnNewLine": [
+    "else"
+  ],
+  "disallowKeywords": [
+    "with"
+  ],
+  "disallowMixedSpacesAndTabs": true,
+  "disallowMultipleLineBreaks": true,
+  "disallowMultipleSpaces": true,
+  "disallowNewlineBeforeBlockStatements": true,
+  "disallowOperatorBeforeLineBreak": [
+    "||",
+    "&&",
+    "*",
+    "/",
+    "%",
+    "+",
+    "-",
+    ">=",
+    "==",
+    "===",
+    "!=",
+    "!==",
+    ">",
+    "<",
+    "<=",
+    "instanceof"
+  ],
+  "disallowPaddingNewlinesInBlocks": true,
+  "disallowQuotedKeysInObjects": "allButReserved",
+  "disallowSpaceAfterBinaryOperators": [
+    "!"
+  ],
+  "disallowSpaceAfterPrefixUnaryOperators": true,
+  "disallowSpaceAfterObjectKeys": true,
+  "disallowSpaceBeforePostfixUnaryOperators": true,
+  "disallowSpacesInsideArrayBrackets": true,
+  "disallowTrailingComma": true,
+  "disallowTrailingWhitespace": true,
+
+  "requireBlocksOnNewline": true,
+  "requireCommaBeforeLineBreak": true,
+  "requireCurlyBraces": true,
+  "requireDotNotation": true,
+  "requireLineBreakAfterVariableAssignment": true,
+  "requireLineFeedAtFileEnd": true,
+  "requirePaddingNewLinesAfterUseStrict": true,
+  "requirePaddingNewLinesBeforeExport": true,
+  "requireParenthesesAroundIIFE": true,
+  "requireSemicolons": true,
+  "requireSpaceAfterBinaryOperators": true,
+  "requireSpaceAfterKeywords": true,
+  "requireSpaceAfterLineComment": true,
+  "requireSpaceBeforeBinaryOperators": true,
+  "requireSpaceBeforeBlockStatements": true,
+  "requireSpaceBeforeKeywords": [
+    "if",
+    "else",
+    "try",
+    "catch"
+  ],
+  "requireSpacesInConditionalExpression": true,
+  "requireSpacesInForStatement": true,
+  "requireSpacesInFunction": {
+    "beforeOpeningRoundBrace": true,
+    "beforeOpeningCurlyBrace": true
+  },
+  "requireSpacesInsideObjectBrackets": "all",
+
+  "validateIndentation": "\t",
+  "validateQuoteMarks": {
+    "mark": "'",
+    "escape": true
+  }
+}

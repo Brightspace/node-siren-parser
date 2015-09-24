@@ -1,0 +1,14 @@
+{
+  "bitwise": true,
+  "eqeqeq": true,
+  "strict": true,
+  "undef": true,
+  "unused": true,
+  "-W030": true,
+
+  "esnext": true,
+  "noyield": true,
+  "laxbreak": true,
+
+  "node": true
+}
