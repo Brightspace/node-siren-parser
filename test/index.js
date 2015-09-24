@@ -10,6 +10,7 @@ const
 const
 	Action = require('../src/Action'),
 	Entity = require('../src/index'),
+	Field = require('../src/Field'),
 	Link = require('../src/Link');
 
 chai.use(require('sinon-chai'));
@@ -320,6 +321,106 @@ describe('Siren Parser', function () {
 			it('should require fields be an array, if supplied', function () {
 				resource.fields = 1;
 				expect(buildAction.bind(undefined, resource)).to.throw();
+			});
+
+			it('should be able to retrieve fields based off their name', function () {
+				resource.fields = [{
+					name: 'foo',
+					title: 'bar'
+				}];
+				siren = buildAction();
+				expect(siren.getField('foo')).to.have.property('title', 'bar');
+			});
+		});
+	});
+
+	describe('Field', function () {
+		function buildField () {
+			return new Field(resource);
+		}
+
+		beforeEach(function () {
+			resource = {
+				name: 'foo'
+			};
+		});
+
+		it('should require the field be an object', function () {
+			resource = 1;
+			expect(buildField.bind()).to.throw();
+		});
+
+		describe('name', function () {
+			it('should require a name', function () {
+				resource.name = undefined;
+				expect(buildField.bind()).to.throw();
+			});
+
+			it('should require name be a string', function () {
+				resource.name = 1;
+				expect(buildField.bind()).to.throw();
+			});
+
+			it('should parse name', function () {
+				siren = buildField();
+				expect(siren.name).to.equal('foo');
+			});
+		});
+
+		describe('value', function () {
+			it('should parse value', function () {
+				resource.value = 'foo';
+				siren = buildField();
+				expect(siren.value).to.equal('foo');
+			});
+
+			it('should require value be a string, if supplied', function () {
+				resource.value = 1;
+				expect(buildField.bind()).to.throw();
+			});
+		});
+
+		describe('class', function () {
+			it('should parse class', function () {
+				resource.class = [];
+				siren = buildField();
+				expect(siren.class).to.be.an.instanceof(Array);
+			});
+
+			it('should require class be an array, if supplied', function () {
+				resource.class = 1;
+				expect(buildField.bind()).to.throw();
+			});
+		});
+
+		describe('title', function () {
+			it('should parse title', function () {
+				resource.title = 'bar';
+				siren = buildField();
+				expect(siren.title).to.equal('bar');
+			});
+
+			it('should require title be a string, if supplied', function () {
+				resource.title = 1;
+				expect(buildField.bind(undefined, resource)).to.throw();
+			});
+		});
+
+		describe('type', function () {
+			it('should parse type', function () {
+				resource.type = 'text';
+				siren = buildField();
+				expect(siren.type).to.equal('text');
+			});
+
+			it('should require type be a string, if supplied', function () {
+				resource.type = 1;
+				expect(buildField.bind(undefined, resource)).to.throw();
+			});
+
+			it('should require type be a valid HTML5 input type, if specified', function () {
+				resource.type = 'bar';
+				expect(buildField.bind()).to.throw();
 			});
 		});
 	});

@@ -1,8 +1,12 @@
 'use strict';
 
-const assert = require('assert');
+const
+	assert = require('assert'),
+	Field = require('./Field');
 
 function Action (action) {
+	const self = this;
+
 	assert('object' === typeof action);
 	assert('string' === typeof action.name);
 	assert('string' === typeof action.href);
@@ -12,28 +16,39 @@ function Action (action) {
 	assert('undefined' === typeof action.type || 'string' === typeof action.type);
 	assert('undefined' === typeof action.fields || Array.isArray(action.fields));
 
-	this.name = action.name;
-	this.href = action.href;
+	self.name = action.name;
+	self.href = action.href;
 
 	if (action.class) {
-		this.class = action.class;
+		self.class = action.class;
 	}
 
 	if (action.method) {
-		this.method = action.method;
+		self.method = action.method;
 	}
 
 	if (action.title) {
-		this.title = action.title;
+		self.title = action.title;
 	}
 
 	if (action.type) {
-		this.type = action.type;
+		self.type = action.type;
 	}
 
+	self.fieldsByName = {};
 	if (action.fields) {
-		this.fields = action.fields;
+		self.fields = [];
+		action.fields.forEach(function (field) {
+			const fieldInstance = new Field(field);
+			self.fields.push(fieldInstance);
+			self.fieldsByName[field.name] = fieldInstance;
+		});
+		self.fields = action.fields;
 	}
 }
+
+Action.prototype.getField = function (fieldName) {
+	return this.fieldsByName[fieldName];
+};
 
 module.exports = Action;
