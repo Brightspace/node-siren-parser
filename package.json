@@ -1,9 +1,24 @@
 {
+  "name": "@d2l/node-siren-parser",
+  "version": "0.0.1",
+  "description": "Pretty much the opposite of dominicbarnes/node-siren-writer",
+  "main": "src/index.js",
   "scripts": {
     "check-style": "jscs . && jshint .",
-    "test": "npm run check-style && npm run test-unit",
-    "test-unit": "export NODE_ENV=test; istanbul cover --source-map --dir ./coverage/unit --root src/ node_modules/.bin/_mocha -- --recursive ./test",
-    "posttest": "istanbul report text-summary lcov"
+    "test": "npm run check-style && npm run test-no-style",
+    "test-no-style": "export NODE_ENV=test; istanbul cover --source-map --dir ./coverage/unit --root src/ node_modules/.bin/_mocha -- --recursive ./test",
+    "posttest": "istanbul report text-summary lcov",
+    "report-cov": "istanbul report lcovonly && coveralls < ./coverage/lcov.info"
+  },
+  "author": "D2L Corporation",
+  "license": "",
+  "homepage": "https://github.com/Brightspace/node-siren-parser",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Brightspace/node-siren-parser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Brightspace/node-siren-parser/issues"
   },
   "devDependencies": {
     "chai": "^3.3.0",
@@ -13,5 +28,8 @@
     "mocha": "^2.3.3",
     "sinon": "^1.17.0",
     "sinon-chai": "^2.8.0"
+  },
+  "dependencies": {
+    "coveralls": "^2.11.4"
   }
 }

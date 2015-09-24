@@ -1,0 +1,17 @@
+node_modules
+coverage
+
+.npmignore
+.gitignore
+*.tgz
+
+.editorconfig
+.jscs.json
+.jshintignore
+.jshintrc
+
+.travis.yml
+travis-deploy.sh
+.npmrc*
+
+test
