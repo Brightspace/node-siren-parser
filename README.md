@@ -19,7 +19,11 @@ const sirenJson = {
 		name: 'fancy-action',
 		href: 'http://example.com',
 		title: 'A fancy action!',
-		method: 'GET'
+		method: 'GET',
+		fields: [{
+			name: 'max',
+			title: 'Maximum value'
+		}]
 	}],
 	entities: [{
 		class: ['inner', 'smaller'],
@@ -39,7 +43,7 @@ const resource = sirenParser(sirenJson);
 
 ### `sirenParser(String|Object siren)`
 
-Returns an `Entity` object with all Siren attributes specified. Input can be a Siren object or a Siren JSON string.
+Returns an [Entity](#entity) object with all Siren attributes specified. Input can be a Siren object or a Siren JSON string.
 
 ---
 
@@ -52,8 +56,8 @@ Attributes:
 * `type` (string)
 * `properties` (object)
 * `class` (array of strings)
-* `actions` (array of Actions)
-* `links` (array of Links)
+* `actions` (array of [Actions](#action))
+* `links` (array of [Links](#link))
 * `entities` (array of Entities)
 
 Each of these can be accessed as `Entity.attribute`, e.g. if one of the input's `properties` is`foo`, it would be accessed as `Entity.properties.foo`.
@@ -62,7 +66,7 @@ Each of these can be accessed as `Entity.attribute`, e.g. if one of the input's 
 
 #### `Entity.getAction(String name)`
 
-Returns the Action with the specified `name` if it exists, otherwise `undefined`. Actions are indexed by `name` upon parse, so this is O(1).
+Returns the [Action](#action) with the specified `name` if it exists, otherwise `undefined`. Actions are indexed by `name` upon parse, so this is O(1).
 
 ```js
 resource.getAction('fancy-action'); // The 'fancy-action' Action instance
@@ -71,7 +75,7 @@ resource.getAction('fancy-action').title; // 'A fancy action!'
 
 #### `Entity.getLink(String rel)`
 
-Returns the Link with the specified `rel` if it exists, otherwise `undefined`. Links are indexed by `rel` upon parse, so this is O(1).
+Returns the [Link](#link) with the specified `rel` if it exists, otherwise `undefined`. Links are indexed by `rel` upon parse, so this is O(1).
 
 ```js
 resource.getLink('self'); // The 'self' Link instance
@@ -98,7 +102,7 @@ Attributes:
 * `href` (string) _Required_
 * `class` (array of strings)
 * `title` (string)
-* `type` (string)
+* `type` (string) _If specified, must be an HTML5 input type - see [this link][action types]_
 
 ---
 
@@ -112,7 +116,28 @@ Attributes:
 * `method` (string)
 * `title` (string)
 * `type` (string)
-* `fields` (array of object) _TODO: Implement Field as a class_
+* `fields` (array of [Fields](#field))
+
+#### `Action.getField(String name)`
+
+Returns the [Field](#field) with the specified `name` if it exists, otherwise `undefined`. Fields are indexed by `name` upon parse, so this is O(1).
+
+```js
+resource.getAction('fancy-action').getField('max'); // The 'max' Field instance
+resource.getAction('fancy-action').getField('max').title; // 'Maximum value'
+```
+
+---
+
+### `Field`
+
+Attributes:
+
+* `name` (string) _Required_
+* `value` (string)
+* `class` (array of strings)
+* `type` (string)
+* `title` (string)
 
 ## Testing
 
@@ -140,6 +165,7 @@ for information on installing editor extensions.
 
 [node-siren-writer]: https://github.com/dominicbarnes/node-siren-writer
 [siren]: https://github.com/kevinswiber/siren
+[action types]: https://github.com/kevinswiber/siren#type-3
 [EditorConfig]: http://editorconfig.org/
 [jscs]: http://jscs.info/
 [JSHint]: http://jshint.com/
