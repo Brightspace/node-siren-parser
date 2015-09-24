@@ -47,8 +47,9 @@ function Entity (entity) {
 	if (entity.actions) {
 		self.actions = [];
 		entity.actions.forEach(function (action) {
-			self.actions.push(new Action(action));
-			self.actionsByName[action.name] = action;
+			const actionInstance = new Action(action);
+			self.actions.push(actionInstance);
+			self.actionsByName[action.name] = actionInstance;
 		});
 	}
 
@@ -56,10 +57,11 @@ function Entity (entity) {
 	if (entity.links) {
 		self.links = [];
 		entity.links.forEach(function (link) {
-			self.links.push(new Link(link));
+			const linkInstance = new Link(link);
+			self.links.push(linkInstance);
 
 			link.rel.forEach(function (rel) {
-				self.linksByRel[rel] = link;
+				self.linksByRel[rel] = linkInstance;
 			});
 		});
 	}

@@ -190,6 +190,20 @@ describe('Siren Parser', function () {
 				siren = buildEntity();
 				expect(siren.getSubEntity('foo')).to.equal(siren.getSubEntity('bar'));
 			});
+
+			it('should work with chained Entity/Action/Links', function () {
+				resource.entities = [{
+					rel: ['foo'],
+					actions: [{
+						name: 'bar',
+						href: 'baz'
+					}]
+				}];
+				siren = buildEntity();
+				expect(siren.getSubEntity('foo').getAction('bar'))
+					.to.be.an.instanceof(Action)
+					.with.property('href', 'baz');
+			});
 		});
 	});
 
