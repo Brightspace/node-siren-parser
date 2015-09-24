@@ -70,18 +70,16 @@ function Entity (entity) {
 		entity.entities.forEach(function (subEntity) {
 			assert(Array.isArray(subEntity.rel));
 
+			let subEntityInstance;
 			if ('string' === typeof subEntity.href) {
-				self.entities.push(new Link(subEntity));
+				subEntityInstance = new Link(subEntity);
 			} else {
-				self.entities.push(new Entity(subEntity));
+				subEntityInstance = new Entity(subEntity);
 			}
+			self.entities.push(subEntityInstance);
 
 			subEntity.rel.forEach(function (rel) {
-				if ('string' === typeof subEntity.href) {
-					self.entitiesByRel[rel] = new Link(subEntity);
-				} else {
-					self.entitiesByRel[rel] = new Entity(subEntity);
-				}
+				self.entitiesByRel[rel] = subEntityInstance;
 			});
 		});
 	}
