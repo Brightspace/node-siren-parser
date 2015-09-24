@@ -182,6 +182,14 @@ describe('Siren Parser', function () {
 				siren = buildEntity();
 				expect(siren.getSubEntity('foo')).to.be.an.instanceof(Entity);
 			});
+
+			it('should not duplicate sub-entities with the same rel', function () {
+				resource.entities = [{
+					rel: ['foo', 'bar']
+				}];
+				siren = buildEntity();
+				expect(siren.getSubEntity('foo')).to.equal(siren.getSubEntity('bar'));
+			});
 		});
 	});
 
