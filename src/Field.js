@@ -27,7 +27,6 @@ const VALID_TYPES = [
 function Field (field) {
 	assert('object' === typeof field);
 	assert('string' === typeof field.name);
-	assert('undefined' === typeof field.value || 'string' === typeof field.value);
 	assert('undefined' === typeof field.class || Array.isArray(field.class));
 	assert('undefined' === typeof field.type
 		|| ('string' === typeof field.type && VALID_TYPES.indexOf(field.type.toLowerCase()) > -1));
