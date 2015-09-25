@@ -38,6 +38,10 @@ describe('Siren Parser', function () {
 			return new Entity(resource);
 		}
 
+		it('should auto-instantiate', function () {
+			expect(Entity(resource)).to.be.an.instanceof(Entity); // jshint ignore:line
+		});
+
 		it('should work with stringified entity', function () {
 			resource = '{}';
 			expect(buildEntity()).to.be.an('object');
@@ -372,11 +376,6 @@ describe('Siren Parser', function () {
 				resource.value = 'foo';
 				siren = buildField();
 				expect(siren.value).to.equal('foo');
-			});
-
-			it('should require value be a string, if supplied', function () {
-				resource.value = 1;
-				expect(buildField.bind()).to.throw();
 			});
 		});
 

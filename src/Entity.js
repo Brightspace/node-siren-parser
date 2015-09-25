@@ -7,6 +7,10 @@ const
 	Link = require('./Link');
 
 function Entity (entity) {
+	if (!(this instanceof Entity)) {
+		return new Entity(entity);
+	}
+
 	if ('object' !== typeof entity) {
 		entity = JSON.parse(entity);
 	}
