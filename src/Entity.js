@@ -47,17 +47,17 @@ function Entity (entity) {
 		self.class = entity.class;
 	}
 
-	self.actionsByName = {};
+	self._actionsByName = {};
 	if (entity.actions) {
 		self.actions = [];
 		entity.actions.forEach(function (action) {
 			const actionInstance = new Action(action);
 			self.actions.push(actionInstance);
-			self.actionsByName[action.name] = actionInstance;
+			self._actionsByName[action.name] = actionInstance;
 		});
 	}
 
-	self.linksByRel = {};
+	self._linksByRel = {};
 	if (entity.links) {
 		self.links = [];
 		entity.links.forEach(function (link) {
@@ -65,12 +65,13 @@ function Entity (entity) {
 			self.links.push(linkInstance);
 
 			link.rel.forEach(function (rel) {
-				self.linksByRel[rel] = linkInstance;
+				self._linksByRel[rel] = linkInstance;
 			});
 		});
 	}
 
-	self.entitiesByRel = {};
+	self._entitiesByRel = {};
+	self._entitiesByClass = {};
 	if (entity.entities) {
 		self.entities = [];
 		entity.entities.forEach(function (subEntity) {
@@ -85,22 +86,44 @@ function Entity (entity) {
 			self.entities.push(subEntityInstance);
 
 			subEntity.rel.forEach(function (rel) {
-				self.entitiesByRel[rel] = subEntityInstance;
+				self._entitiesByRel[rel] = subEntityInstance;
 			});
+
+			if (Array.isArray(subEntity.class)) {
+				subEntity.class.forEach(function (cls) {
+					/* istanbul ignore else */
+					if (!self._entitiesByClass[cls]) {
+						self._entitiesByClass[cls] = [];
+					}
+					self._entitiesByClass[cls].push(subEntityInstance);
+				});
+			}
 		});
 	}
 }
 
+Entity.prototype.hasClass = function (cls) {
+	return this.class.indexOf(cls) > -1;
+};
+
+Entity.prototype.hasProperty = function (property) {
+	return this.properties.hasOwnProperty(property);
+};
+
 Entity.prototype.getAction = function (actionName) {
-	return this.actionsByName[actionName];
+	return this._actionsByName[actionName];
 };
 
 Entity.prototype.getLink = function (linkRel) {
-	return this.linksByRel[linkRel];
+	return this._linksByRel[linkRel];
 };
 
 Entity.prototype.getSubEntity = function (entityRel) {
-	return this.entitiesByRel[entityRel];
+	return this._entitiesByRel[entityRel];
+};
+
+Entity.prototype.getSubEntitiesByClass = function (cls) {
+	return this._entitiesByClass[cls];
 };
 
 module.exports = Entity;

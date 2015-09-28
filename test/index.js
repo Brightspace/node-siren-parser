@@ -84,6 +84,14 @@ describe('Siren Parser', function () {
 				resource.properties = 1;
 				expect(buildEntity.bind()).to.throw();
 			});
+
+			it('should be able to determine if an entity has a given property', function () {
+				resource.properties = {
+					foo: 'bar'
+				};
+				siren = buildEntity();
+				expect(siren.hasProperty('foo')).to.be.true;
+			});
 		});
 
 		describe('class', function () {
@@ -96,6 +104,12 @@ describe('Siren Parser', function () {
 			it('should require class be an array, if supplied', function () {
 				resource.class = 1;
 				expect(buildEntity.bind()).to.throw();
+			});
+
+			it('should be able to determine if an entity has a given class', function () {
+				resource.class = ['foo'];
+				siren = buildEntity();
+				expect(siren.hasClass('foo')).to.be.true;
 			});
 		});
 
@@ -186,6 +200,16 @@ describe('Siren Parser', function () {
 				}];
 				siren = buildEntity();
 				expect(siren.getSubEntity('foo')).to.be.an.instanceof(Entity);
+			});
+
+			it('should be able to retrieve sub-entities based off their class', function () {
+				resource.entities = [{
+					rel: ['foo'],
+					class: ['bar', 'baz']
+				}];
+				siren = buildEntity();
+				expect(siren.getSubEntitiesByClass('bar')).to.be.an.instanceof(Array);
+				expect(siren.getSubEntitiesByClass('bar')[0].hasClass('baz')).to.equal.true;
 			});
 
 			it('should not duplicate sub-entities with the same rel', function () {
@@ -325,6 +349,14 @@ describe('Siren Parser', function () {
 			it('should require fields be an array, if supplied', function () {
 				resource.fields = 1;
 				expect(buildAction.bind(undefined, resource)).to.throw();
+			});
+
+			it('should be able to determine if an Action has a given Field', function () {
+				resource.fields = [{
+					name: 'foo'
+				}];
+				siren = buildAction();
+				expect(siren.hasField('foo')).to.be.true;
 			});
 
 			it('should be able to retrieve fields based off their name', function () {
