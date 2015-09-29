@@ -1,6 +1,6 @@
 {
   "name": "@d2l/siren-parser",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Pretty much the opposite of dominicbarnes/node-siren-writer",
   "main": "src/index.js",
   "scripts": {
