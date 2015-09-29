@@ -2,12 +2,13 @@
 
 [![Build Status](https://magnum.travis-ci.com/Brightspace/node-siren-parser.svg?token=Cab9cPiYKusHs1TWpuUv&branch=master)](https://magnum.travis-ci.com/Brightspace/node-siren-parser) [![Coverage Status](https://coveralls.io/repos/Brightspace/node-siren-parser/badge.svg?branch=master&service=github&t=smOGqn)](https://coveralls.io/github/Brightspace/node-siren-parser?branch=master)
 
-Parses a Siren object (or Siren JSON string) into an Entity object that is intended to be easier to work with and test, and prevent having to parse replies from Siren APIs manually. Fully implements the [Siren spec](siren), including all restrictions and requirements on entities, links, fields, etc. Kinda complements [node-siren-writer](node-siren-writer), in that they're inteded to sort of be opposites.
+Parses a Siren object (or Siren JSON string) into an Entity object that is intended to be easier to work with and test, and prevent having to parse replies from Siren APIs manually. Fully implements the [Siren spec](siren), including all restrictions and requirements on entities, links, fields, etc. Kinda complements [node-siren-writer](node-siren-writer), in that they're inteded to sort of be opposites. Also includes a plugin for use with [chai](chai).
 
 ## Usage
 
 ```js
 const sirenParser = require('@d2l/siren-parser');
+const sirenParserChai = require('@d2l/siren-parser').chai;
 const sirenJson = {
 	title: 'My title',
 	class: ['outer'],
@@ -33,10 +34,19 @@ const sirenJson = {
 			href: 'http://example.com/child',
 			title: 'Child entity'
 		}]
-	}]
+	}],
+	properties: {
+		one: 1,
+		two: 2,
+		pi: 'is exactly three'
+	}
+}
 };
 
 const resource = sirenParser(sirenJson);
+
+// ... assuming you've got all your chai stuff set up
+expect(resource).to.have.sirenAction('fancy-action');
 ```
 
 ## API
@@ -63,6 +73,22 @@ Attributes:
 Each of these can be accessed as `Entity.attribute`, e.g. if one of the input's `properties` is`foo`, it would be accessed as `Entity.properties.foo`.
 
 > Note that only those attributes present in the input will be copied into the `Entity`, i.e. if your input has no links, `Entity.links` will not be set, rather than being an empty array.
+
+#### `Entity.hasClass(String class)`
+
+Returns true if the Entity has the specified `class`, otherwise false.
+
+```js
+resource.hasClass('foo'); // false
+```
+
+#### `Entity.hasProperty(String property)`
+
+Returns true if the Entity has the specified `property`, otherwise false.
+
+```js
+resource.hasProperty('pi'); // true
+```
 
 #### `Entity.getAction(String name)`
 
@@ -92,6 +118,14 @@ Returns the sub-Entity with the specified `rel` if it exists, otherwise `undefin
 resource.getSubEntity('child').getLink('self').title; // 'Child entity'
 ```
 
+#### `Entity.getSubEntitiesByClass(String class)`
+
+Returns an array containing all sub-entities with the given `class`, otherwise `undefined`. Sub-entities are indexed by `rel` upon parse, so this is O(1).
+
+```js
+resource.getSubEntitiesByClass('inner'); // [ Entity/Entities with 'inner' class ]
+```
+
 ---
 
 ### `Link`
@@ -118,6 +152,14 @@ Attributes:
 * `type` (string)
 * `fields` (array of [Fields](#field))
 
+#### `Action.hasField(String name)`
+
+Returns true if Action has a field with the name `name`, otherwise false.
+
+```js
+resource.getAction('fancy-action').hasField('max'); // true
+```
+
 #### `Action.getField(String name)`
 
 Returns the [Field](#field) with the specified `name` if it exists, otherwise `undefined`. Fields are indexed by `name` upon parse, so this is O(1).
@@ -138,6 +180,32 @@ Attributes:
 * `class` (array of strings)
 * `type` (string)
 * `title` (string)
+
+## `chai` interface
+
+There are a few helper `chai` methods included with this module, under `./chaiPlugin`. These are mostly equivalents of the `hasX` methods in the API (and take generally the same arguments), to make testing with `chai` cleaner. Can also test whether a given resource is a particular Siren type.
+
+```js
+// Without chai plugin, boo ugly!
+expect(resource.hasClass('foo')).to.be.true;
+// With chai plugin magic!
+expect(resource).to.have.sirenClass('foo');
+
+// Importing a bunch of classes? Gross!
+const Entity = require('./src/Entity');
+expect(resource).to.be.an.instanceof(Entity);
+// 50% fewer lines of code = 2000% better tests, guaranteed!
+expect(resource).to.be.a.siren('entity');
+```
+
+The available assertions are:
+
+* `expect(resource).to.have.sirenAction('foo')`
+* `expect(resource).to.have.sirenClass('foo')`
+* `expect(resource).to.have.sirenClasses(['foo', 'bar', 'baz'])`
+* `expect(resource).to.have.sirenProperty('foo')`
+* `expect(resource).to.have.sirenProperties(['foo', 'bar', 'baz'])`
+* `expect(resource).to.be.a.siren('entity')` - checks if `resource` is a Siren entity. Other types include action, class, field, and link.
 
 ## Testing
 
@@ -164,6 +232,7 @@ and [JSHint][JSHint] rules. See the [docs.dev code style article][code style]
 for information on installing editor extensions.
 
 [node-siren-writer]: https://github.com/dominicbarnes/node-siren-writer
+[chai]: https://github.com/chaijs/chai
 [siren]: https://github.com/kevinswiber/siren
 [action types]: https://github.com/kevinswiber/siren#type-3
 [EditorConfig]: http://editorconfig.org/

@@ -35,20 +35,24 @@ function Action (action) {
 		self.type = action.type;
 	}
 
-	self.fieldsByName = {};
+	self._fieldsByName = {};
 	if (action.fields) {
 		self.fields = [];
 		action.fields.forEach(function (field) {
 			const fieldInstance = new Field(field);
 			self.fields.push(fieldInstance);
-			self.fieldsByName[field.name] = fieldInstance;
+			self._fieldsByName[field.name] = fieldInstance;
 		});
 		self.fields = action.fields;
 	}
 }
 
+Action.prototype.hasField = function (fieldName) {
+	return this._fieldsByName.hasOwnProperty(fieldName);
+};
+
 Action.prototype.getField = function (fieldName) {
-	return this.fieldsByName[fieldName];
+	return this._fieldsByName[fieldName];
 };
 
 module.exports = Action;
