@@ -6,7 +6,7 @@ const
 	Field = require('./Field'),
 	Link = require('./Link');
 
-module.exports = function (chai) {
+module.exports = function (chai, utils) {
 	const Assertion = chai.Assertion;
 
 	// expect(resource).to.be.a.siren('Type');
@@ -57,10 +57,10 @@ module.exports = function (chai) {
 			}
 		});
 
+	// expect(entity).to.have.sirenAction('actionName')
 	Assertion.addChainableMethod('sirenAction',
-		// expect(entity).to.have.sirenAction('actionName')
 		function (actionName) {
-			new Assertion(this._obj).to.be.instanceof(Entity);
+			new Assertion(this._obj).to.be.an.instanceof(Entity);
 			const action = this._obj.getAction(actionName);
 
 			this.assert(
@@ -68,12 +68,28 @@ module.exports = function (chai) {
 				'expected #{this} to have Action #{exp}, but it does not',
 				'expected #{this} to not have Action #{exp}',
 				actionName);
+			utils.flag(this, 'object', this._obj.getAction(actionName));
 		});
 
+	// expect(entity).to.have.sirenActions(['actionName1', 'actionName2', ...])
+	Assertion.addChainableMethod('sirenActions',
+		function (actionNames) {
+			new Assertion(this._obj).to.be.an.instanceof(Entity);
+			new Assertion(actionNames).to.be.an.instanceof(Array);
+
+			for (var i = 0; i < actionNames.length; i++) {
+				this.assert(
+					this._obj.hasAction(actionNames[i]),
+					'expected #{exp} to be among actions of #{this}, but it was not',
+					'expected #{exp} to not be among actions of #{this}',
+					actionNames[i]);
+			}
+		});
+
+	// expect(entity).to.have.sirenClass('className')
 	Assertion.addChainableMethod('sirenClass',
-		// expect(entity).to.have.sirenClass('className')
 		function (cls) {
-			new Assertion(this._obj).to.be.instanceof(Entity);
+			new Assertion(this._obj).to.be.an.instanceof(Entity);
 
 			this.assert(
 				this._obj.hasClass(cls),
@@ -82,11 +98,11 @@ module.exports = function (chai) {
 				cls);
 		});
 
+	// expect(entity).to.have.sirenClasses(['class1', 'class2', ...])
 	Assertion.addChainableMethod('sirenClasses',
-		// expect(entity).to.have.sirenClasses(['class1', 'class2', ...])
 		function (classes) {
-			new Assertion(this._obj).to.be.instanceof(Entity);
-			new Assertion(classes).to.be.instanceof(Array);
+			new Assertion(this._obj).to.be.an.instanceof(Entity);
+			new Assertion(classes).to.be.an.instanceof(Array);
 
 			for (let i = 0; i < classes.length; i++) {
 				this.assert(
@@ -97,23 +113,80 @@ module.exports = function (chai) {
 			}
 		});
 
+	// expect(entity).to.have.sirenEntity('relName')
+	Assertion.addChainableMethod('sirenEntity',
+		function (entityRel) {
+			new Assertion(this._obj).to.be.an.instanceof(Entity);
+
+			this.assert(
+				this._obj.hasEntity(entityRel),
+				'expected #{this} to have sub-entity #{exp}',
+				'expected #{this} to not have sub-entity #{exp}',
+				entityRel);
+			utils.flag(this, 'object', this._obj.getSubEntity(entityRel));
+		});
+
+	// expect(entity).to.have.sirenEntityies(['relName1', 'relName2', ...])
+	Assertion.addChainableMethod('sirenEntities',
+		function (entityRels) {
+			new Assertion(this._obj).to.be.an.instanceof(Entity);
+			new Assertion(entityRels).to.be.an.instanceof(Array);
+
+			for (let i = 0; i < entityRels.length; i++) {
+				this.assert(
+					this._obj.hasEntity(entityRels[i]),
+					'expected #{this} to have sub-entity #{exp}',
+					'expected #{this} to not have sub-entity #{exp}',
+					entityRels[i]);
+			}
+		});
+
+	// expect(entity).to.have.sirenLink('relName')
+	Assertion.addChainableMethod('sirenLink',
+		function (rel) {
+			new Assertion(this._obj).to.be.an.instanceof(Entity);
+
+			this.assert(
+				this._obj.hasLink(rel),
+				'expected #{this} to have a Link with rel #{exp}',
+				'expected #{this} to not have a link with rel #{exp}',
+				rel);
+			utils.flag(this, 'object', this._obj.getLink(rel));
+		});
+
+	// expect(entity).to.have.sirenLinks(['relName1', 'relName2', ...])
+	Assertion.addChainableMethod('sirenLinks',
+		function (rels) {
+			new Assertion(this._obj).to.be.an.instanceof(Entity);
+			new Assertion(rels).to.be.an.instanceof(Array);
+
+			for (var i = 0; i < rels.length; i++) {
+				this.assert(
+					this._obj.hasLink(rels[i]),
+					'expected #{exp} to be among links of #{this}, but it was not',
+					'expected #{exp} to not be among links of #{this}',
+					rels[i]);
+			}
+		});
+
+	// expect(entity).to.have.sirenProperty('propertyKey')
 	Assertion.addChainableMethod('sirenProperty',
-		// expect(entity).to.have.sirenProperty('propertyKey')
 		function (property) {
-			new Assertion(this._obj).to.be.instanceof(Entity);
+			new Assertion(this._obj).to.be.an.instanceof(Entity);
 
 			this.assert(
 				this._obj.hasProperty(property),
 				'expected #{this} to have property #{exp}, but it does not',
 				'expected #{this} to not have #{exp}',
 				property);
+			utils.flag(this, 'object', this._obj.properties[property]);
 		});
 
+	// expect(entity).to.have.sirenProperties(['property1', 'property2', ...])
 	Assertion.addChainableMethod('sirenProperties',
-		// expect(entity).to.have.sirenProperties(['property1', 'property2', ...])
 		function (properties) {
-			new Assertion(this._obj).to.be.instanceof(Entity);
-			new Assertion(properties).to.be.instanceof(Array);
+			new Assertion(this._obj).to.be.an.instanceof(Entity);
+			new Assertion(properties).to.be.an.instanceof(Array);
 
 			for (let i = 0; i < properties.length; i++) {
 				this.assert(

@@ -150,6 +150,15 @@ describe('Siren Parser', function () {
 				expect(buildEntity.bind()).to.throw();
 			});
 
+			it('should be able to determine if an entity has a given link', function () {
+				resource.links = [{
+					rel: ['foo'],
+					href: 'bar'
+				}];
+				siren = buildEntity();
+				expect(siren.hasLink('foo')).to.be.true;
+			});
+
 			it('should be able to retrieve links based off their rel', function () {
 				resource.links = [{
 					rel: ['foo'],
@@ -556,7 +565,8 @@ describe('Chai Plugin', function () {
 		action,
 		entity,
 		field,
-		link;
+		link,
+		subEntity;
 
 	beforeEach(function () {
 		field = new Field({
@@ -571,6 +581,11 @@ describe('Chai Plugin', function () {
 			rel: ['rel-foo', 'rel-bar'],
 			href: 'http://example.com'
 		});
+		subEntity = new Entity({
+			rel: ['sub-rel-foo', 'sub-rel-bar'],
+			class: ['sub-class-foo', 'sub-class-bar'],
+			title: 'sub-title-foo'
+		});
 
 		entity = new Entity({
 			class: ['class-foo', 'class-bar'],
@@ -579,7 +594,8 @@ describe('Chai Plugin', function () {
 				two: 2
 			},
 			actions: [action],
-			links: [link]
+			links: [link],
+			entities: [subEntity]
 		});
 	});
 
@@ -594,12 +610,24 @@ describe('Chai Plugin', function () {
 
 		it('expect().to.have.sirenAction()', function () {
 			expect(entity).to.have.sirenAction('action-foo');
+			expect(entity).to.have.sirenAction('action-foo').with.property('href', 'http://example.com');
 			expect(entity).to.not.have.sirenAction('action-bar');
 			expect(function () {
 				expect(entity).to.have.sirenAction('action-bar');
 			}).to.throw();
 			expect(function () {
 				expect(action).to.have.sirenAction('action-foo');
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenActions()', function () {
+			expect(entity).to.have.sirenActions(['action-foo']);
+			expect(entity).to.not.have.sirenActions(['action-bar']);
+			expect(function () {
+				expect(entity).to.have.sirenActions(['action-bar']);
+			}).to.throw();
+			expect(function () {
+				expect(action).to.have.sirenActions(['action-foo']);
 			}).to.throw();
 		});
 	});
@@ -647,6 +675,29 @@ describe('Chai Plugin', function () {
 				expect(action).to.be.a.siren('entity');
 			}).to.throw();
 		});
+
+		it('expect().to.have.sirenEntity()', function () {
+			expect(entity).to.have.sirenEntity('sub-rel-foo');
+			expect(entity).to.have.sirenEntity('sub-rel-foo').with.property('title', 'sub-title-foo');
+			expect(entity).to.not.have.sirenEntity('foo');
+			expect(function () {
+				expect(entity).to.have.sirenEntity('foo');
+			}).to.throw();
+			expect(function () {
+				expect(entity).to.not.have.sirenEntity('sub-rel-foo');
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenEntities()', function () {
+			expect(entity).to.have.sirenEntities(['sub-rel-foo', 'sub-rel-bar']);
+			expect(entity).to.not.have.sirenEntities(['foo', 'bar']);
+			expect(function () {
+				expect(entity).to.have.sirenEntities(['sub-rel-foo', 'foo']);
+			}).to.throw();
+			expect(function () {
+				expect(entity).to.not.have.sirenEntities(['sub-rel-foo', 'bar']);
+			}).to.throw();
+		});
 	});
 
 	describe('Field', function () {
@@ -667,11 +718,35 @@ describe('Chai Plugin', function () {
 				expect(entity).to.be.a.siren('link');
 			}).to.throw();
 		});
+
+		it('expect().to.have.sirenLink()', function () {
+			expect(entity).to.have.sirenLink('rel-foo');
+			expect(entity).to.have.sirenLink('rel-foo').with.property('href', 'http://example.com');
+			expect(entity).to.not.have.sirenLink('foo');
+			expect(function () {
+				expect(entity).to.have.sirenLink('foo');
+			}).to.throw();
+			expect(function () {
+				expect(entity).to.not.have.sirenLink('rel-foo');
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenLinks()', function () {
+			expect(entity).to.have.sirenLinks(['rel-foo', 'rel-bar']);
+			expect(entity).to.not.have.sirenLinks(['foo', 'bar']);
+			expect(function () {
+				expect(entity).to.have.sirenLinks(['rel-foo', 'foo']);
+			}).to.throw();
+			expect(function () {
+				expect(entity).to.not.have.sirenLinks(['rel-foo', 'bar']);
+			}).to.throw();
+		});
 	});
 
 	describe('Property', function () {
 		it('expect().to.have.sirenProperty()', function () {
 			expect(entity).to.have.sirenProperty('one');
+			expect(entity).to.have.sirenProperty('one').that.equals(1);
 			expect(entity).to.not.have.sirenProperty('foo');
 			expect(function () {
 				expect(entity).to.have.sirenProperty('foo');

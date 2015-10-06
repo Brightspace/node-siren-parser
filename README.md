@@ -201,9 +201,18 @@ expect(resource).to.be.a.siren('entity');
 The available assertions are:
 
 * `expect(resource).to.have.sirenAction('foo')`
+* `expect(resource).to.have.sirenAction('foo').with.property('href', 'foo')`
+* `expect(resource).to.have.sirenActions(['foo', 'bar'])`
 * `expect(resource).to.have.sirenClass('foo')`
 * `expect(resource).to.have.sirenClasses(['foo', 'bar', 'baz'])`
+* `expect(resource).to.have.sirenEntity('foo')`
+* `expect(resource).to.have.sirenEntity('foo').with.property('title', 'foo')`
+* `expect(resource).to.have.sirenEntities(['foo', 'bar', 'baz'])`
+* `expect(resource).to.have.sirenLink('foo')`
+* `expect(resource).to.have.sirenLink('foo').with.property('href', 'foo')`
+* `expect(resource).to.have.sirenLinks(['foo', 'bar', 'baz'])`
 * `expect(resource).to.have.sirenProperty('foo')`
+* `expect(resource).to.have.sirenProperty('foo').that.equals('bar')`
 * `expect(resource).to.have.sirenProperties(['foo', 'bar', 'baz'])`
 * `expect(resource).to.be.a.siren('entity')` - checks if `resource` is a Siren entity. Other types include action, class, field, and link.
 
