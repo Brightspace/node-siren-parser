@@ -123,7 +123,7 @@ module.exports = function (chai, utils) {
 			utils.flag(this, 'object', this._obj.getSubEntity(entityRel));
 		});
 
-	// expect(entity).to.have.sirenEntityies(['relName1', 'relName2', ...])
+	// expect(entity).to.have.sirenEntities(['relName1', 'relName2', ...])
 	Assertion.addChainableMethod('sirenEntities',
 		function (entityRels) {
 			new Assertion(this._obj).to.be.an.instanceof(Entity);
@@ -138,10 +138,37 @@ module.exports = function (chai, utils) {
 			}
 		});
 
+	// expect(action).to.have.sirenField('name')
+	Assertion.addChainableMethod('sirenField',
+		function (name) {
+			new Assertion(this._obj).to.be.an.instanceof(Action);
+
+			this.assert(
+				this._obj.hasField(name),
+				'expected #{this} to have field #{exp}',
+				'expected #{this} to not have field #{exp}',
+				name);
+			utils.flag(this, 'object', this._obj.getField(name));
+		});
+
+	// expect(action).to.have.sirenFields(['name1', 'name2', ...])
+	Assertion.addChainableMethod('sirenFields',
+		function (fieldNames) {
+			new Assertion(this._obj).to.be.an.instanceof(Action);
+
+			for (let i = 0; i < fieldNames.length; i++) {
+				this.assert(
+					this._obj.hasField(fieldNames[i]),
+					'expected #{this} to have field #{exp}',
+					'expected #{this} to not have field #{exp}',
+					fieldNames[i]);
+			}
+		});
+
 	// expect(entity).to.have.sirenLink('relName')
 	Assertion.addChainableMethod('sirenLink',
 		function (rel) {
-			new Assertion(this._obj).to.be.an.instanceof(Entity);
+			new Assertion(this._obj).to.be.an.instanceOf(Entity);
 
 			this.assert(
 				this._obj.hasLink(rel),

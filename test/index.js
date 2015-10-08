@@ -604,7 +604,8 @@ describe('Chai Plugin', function () {
 
 	beforeEach(function () {
 		field = new Field({
-			name: 'field-foo'
+			name: 'field-foo',
+			type: 'text'
 		});
 		action = new Action({
 			name: 'action-foo',
@@ -650,7 +651,7 @@ describe('Chai Plugin', function () {
 				expect(entity).to.have.sirenAction('action-bar');
 			}).to.throw();
 			expect(function () {
-				expect(action).to.have.sirenAction('action-foo');
+				expect(entity).to.not.have.sirenAction('action-foo');
 			}).to.throw();
 		});
 
@@ -661,7 +662,7 @@ describe('Chai Plugin', function () {
 				expect(entity).to.have.sirenActions(['action-bar']);
 			}).to.throw();
 			expect(function () {
-				expect(action).to.have.sirenActions(['action-foo']);
+				expect(entity).to.not.have.sirenActions(['action-foo']);
 			}).to.throw();
 		});
 	});
@@ -740,6 +741,29 @@ describe('Chai Plugin', function () {
 			expect(link).to.not.be.a.siren('field');
 			expect(function () {
 				expect(link).to.be.a.siren('field');
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenField()', function () {
+			expect(entity.getAction('action-foo')).to.have.sirenField('field-foo');
+			expect(entity.getAction('action-foo')).to.have.sirenField('field-foo').with.property('type', 'text');
+			expect(entity.getAction('action-foo')).to.not.have.sirenField('foo');
+			expect(function () {
+				expect(entity.getAction('action-foo')).to.have.sirenField('foo');
+			}).to.throw();
+			expect(function () {
+				expect(entity.getAction('action-foo')).to.not.have.sirenField('field-foo');
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenFields()', function () {
+			expect(entity.getAction('action-foo')).to.have.sirenFields(['field-foo']);
+			expect(entity.getAction('action-foo')).to.not.have.sirenFields(['field-bar']);
+			expect(function () {
+				expect(entity.getAction('action-foo')).to.have.sirenFields(['field-bar']);
+			}).to.throw();
+			expect(function () {
+				expect(entity.getAction('action-foo')).to.not.have.sirenFields(['field-foo']);
 			}).to.throw();
 		});
 	});

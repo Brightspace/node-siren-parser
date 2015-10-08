@@ -232,6 +232,9 @@ The available assertions are:
 * `expect(resource).to.have.sirenEntity('foo')`
 * `expect(resource).to.have.sirenEntity('foo').with.property('title', 'foo')`
 * `expect(resource).to.have.sirenEntities(['foo', 'bar', 'baz'])`
+* `expect(resource).to.have.sirenField('foo')`
+* `expect(resource).to.have.sirenField('foo').with.property('name', 'foo')`
+* `expect(resource).to.have.sirenFields(['foo', 'bar', 'baz'])`
 * `expect(resource).to.have.sirenLink('foo')`
 * `expect(resource).to.have.sirenLink('foo').with.property('href', 'foo')`
 * `expect(resource).to.have.sirenLinks(['foo', 'bar', 'baz'])`
