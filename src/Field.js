@@ -51,4 +51,8 @@ function Field (field) {
 	}
 }
 
+Field.prototype.hasClass = function (cls) {
+	return this.class instanceof Array && this.class.indexOf(cls) > -1;
+};
+
 module.exports = Field;

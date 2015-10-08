@@ -113,6 +113,10 @@ describe('Siren Parser', function () {
 				resource.class = ['foo'];
 				siren = buildEntity();
 				expect(siren.hasClass('foo')).to.be.true;
+
+				resource.class = undefined;
+				siren = buildEntity();
+				expect(siren.hasClass('foo')).to.be.false;
 			});
 		});
 
@@ -310,6 +314,16 @@ describe('Siren Parser', function () {
 				resource.class = 1;
 				expect(buildAction.bind()).to.throw();
 			});
+
+			it('should be able to determine if an action has a given class', function () {
+				resource.class = ['foo'];
+				siren = buildAction();
+				expect(siren.hasClass('foo')).to.be.true;
+
+				resource.class = undefined;
+				siren = buildAction();
+				expect(siren.hasClass('foo')).to.be.false;
+			});
 		});
 
 		describe('method', function () {
@@ -434,6 +448,16 @@ describe('Siren Parser', function () {
 				resource.class = 1;
 				expect(buildField.bind()).to.throw();
 			});
+
+			it('should be able to determine if a field has a given class', function () {
+				resource.class = ['foo'];
+				siren = buildField();
+				expect(siren.hasClass('foo')).to.be.true;
+
+				resource.class = undefined;
+				siren = buildField();
+				expect(siren.hasClass('foo')).to.be.false;
+			});
 		});
 
 		describe('title', function () {
@@ -529,6 +553,16 @@ describe('Siren Parser', function () {
 			it('should require class be an array, if supplied', function () {
 				resource.class = 1;
 				expect(buildLink.bind()).to.throw();
+			});
+
+			it('should be able to determine if a link has a given class', function () {
+				resource.class = ['foo'];
+				siren = buildLink();
+				expect(siren.hasClass('foo')).to.be.true;
+
+				resource.class = undefined;
+				siren = buildLink();
+				expect(siren.hasClass('foo')).to.be.false;
 			});
 		});
 

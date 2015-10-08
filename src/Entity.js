@@ -107,7 +107,7 @@ Entity.prototype.hasAction = function (actionName) {
 };
 
 Entity.prototype.hasClass = function (cls) {
-	return this.class.indexOf(cls) > -1;
+	return this.class instanceof Array && this.class.indexOf(cls) > -1;
 };
 
 Entity.prototype.hasEntity = function (entityRel) {

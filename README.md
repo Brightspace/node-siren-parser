@@ -138,6 +138,14 @@ Attributes:
 * `title` (string)
 * `type` (string) _If specified, must be an HTML5 input type - see [this link][action types]_
 
+#### `Link.hasClass(String class)`
+
+Returns true if the Link has the specified `class`, otherwise false.
+
+```js
+resource.hasClass('foo'); // false
+```
+
 ---
 
 ### `Action`
@@ -151,6 +159,14 @@ Attributes:
 * `title` (string)
 * `type` (string)
 * `fields` (array of [Fields](#field))
+
+#### `Action.hasClass(String class)`
+
+Returns true if the Action has the specified `class`, otherwise false.
+
+```js
+resource.hasClass('foo'); // false
+```
 
 #### `Action.hasField(String name)`
 
@@ -180,6 +196,14 @@ Attributes:
 * `class` (array of strings)
 * `type` (string)
 * `title` (string)
+
+#### `Field.hasClass(String class)`
+
+Returns true if the Field has the specified `class`, otherwise false.
+
+```js
+resource.hasClass('foo'); // false
+```
 
 ## `chai` interface
 
