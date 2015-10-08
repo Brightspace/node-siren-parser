@@ -89,8 +89,6 @@ module.exports = function (chai, utils) {
 	// expect(entity).to.have.sirenClass('className')
 	Assertion.addChainableMethod('sirenClass',
 		function (cls) {
-			new Assertion(this._obj).to.be.an.instanceof(Entity);
-
 			this.assert(
 				this._obj.hasClass(cls),
 				'expected #{this} to have class #{exp}, but it does not',
@@ -101,7 +99,6 @@ module.exports = function (chai, utils) {
 	// expect(entity).to.have.sirenClasses(['class1', 'class2', ...])
 	Assertion.addChainableMethod('sirenClasses',
 		function (classes) {
-			new Assertion(this._obj).to.be.an.instanceof(Entity);
 			new Assertion(classes).to.be.an.instanceof(Array);
 
 			for (let i = 0; i < classes.length; i++) {
