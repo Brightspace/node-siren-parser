@@ -138,6 +138,14 @@ Attributes:
 * `title` (string)
 * `type` (string) _If specified, must be an HTML5 input type - see [this link][action types]_
 
+#### `Link.hasClass(String class)`
+
+Returns true if the Link has the specified `class`, otherwise false.
+
+```js
+resource.hasClass('foo'); // false
+```
+
 ---
 
 ### `Action`
@@ -151,6 +159,14 @@ Attributes:
 * `title` (string)
 * `type` (string)
 * `fields` (array of [Fields](#field))
+
+#### `Action.hasClass(String class)`
+
+Returns true if the Action has the specified `class`, otherwise false.
+
+```js
+resource.hasClass('foo'); // false
+```
 
 #### `Action.hasField(String name)`
 
@@ -181,6 +197,14 @@ Attributes:
 * `type` (string)
 * `title` (string)
 
+#### `Field.hasClass(String class)`
+
+Returns true if the Field has the specified `class`, otherwise false.
+
+```js
+resource.hasClass('foo'); // false
+```
+
 ## `chai` interface
 
 There are a few helper `chai` methods included with this module, under `./chaiPlugin`. These are mostly equivalents of the `hasX` methods in the API (and take generally the same arguments), to make testing with `chai` cleaner. Can also test whether a given resource is a particular Siren type.
@@ -208,6 +232,9 @@ The available assertions are:
 * `expect(resource).to.have.sirenEntity('foo')`
 * `expect(resource).to.have.sirenEntity('foo').with.property('title', 'foo')`
 * `expect(resource).to.have.sirenEntities(['foo', 'bar', 'baz'])`
+* `expect(resource).to.have.sirenField('foo')`
+* `expect(resource).to.have.sirenField('foo').with.property('name', 'foo')`
+* `expect(resource).to.have.sirenFields(['foo', 'bar', 'baz'])`
 * `expect(resource).to.have.sirenLink('foo')`
 * `expect(resource).to.have.sirenLink('foo').with.property('href', 'foo')`
 * `expect(resource).to.have.sirenLinks(['foo', 'bar', 'baz'])`

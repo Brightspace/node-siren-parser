@@ -47,6 +47,10 @@ function Action (action) {
 	}
 }
 
+Action.prototype.hasClass = function (cls) {
+	return this.class instanceof Array && this.class.indexOf(cls) > -1;
+};
+
 Action.prototype.hasField = function (fieldName) {
 	return this._fieldsByName.hasOwnProperty(fieldName);
 };

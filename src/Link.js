@@ -26,4 +26,8 @@ function Link (link) {
 	}
 }
 
+Link.prototype.hasClass = function (cls) {
+	return this.class instanceof Array && this.class.indexOf(cls) > -1;
+};
+
 module.exports = Link;
