@@ -24,7 +24,7 @@ const VALID_TYPES = [
 	'file'
 ];
 
-function Field (field) {
+function Field(field) {
 	assert('object' === typeof field);
 	assert('string' === typeof field.name);
 	assert('undefined' === typeof field.class || Array.isArray(field.class));
@@ -51,7 +51,7 @@ function Field (field) {
 	}
 }
 
-Field.prototype.hasClass = function (cls) {
+Field.prototype.hasClass = function(cls) {
 	return this.class instanceof Array && this.class.indexOf(cls) > -1;
 };
 

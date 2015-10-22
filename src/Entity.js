@@ -6,7 +6,7 @@ const
 	Action = require('./Action'),
 	Link = require('./Link');
 
-function Entity (entity) {
+function Entity(entity) {
 	if (!(this instanceof Entity)) {
 		return new Entity(entity);
 	}
@@ -50,7 +50,7 @@ function Entity (entity) {
 	self._actionsByName = {};
 	if (entity.actions) {
 		self.actions = [];
-		entity.actions.forEach(function (action) {
+		entity.actions.forEach(function(action) {
 			const actionInstance = new Action(action);
 			self.actions.push(actionInstance);
 			self._actionsByName[action.name] = actionInstance;
@@ -60,11 +60,11 @@ function Entity (entity) {
 	self._linksByRel = {};
 	if (entity.links) {
 		self.links = [];
-		entity.links.forEach(function (link) {
+		entity.links.forEach(function(link) {
 			const linkInstance = new Link(link);
 			self.links.push(linkInstance);
 
-			link.rel.forEach(function (rel) {
+			link.rel.forEach(function(rel) {
 				self._linksByRel[rel] = linkInstance;
 			});
 		});
@@ -74,7 +74,7 @@ function Entity (entity) {
 	self._entitiesByClass = {};
 	if (entity.entities) {
 		self.entities = [];
-		entity.entities.forEach(function (subEntity) {
+		entity.entities.forEach(function(subEntity) {
 			assert(Array.isArray(subEntity.rel));
 
 			let subEntityInstance;
@@ -85,12 +85,12 @@ function Entity (entity) {
 			}
 			self.entities.push(subEntityInstance);
 
-			subEntity.rel.forEach(function (rel) {
+			subEntity.rel.forEach(function(rel) {
 				self._entitiesByRel[rel] = subEntityInstance;
 			});
 
 			if (Array.isArray(subEntity.class)) {
-				subEntity.class.forEach(function (cls) {
+				subEntity.class.forEach(function(cls) {
 					/* istanbul ignore else */
 					if (!self._entitiesByClass[cls]) {
 						self._entitiesByClass[cls] = [];
@@ -102,39 +102,39 @@ function Entity (entity) {
 	}
 }
 
-Entity.prototype.hasAction = function (actionName) {
+Entity.prototype.hasAction = function(actionName) {
 	return this._actionsByName.hasOwnProperty(actionName);
 };
 
-Entity.prototype.hasClass = function (cls) {
+Entity.prototype.hasClass = function(cls) {
 	return this.class instanceof Array && this.class.indexOf(cls) > -1;
 };
 
-Entity.prototype.hasEntity = function (entityRel) {
+Entity.prototype.hasEntity = function(entityRel) {
 	return this._entitiesByRel.hasOwnProperty(entityRel);
 };
 
-Entity.prototype.hasLink = function (linkRel) {
+Entity.prototype.hasLink = function(linkRel) {
 	return this._linksByRel.hasOwnProperty(linkRel);
 };
 
-Entity.prototype.hasProperty = function (property) {
+Entity.prototype.hasProperty = function(property) {
 	return this.properties.hasOwnProperty(property);
 };
 
-Entity.prototype.getAction = function (actionName) {
+Entity.prototype.getAction = function(actionName) {
 	return this._actionsByName[actionName];
 };
 
-Entity.prototype.getLink = function (linkRel) {
+Entity.prototype.getLink = function(linkRel) {
 	return this._linksByRel[linkRel];
 };
 
-Entity.prototype.getSubEntity = function (entityRel) {
+Entity.prototype.getSubEntity = function(entityRel) {
 	return this._entitiesByRel[entityRel];
 };
 
-Entity.prototype.getSubEntitiesByClass = function (cls) {
+Entity.prototype.getSubEntitiesByClass = function(cls) {
 	return this._entitiesByClass[cls];
 };
 

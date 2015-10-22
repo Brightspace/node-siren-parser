@@ -6,12 +6,12 @@ const
 	Field = require('./Field'),
 	Link = require('./Link');
 
-module.exports = function (chai, utils) {
+module.exports = function(chai, utils) {
 	const Assertion = chai.Assertion;
 
 	// expect(resource).to.be.a.siren('Type');
 	Assertion.addChainableMethod('siren',
-		function (type) {
+		/* @this */ function(type) {
 			new Assertion(type).to.be.a('string');
 			type = type.toLowerCase();
 
@@ -59,7 +59,7 @@ module.exports = function (chai, utils) {
 
 	// expect(entity).to.have.sirenAction('actionName')
 	Assertion.addChainableMethod('sirenAction',
-		function (actionName) {
+		/* @this */ function(actionName) {
 			new Assertion(this._obj).to.be.an.instanceof(Entity);
 			const action = this._obj.getAction(actionName);
 
@@ -73,7 +73,7 @@ module.exports = function (chai, utils) {
 
 	// expect(entity).to.have.sirenActions(['actionName1', 'actionName2', ...])
 	Assertion.addChainableMethod('sirenActions',
-		function (actionNames) {
+		/* @this */ function(actionNames) {
 			new Assertion(this._obj).to.be.an.instanceof(Entity);
 			new Assertion(actionNames).to.be.an.instanceof(Array);
 
@@ -88,7 +88,7 @@ module.exports = function (chai, utils) {
 
 	// expect(entity).to.have.sirenClass('className')
 	Assertion.addChainableMethod('sirenClass',
-		function (cls) {
+		/* @this */ function(cls) {
 			this.assert(
 				this._obj.hasClass(cls),
 				'expected #{this} to have class #{exp}, but it does not',
@@ -98,7 +98,7 @@ module.exports = function (chai, utils) {
 
 	// expect(entity).to.have.sirenClasses(['class1', 'class2', ...])
 	Assertion.addChainableMethod('sirenClasses',
-		function (classes) {
+		/* @this */ function(classes) {
 			new Assertion(classes).to.be.an.instanceof(Array);
 
 			for (let i = 0; i < classes.length; i++) {
@@ -112,7 +112,7 @@ module.exports = function (chai, utils) {
 
 	// expect(entity).to.have.sirenEntity('relName')
 	Assertion.addChainableMethod('sirenEntity',
-		function (entityRel) {
+		/* @this */ function(entityRel) {
 			new Assertion(this._obj).to.be.an.instanceof(Entity);
 
 			this.assert(
@@ -125,7 +125,7 @@ module.exports = function (chai, utils) {
 
 	// expect(entity).to.have.sirenEntities(['relName1', 'relName2', ...])
 	Assertion.addChainableMethod('sirenEntities',
-		function (entityRels) {
+		/* @this */ function(entityRels) {
 			new Assertion(this._obj).to.be.an.instanceof(Entity);
 			new Assertion(entityRels).to.be.an.instanceof(Array);
 
@@ -140,7 +140,7 @@ module.exports = function (chai, utils) {
 
 	// expect(action).to.have.sirenField('name')
 	Assertion.addChainableMethod('sirenField',
-		function (name) {
+		/* @this */ function(name) {
 			new Assertion(this._obj).to.be.an.instanceof(Action);
 
 			this.assert(
@@ -153,7 +153,7 @@ module.exports = function (chai, utils) {
 
 	// expect(action).to.have.sirenFields(['name1', 'name2', ...])
 	Assertion.addChainableMethod('sirenFields',
-		function (fieldNames) {
+		/* @this */ function(fieldNames) {
 			new Assertion(this._obj).to.be.an.instanceof(Action);
 
 			for (let i = 0; i < fieldNames.length; i++) {
@@ -167,7 +167,7 @@ module.exports = function (chai, utils) {
 
 	// expect(entity).to.have.sirenLink('relName')
 	Assertion.addChainableMethod('sirenLink',
-		function (rel) {
+		/* @this */ function(rel) {
 			new Assertion(this._obj).to.be.an.instanceOf(Entity);
 
 			this.assert(
@@ -180,7 +180,7 @@ module.exports = function (chai, utils) {
 
 	// expect(entity).to.have.sirenLinks(['relName1', 'relName2', ...])
 	Assertion.addChainableMethod('sirenLinks',
-		function (rels) {
+		/* @this */ function(rels) {
 			new Assertion(this._obj).to.be.an.instanceof(Entity);
 			new Assertion(rels).to.be.an.instanceof(Array);
 
@@ -195,7 +195,7 @@ module.exports = function (chai, utils) {
 
 	// expect(entity).to.have.sirenProperty('propertyKey')
 	Assertion.addChainableMethod('sirenProperty',
-		function (property) {
+		/* @this */ function(property) {
 			new Assertion(this._obj).to.be.an.instanceof(Entity);
 
 			this.assert(
@@ -208,7 +208,7 @@ module.exports = function (chai, utils) {
 
 	// expect(entity).to.have.sirenProperties(['property1', 'property2', ...])
 	Assertion.addChainableMethod('sirenProperties',
-		function (properties) {
+		/* @this */ function(properties) {
 			new Assertion(this._obj).to.be.an.instanceof(Entity);
 			new Assertion(properties).to.be.an.instanceof(Array);
 
