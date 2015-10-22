@@ -4,7 +4,7 @@ const
 	assert = require('assert'),
 	Field = require('./Field');
 
-function Action (action) {
+function Action(action) {
 	const self = this;
 
 	assert('object' === typeof action);
@@ -38,7 +38,7 @@ function Action (action) {
 	self._fieldsByName = {};
 	if (action.fields) {
 		self.fields = [];
-		action.fields.forEach(function (field) {
+		action.fields.forEach(function(field) {
 			const fieldInstance = new Field(field);
 			self.fields.push(fieldInstance);
 			self._fieldsByName[field.name] = fieldInstance;
@@ -47,15 +47,15 @@ function Action (action) {
 	}
 }
 
-Action.prototype.hasClass = function (cls) {
+Action.prototype.hasClass = function(cls) {
 	return this.class instanceof Array && this.class.indexOf(cls) > -1;
 };
 
-Action.prototype.hasField = function (fieldName) {
+Action.prototype.hasField = function(fieldName) {
 	return this._fieldsByName.hasOwnProperty(fieldName);
 };
 
-Action.prototype.getField = function (fieldName) {
+Action.prototype.getField = function(fieldName) {
 	return this._fieldsByName[fieldName];
 };
 

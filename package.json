@@ -4,7 +4,7 @@
   "description": "Pretty much the opposite of dominicbarnes/node-siren-writer",
   "main": "src/index.js",
   "scripts": {
-    "check-style": "jscs . && jshint .",
+    "check-style": "eslint --ignore-path .gitignore .",
     "test": "npm run check-style && npm run test-no-style",
     "test-no-style": "export NODE_ENV=test; istanbul cover --source-map --dir ./coverage/unit --root src/ node_modules/.bin/_mocha -- --recursive ./test",
     "posttest": "istanbul report text-summary lcov",
@@ -23,11 +23,20 @@
   "devDependencies": {
     "chai": "^3.3.0",
     "coveralls": "^2.11.4",
+    "eslint": "^1.7.3",
+    "eslint-config-brightspace": "0.0.2",
     "istanbul": "git+https://github.com/omsmith/istanbul.git#source-map-errors",
     "jscs": "^2.1.1",
     "jshint": "^2.8.0",
     "mocha": "^2.3.3",
     "sinon": "^1.17.0",
     "sinon-chai": "^2.8.0"
+  },
+  "eslintConfig": {
+    "extends": "brightspace",
+    "env": {
+      "es6": true,
+      "node": true
+    }
   }
 }

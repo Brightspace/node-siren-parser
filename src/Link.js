@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 
-function Link (link) {
+function Link(link) {
 	assert('object' === typeof link);
 	assert(Array.isArray(link.rel));
 	assert('string' === typeof link.href);
@@ -26,7 +26,7 @@ function Link (link) {
 	}
 }
 
-Link.prototype.hasClass = function (cls) {
+Link.prototype.hasClass = function(cls) {
 	return this.class instanceof Array && this.class.indexOf(cls) > -1;
 };
 
