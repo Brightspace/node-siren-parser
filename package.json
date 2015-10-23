@@ -2,7 +2,7 @@
   "name": "@d2l/siren-parser",
   "version": "1.5.0",
   "description": "Pretty much the opposite of dominicbarnes/node-siren-writer",
-  "main": "src/index.js",
+  "main": "src/Entity.js",
   "scripts": {
     "check-style": "eslint --ignore-path .gitignore .",
     "test": "npm run check-style && npm run test-no-style",

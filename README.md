@@ -8,7 +8,7 @@ Parses a Siren object (or Siren JSON string) into an Entity object that is inten
 
 ```js
 const sirenParser = require('@d2l/siren-parser');
-const sirenParserChai = require('@d2l/siren-parser').chai;
+const sirenParserChai = require('@d2l/siren-parser/chai');
 const sirenSuperagent = require('@d2l/siren-parser/superagent');
 const sirenJson = {
 	title: 'My title',
@@ -220,7 +220,7 @@ resource.hasClass('foo'); // false
 
 ## `chai` interface
 
-There are a few helper `chai` methods included with this module, under `./chaiPlugin`. These are mostly equivalents of the `hasX` methods in the API (and take generally the same arguments), to make testing with `chai` cleaner. Can also test whether a given resource is a particular Siren type.
+There are a few helper `chai` methods included with this module, under `./chai`. These are mostly equivalents of the `hasX` methods in the API (and take generally the same arguments), to make testing with `chai` cleaner. Can also test whether a given resource is a particular Siren type.
 
 ```js
 // Without chai plugin, boo ugly!
