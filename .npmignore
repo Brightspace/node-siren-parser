@@ -6,9 +6,6 @@ coverage
 *.tgz
 
 .editorconfig
-.jscs.json
-.jshintignore
-.jshintrc
 
 .travis.yml
 travis-deploy.sh

@@ -263,15 +263,14 @@ npm test
 
 ## Code Style
 
-This repository is configured with [EditorConfig][EditorConfig], [jscs][jscs]
-and [JSHint][JSHint] rules. See the [docs.dev code style article][code style]
-for information on installing editor extensions.
+This repository is configured with [EditorConfig][EditorConfig] and [ESLint][ESLint]
+and rules. See the [docs.dev code style article][code style] for information on
+installing editor extensions.
 
 [node-siren-writer]: https://github.com/dominicbarnes/node-siren-writer
 [chai]: https://github.com/chaijs/chai
 [siren]: https://github.com/kevinswiber/siren
 [action types]: https://github.com/kevinswiber/siren#type-3
 [EditorConfig]: http://editorconfig.org/
-[jscs]: http://jscs.info/
-[JSHint]: http://jshint.com/
+[ESLint]: http://eslint.org
 [code style]: http://docs.dev.d2l/index.php/JavaScript_Code_Style_(Personal_Learning)
