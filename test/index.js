@@ -42,7 +42,7 @@ describe('Siren Parser', function() {
 		}
 
 		it('should auto-instantiate', function() {
-			expect(Entity(resource)).to.be.an.instanceof(Entity); // jshint ignore:line
+			expect(Entity(resource)).to.be.an.instanceof(Entity);
 		});
 
 		it('should work with stringified entity', function() {
