@@ -10,6 +10,7 @@ coverage
 .jshintignore
 .jshintrc
 
+.coveralls.yml
 .travis.yml
 travis-deploy.sh
 .npmrc*
