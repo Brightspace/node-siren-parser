@@ -400,6 +400,23 @@ describe('Siren Parser', function() {
 				siren = buildAction();
 				expect(siren.getField('foo')).to.have.property('title', 'bar');
 			});
+
+			it('extendFields should extend given fields object with default values', function() {
+				resource.fields = [{
+					name: 'foo1',
+					value: 'bar'
+				}, {
+					name: 'foo2',
+					value: 'bar'
+				}];
+				siren = buildAction();
+				expect(siren.extendFields({
+					foo1: 'notbar'
+				})).to.deep.equal({
+					foo1: 'notbar',
+					foo2: 'bar'
+				});
+			});
 		});
 	});
 
@@ -844,44 +861,122 @@ describe('Chai Plugin', function() {
 
 describe('Siren Superagent Plugin', function() {
 	let app, src;
-	function setup(reply, headers) {
+
+	beforeEach(function() {
+		app = undefined;
 		src = 'http://localhost';
-		app = nock(src)
-			.get('/')
-			.reply(200, reply, headers);
-	}
+	});
 
 	afterEach(function() {
-		expect(app.isDone()).to.be.true;
+		if (app) {
+			expect(app.isDone()).to.be.true;
+		}
 	});
 
-	it('should parse a json body', function(done) {
-		setup({});
-		request(src)
-			.get('/')
-			.parse(sirenSuperagent.parse)
-			.expect(200)
-			.expect(function(res) {
-				expect(res.body).to.be.an.instanceof(Entity);
-			})
-			.end(done);
+	describe('parser', function() {
+		it('should parse a json body', function(done) {
+			app = nock(src)
+				.get('/')
+				.reply(200, {});
+
+			request(src)
+				.get('/')
+				.parse(sirenSuperagent.parse)
+				.expect(200)
+				.expect(function(res) {
+					expect(res.body).to.be.an.instanceof(Entity);
+				})
+				.end(done);
+		});
+
+		// Emits a "double callback!" warning due to https://github.com/visionmedia/superagent/issues/633
+		it('should throw an error when parsing fails', function(done) {
+			app = nock(src)
+				.get('/')
+				.reply(200, 'not json');
+
+			request(src)
+				.get('/')
+				.parse(sirenSuperagent.parse)
+				.end(function(err, res) {
+					expect(err).to.be.an.instanceof(SyntaxError);
+					expect(res).to.be.undefined;
+					done();
+				});
+		});
+
+		it('should parse a string as a siren entity', function() {
+			const entity = sirenSuperagent.parse('{}');
+			expect(entity).to.be.an.instanceof(Entity);
+		});
 	});
 
-	// Emits a "double callback!" warning due to https://github.com/visionmedia/superagent/issues/633
-	it('should throw an error when parsing fails', function(done) {
-		setup('not json');
-		request(src)
-			.get('/')
-			.parse(sirenSuperagent.parse)
-			.end(function(err, res) {
-				expect(err).to.be.an.instanceof(SyntaxError);
-				expect(res).to.be.undefined;
-				done();
+	describe('perform action', function() {
+		let resource;
+		function buildAction() {
+			return new Action(resource);
+		}
+
+		beforeEach(function() {
+			resource = {
+				name: 'foo',
+				href: '/'
+			};
+		});
+
+		it('should perform a basic action', function(done) {
+			app = nock(src)
+				.get('/')
+				.reply(200);
+
+			const action = buildAction();
+			sirenSuperagent.perform(request(src), action)
+				.expect(200)
+				.end(done);
+		});
+
+		it('should perform a GET action with fields', function(done) {
+			app = nock(src)
+				.get('/')
+				.query({query: 'parameter'})
+				.reply(200);
+
+			resource.method = 'GET';
+			resource.fields = [
+				{
+					name: 'query',
+					value: 'parameter'
+				}
+			];
+			const action = buildAction();
+			sirenSuperagent.perform(request(src), action)
+				.expect(200)
+				.end(done);
+		});
+
+		function testMethod(method) {
+			it('should perform a ' + method + ' action with fields', function(done) {
+				app = nock(src)
+					[method.toLowerCase()]('/', 'query=parameter')
+					.reply(200);
+
+				resource.method = method;
+				resource.fields = [
+					{
+						name: 'query',
+						value: 'parameter'
+					}
+				];
+				const action = buildAction();
+				sirenSuperagent.perform(request(src), action)
+					.expect(200)
+					.end(done);
 			});
-	});
+		}
 
-	it('should parse a string as a siren entity', function() {
-		const entity = sirenSuperagent.parse('{}');
-		expect(entity).to.be.an.instanceof(Entity);
+		testMethod('POST');
+		testMethod('PUT');
+		testMethod('PATCH');
+		testMethod('DELETE');
 	});
 });

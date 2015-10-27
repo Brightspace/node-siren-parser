@@ -1,6 +1,8 @@
 'use strict';
 
 const
+	assert = require('assert'),
+	Action = require('./Action'),
 	Entity = require('./Entity');
 
 function parseSiren(res, fn) {
@@ -22,6 +24,29 @@ function parseSiren(res, fn) {
 	});
 }
 
+function submitHelper(req) {
+	req.submit = function submit(data) {
+		assert('object' === typeof data);
+		if ('GET' === this.method.toUpperCase()) {
+			this.query(data);
+		} else {
+			this.send(data);
+		}
+		return this;
+	};
+}
+
+function performAction(request, action) {
+	assert(request);
+	assert(action instanceof Action);
+	return request[action.method.toLowerCase()](action.href)
+		.use(submitHelper)
+		.type(action.type)
+		.submit(action.extendFields());
+}
+
 module.exports = {
-	parse: parseSiren
+	parse: parseSiren,
+	perform: performAction,
+	submitHelper: submitHelper
 };

@@ -61,4 +61,17 @@ Action.prototype.getField = function(fieldName) {
 	return this._fieldsByName[fieldName];
 };
 
+Action.prototype.extendFields = function(fields) {
+	fields = fields || {};
+	if (this.fields instanceof Array) {
+		for (let field of this.fields) {
+			if (!fields.hasOwnProperty(field.name)) {
+				fields[field.name] = field.value;
+			}
+		}
+	}
+
+	return fields;
+};
+
 module.exports = Action;
