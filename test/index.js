@@ -267,6 +267,10 @@ describe('Siren Parser', function() {
 			};
 		});
 
+		it('should auto-instantiate', function() {
+			expect(Action(resource)).to.be.an.instanceof(Action);
+		});
+
 		it('should require the action be an object', function() {
 			resource = 1;
 			expect(buildAction.bind()).to.throw();
@@ -410,6 +414,10 @@ describe('Siren Parser', function() {
 			};
 		});
 
+		it('should auto-instantiate', function() {
+			expect(Field(resource)).to.be.an.instanceof(Field);
+		});
+
 		it('should require the field be an object', function() {
 			resource = 1;
 			expect(buildField.bind()).to.throw();
@@ -505,6 +513,10 @@ describe('Siren Parser', function() {
 				rel: [],
 				href: 'foo'
 			};
+		});
+
+		it('should auto-instantiate', function() {
+			expect(Link(resource)).to.be.an.instanceof(Link);
 		});
 
 		it('should require the link be an object', function() {

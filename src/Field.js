@@ -25,6 +25,13 @@ const VALID_TYPES = [
 ];
 
 function Field(field) {
+	if (!(this instanceof Field)) {
+		return new Field(field);
+	}
+	if (field instanceof Field) {
+		return field;
+	}
+
 	assert('object' === typeof field);
 	assert('string' === typeof field.name);
 	assert('undefined' === typeof field.class || Array.isArray(field.class));
