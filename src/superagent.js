@@ -24,15 +24,33 @@ function parseSiren(res, fn) {
 	});
 }
 
-function submitHelper(req) {
-	req.submit = function submit(data) {
-		assert('object' === typeof data);
-		if ('GET' === this.method.toUpperCase()) {
-			this.query(data);
-		} else {
-			this.send(data);
+// Siren doesn't specify what to do if there are any fields with the same name
+// (ie. radio buttons). If this happens, the last such field in the list will be chosen
+function flattenFields(fields) {
+	const fieldsObj = {};
+	for (let field of fields) {
+		if (!fields.hasOwnProperty(field.name)) {
+			fieldsObj[field.name] = field.value;
 		}
-		return this;
+	}
+	return fieldsObj;
+}
+
+function submitHelper(req) {
+	req.submit = function submit(fields) {
+		if (Array.isArray(fields)) {
+			fields = flattenFields(fields);
+		}
+
+		switch (this.method.toUpperCase()) {
+			case 'GET':
+			case 'HEAD': {
+				return this.query(fields);
+			}
+			default: {
+				return this.send(fields);
+			}
+		}
 	};
 }
 
@@ -42,11 +60,10 @@ function performAction(request, action) {
 	return request[action.method.toLowerCase()](action.href)
 		.use(submitHelper)
 		.type(action.type)
-		.submit(action.extendFields());
+		.submit(action.fields || []);
 }
 
 module.exports = {
 	parse: parseSiren,
-	perform: performAction,
-	submitHelper: submitHelper
+	perform: performAction
 };

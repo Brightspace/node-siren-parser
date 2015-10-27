@@ -410,23 +410,6 @@ describe('Siren Parser', function() {
 				siren = buildAction();
 				expect(siren.getField('foo')).to.have.property('title', 'bar');
 			});
-
-			it('extendFields should extend given fields object with default values', function() {
-				resource.fields = [{
-					name: 'foo1',
-					value: 'bar'
-				}, {
-					name: 'foo2',
-					value: 'bar'
-				}];
-				siren = buildAction();
-				expect(siren.extendFields({
-					foo1: 'notbar'
-				})).to.deep.equal({
-					foo1: 'notbar',
-					foo2: 'bar'
-				});
-			});
 		});
 	});
 
@@ -945,26 +928,28 @@ describe('Siren Superagent Plugin', function() {
 				.end(done);
 		});
 
-		it('should perform a GET action with fields', function(done) {
-			app = nock(src)
-				.get('/')
-				.query({query: 'parameter'})
-				.reply(200);
+		function testMethodWithQuery(method) {
+			it('should perform a ' + method + ' action with fields', function(done) {
+				app = nock(src)
+					[method.toLowerCase()]('/')
+					.query({query: 'parameter'})
+					.reply(200);
 
-			resource.method = 'GET';
-			resource.fields = [
-				{
-					name: 'query',
-					value: 'parameter'
-				}
-			];
-			const action = buildAction();
-			sirenSuperagent.perform(request(src), action)
-				.expect(200)
-				.end(done);
-		});
+				resource.method = method;
+				resource.fields = [
+					{
+						name: 'query',
+						value: 'parameter'
+					}
+				];
+				const action = buildAction();
+				sirenSuperagent.perform(request(src), action)
+					.expect(200)
+					.end(done);
+			});
+		}
 
-		function testMethod(method) {
+		function testMethodWithBody(method) {
 			it('should perform a ' + method + ' action with fields', function(done) {
 				app = nock(src)
 					[method.toLowerCase()]('/', 'query=parameter')
@@ -984,9 +969,55 @@ describe('Siren Superagent Plugin', function() {
 			});
 		}
 
-		testMethod('POST');
-		testMethod('PUT');
-		testMethod('PATCH');
-		testMethod('DELETE');
+		testMethodWithQuery('GET');
+		testMethodWithQuery('HEAD');
+		testMethodWithBody('POST');
+		testMethodWithBody('PUT');
+		testMethodWithBody('PATCH');
+		testMethodWithBody('DELETE');
+
+		it('should add list of fields on performed action', function(done) {
+			app = nock(src)
+				.get('/')
+				.query({query: 'parameter'})
+				.reply(200);
+
+			const action = buildAction();
+			sirenSuperagent.perform(request(src), action)
+				.submit([
+					{
+						name: 'query',
+						value: 'parameter'
+					}
+				])
+				.expect(200)
+				.end(done);
+		});
+
+		it('should add fields on performed action', function(done) {
+			app = nock(src)
+				.get('/')
+				.query({query: 'parameter'})
+				.reply(200);
+
+			const action = buildAction();
+			sirenSuperagent.perform(request(src), action)
+				.submit({query: 'parameter'})
+				.expect(200)
+				.end(done);
+		});
+
+		it('should add fields string on performed action', function(done) {
+			app = nock(src)
+				.get('/')
+				.query({query: 'parameter'})
+				.reply(200);
+
+			const action = buildAction();
+			sirenSuperagent.perform(request(src), action)
+				.submit('query=parameter')
+				.expect(200)
+				.end(done);
+		});
 	});
 });
