@@ -340,6 +340,11 @@ describe('Siren Parser', function() {
 				expect(siren.method).to.equal('baz');
 			});
 
+			it('should default to GET', function() {
+				siren = buildAction();
+				expect(siren.method).to.equal('GET');
+			});
+
 			it('should require method be a string, if supplied', function() {
 				resource.method = 1;
 				expect(buildAction.bind(undefined, resource)).to.throw();
@@ -364,6 +369,11 @@ describe('Siren Parser', function() {
 				resource.type = 'baz';
 				siren = buildAction();
 				expect(siren.type).to.equal('baz');
+			});
+
+			it('should default to application/x-www-form-urlencoded', function() {
+				siren = buildAction();
+				expect(siren.type).to.equal('application/x-www-form-urlencoded');
 			});
 
 			it('should require type be a string, if supplied', function() {
