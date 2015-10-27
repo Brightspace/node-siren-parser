@@ -7,11 +7,11 @@ const
 	Link = require('./Link');
 
 function Entity(entity) {
-	if (!(this instanceof Entity)) {
-		return new Entity(entity);
-	}
 	if (entity instanceof Entity) {
 		return entity;
+	}
+	if (!(this instanceof Entity)) {
+		return new Entity(entity);
 	}
 
 	if ('object' !== typeof entity) {

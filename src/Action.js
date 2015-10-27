@@ -5,11 +5,11 @@ const
 	Field = require('./Field');
 
 function Action(action) {
-	if (!(this instanceof Action)) {
-		return new Action(action);
-	}
 	if (action instanceof Action) {
 		return action;
+	}
+	if (!(this instanceof Action)) {
+		return new Action(action);
 	}
 	const self = this;
 

@@ -25,11 +25,11 @@ const VALID_TYPES = [
 ];
 
 function Field(field) {
-	if (!(this instanceof Field)) {
-		return new Field(field);
-	}
 	if (field instanceof Field) {
 		return field;
+	}
+	if (!(this instanceof Field)) {
+		return new Field(field);
 	}
 
 	assert('object' === typeof field);

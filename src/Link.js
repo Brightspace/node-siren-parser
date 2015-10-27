@@ -3,11 +3,11 @@
 const assert = require('assert');
 
 function Link(link) {
-	if (!(this instanceof Link)) {
-		return new Link(link);
-	}
 	if (link instanceof Link) {
 		return link;
+	}
+	if (!(this instanceof Link)) {
+		return new Link(link);
 	}
 
 	assert('object' === typeof link);
