@@ -16,7 +16,7 @@ const
 	Field = require('../src/Field'),
 	Link = require('../src/Link'),
 	sirenChai = require('../src/chaiPlugin'),
-	sirenSuperagent = require('../src/superagent');
+	sirenSuperagent = require('../superagent');
 
 chai.use(sinonChai);
 chai.use(sirenChai);

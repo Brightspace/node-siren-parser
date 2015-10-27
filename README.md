@@ -9,6 +9,7 @@ Parses a Siren object (or Siren JSON string) into an Entity object that is inten
 ```js
 const sirenParser = require('@d2l/siren-parser');
 const sirenParserChai = require('@d2l/siren-parser').chai;
+const sirenSuperagent = require('@d2l/siren-parser/superagent');
 const sirenJson = {
 	title: 'My title',
 	class: ['outer'],
@@ -47,6 +48,15 @@ const resource = sirenParser(sirenJson);
 
 // ... assuming you've got all your chai stuff set up
 expect(resource).to.have.sirenAction('fancy-action');
+
+// ... assuming superagent is setup
+sirenSuperagent.perform(request, resource.getAction('fancy-action'))
+	.submit({key: 'value'}) // overrides default field(s) specified in action
+	.parse(sirenSuperagent.parse)
+	.end(function(err, res) {
+		const resource = res.body; // parsed siren resource
+		expect(resource).to.have.sirenProperty('some-field');
+	});
 ```
 
 ## API
@@ -242,6 +252,13 @@ The available assertions are:
 * `expect(resource).to.have.sirenProperty('foo').that.equals('bar')`
 * `expect(resource).to.have.sirenProperties(['foo', 'bar', 'baz'])`
 * `expect(resource).to.be.a.siren('entity')` - checks if `resource` is a Siren entity. Other types include action, class, field, and link.
+
+## `superagent` interface
+
+There are two helper `superagent` methods included with this module, under `./superagent`.
+
+* `.parse(sirenSuperagent.parse)` - To be used with `superagent`'s `.parse()` method
+* `sirenSuperagent.perform(request, action)` - Returns unended `superagent` request object
 
 ## Testing
 
