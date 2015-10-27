@@ -5,15 +5,18 @@
 const
 	chai = require('chai'),
 	expect = chai.expect,
+	nock = require('nock'),
 	sinon = require('sinon'),
-	sinonChai = require('sinon-chai');
+	sinonChai = require('sinon-chai'),
+	request = require('supertest');
 
 const
 	Action = require('../src/Action'),
 	Entity = require('../src/index'),
 	Field = require('../src/Field'),
 	Link = require('../src/Link'),
-	sirenChai = require('../src/chaiPlugin');
+	sirenChai = require('../src/chaiPlugin'),
+	sirenSuperagent = require('../src/superagent');
 
 chai.use(sinonChai);
 chai.use(sirenChai);
@@ -824,5 +827,49 @@ describe('Chai Plugin', function() {
 				expect(entity).to.not.have.sirenProperties(['one', 'two']);
 			}).to.throw();
 		});
+	});
+});
+
+describe('Siren Superagent Plugin', function() {
+	let app, src;
+	function setup(reply, headers) {
+		src = 'http://localhost';
+		app = nock(src)
+			.get('/')
+			.reply(200, reply, headers);
+	}
+
+	afterEach(function() {
+		expect(app.isDone()).to.be.true;
+	});
+
+	it('should parse a json body', function(done) {
+		setup({});
+		request(src)
+			.get('/')
+			.parse(sirenSuperagent.parse)
+			.expect(200)
+			.expect(function(res) {
+				expect(res.body).to.be.an.instanceof(Entity);
+			})
+			.end(done);
+	});
+
+	// Emits a "double callback!" warning due to https://github.com/visionmedia/superagent/issues/633
+	it('should throw an error when parsing fails', function(done) {
+		setup('not json');
+		request(src)
+			.get('/')
+			.parse(sirenSuperagent.parse)
+			.end(function(err, res) {
+				expect(err).to.be.an.instanceof(SyntaxError);
+				expect(res).to.be.undefined;
+				done();
+			});
+	});
+
+	it('should parse a string as a siren entity', function() {
+		const entity = sirenSuperagent.parse('{}');
+		expect(entity).to.be.an.instanceof(Entity);
 	});
 });
