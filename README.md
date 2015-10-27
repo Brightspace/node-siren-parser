@@ -49,7 +49,7 @@ const resource = sirenParser(sirenJson);
 // ... assuming you've got all your chai stuff set up
 expect(resource).to.have.sirenAction('fancy-action');
 
-// ... assuming superagent is setup
+const request = require('superagent');
 sirenSuperagent.perform(request, resource.getAction('fancy-action'))
 	.submit({key: 'value'}) // overrides default field(s) specified in action
 	.parse(sirenSuperagent.parse)

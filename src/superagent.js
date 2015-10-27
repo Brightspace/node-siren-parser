@@ -25,7 +25,7 @@ function parseSiren(res, fn) {
 }
 
 // Siren doesn't specify what to do if there are any fields with the same name
-// (ie. radio buttons). If this happens, the last such field in the list will be chosen
+// (ie. radio buttons). If this happens, the first such field in the list will be chosen
 function flattenFields(fields) {
 	const fieldsObj = {};
 	for (let field of fields) {
