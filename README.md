@@ -57,6 +57,9 @@ sirenSuperagent.perform(request, resource.getAction('fancy-action'))
 		const resource = res.body; // parsed siren resource
 		expect(resource).to.have.sirenProperty('some-field');
 	});
+
+// Alternatively, add the parser to the global superagent parser
+request.parse['application/vnd.siren+json'] = sirenSuperagent.parse;
 ```
 
 ## API
