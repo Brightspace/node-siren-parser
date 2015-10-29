@@ -27,8 +27,10 @@
     "eslint-config-brightspace": "0.0.2",
     "istanbul": "git+https://github.com/omsmith/istanbul.git#source-map-errors",
     "mocha": "^2.3.3",
+    "nock": "^2.15.0",
     "sinon": "^1.17.0",
-    "sinon-chai": "^2.8.0"
+    "sinon-chai": "^2.8.0",
+    "supertest": "^1.1.0"
   },
   "eslintConfig": {
     "extends": "brightspace",

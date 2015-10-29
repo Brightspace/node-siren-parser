@@ -5,6 +5,12 @@ const
 	Field = require('./Field');
 
 function Action(action) {
+	if (action instanceof Action) {
+		return action;
+	}
+	if (!(this instanceof Action)) {
+		return new Action(action);
+	}
 	const self = this;
 
 	assert('object' === typeof action);
@@ -23,17 +29,13 @@ function Action(action) {
 		self.class = action.class;
 	}
 
-	if (action.method) {
-		self.method = action.method;
-	}
+	self.method = action.method || 'GET';
 
 	if (action.title) {
 		self.title = action.title;
 	}
 
-	if (action.type) {
-		self.type = action.type;
-	}
+	self.type = action.type || 'application/x-www-form-urlencoded';
 
 	self._fieldsByName = {};
 	if (action.fields) {

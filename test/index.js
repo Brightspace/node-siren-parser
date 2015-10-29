@@ -5,15 +5,18 @@
 const
 	chai = require('chai'),
 	expect = chai.expect,
+	nock = require('nock'),
 	sinon = require('sinon'),
-	sinonChai = require('sinon-chai');
+	sinonChai = require('sinon-chai'),
+	request = require('supertest');
 
 const
 	Action = require('../src/Action'),
 	Entity = require('../src/index'),
 	Field = require('../src/Field'),
 	Link = require('../src/Link'),
-	sirenChai = require('../src/chaiPlugin');
+	sirenChai = require('../src/chaiPlugin'),
+	sirenSuperagent = require('../superagent');
 
 chai.use(sinonChai);
 chai.use(sirenChai);
@@ -264,6 +267,10 @@ describe('Siren Parser', function() {
 			};
 		});
 
+		it('should auto-instantiate', function() {
+			expect(Action(resource)).to.be.an.instanceof(Action);
+		});
+
 		it('should require the action be an object', function() {
 			resource = 1;
 			expect(buildAction.bind()).to.throw();
@@ -333,6 +340,11 @@ describe('Siren Parser', function() {
 				expect(siren.method).to.equal('baz');
 			});
 
+			it('should default to GET', function() {
+				siren = buildAction();
+				expect(siren.method).to.equal('GET');
+			});
+
 			it('should require method be a string, if supplied', function() {
 				resource.method = 1;
 				expect(buildAction.bind(undefined, resource)).to.throw();
@@ -357,6 +369,11 @@ describe('Siren Parser', function() {
 				resource.type = 'baz';
 				siren = buildAction();
 				expect(siren.type).to.equal('baz');
+			});
+
+			it('should default to application/x-www-form-urlencoded', function() {
+				siren = buildAction();
+				expect(siren.type).to.equal('application/x-www-form-urlencoded');
 			});
 
 			it('should require type be a string, if supplied', function() {
@@ -405,6 +422,10 @@ describe('Siren Parser', function() {
 			resource = {
 				name: 'foo'
 			};
+		});
+
+		it('should auto-instantiate', function() {
+			expect(Field(resource)).to.be.an.instanceof(Field);
 		});
 
 		it('should require the field be an object', function() {
@@ -502,6 +523,10 @@ describe('Siren Parser', function() {
 				rel: [],
 				href: 'foo'
 			};
+		});
+
+		it('should auto-instantiate', function() {
+			expect(Link(resource)).to.be.an.instanceof(Link);
 		});
 
 		it('should require the link be an object', function() {
@@ -823,6 +848,176 @@ describe('Chai Plugin', function() {
 			expect(function() {
 				expect(entity).to.not.have.sirenProperties(['one', 'two']);
 			}).to.throw();
+		});
+	});
+});
+
+describe('Siren Superagent Plugin', function() {
+	let app, src;
+
+	beforeEach(function() {
+		app = undefined;
+		src = 'http://localhost';
+	});
+
+	afterEach(function() {
+		if (app) {
+			expect(app.isDone()).to.be.true;
+		}
+	});
+
+	describe('parser', function() {
+		it('should parse a json body', function(done) {
+			app = nock(src)
+				.get('/')
+				.reply(200, {});
+
+			request(src)
+				.get('/')
+				.parse(sirenSuperagent.parse)
+				.expect(200)
+				.expect(function(res) {
+					expect(res.body).to.be.an.instanceof(Entity);
+				})
+				.end(done);
+		});
+
+		// Emits a "double callback!" warning due to https://github.com/visionmedia/superagent/issues/633
+		it('should throw an error when parsing fails', function(done) {
+			app = nock(src)
+				.get('/')
+				.reply(200, 'not json');
+
+			request(src)
+				.get('/')
+				.parse(sirenSuperagent.parse)
+				.end(function(err, res) {
+					expect(err).to.be.an.instanceof(SyntaxError);
+					expect(res).to.be.undefined;
+					done();
+				});
+		});
+
+		it('should parse a string as a siren entity', function() {
+			const entity = sirenSuperagent.parse('{}');
+			expect(entity).to.be.an.instanceof(Entity);
+		});
+	});
+
+	describe('perform action', function() {
+		let resource;
+		function buildAction() {
+			return new Action(resource);
+		}
+
+		beforeEach(function() {
+			resource = {
+				name: 'foo',
+				href: '/'
+			};
+		});
+
+		it('should perform a basic action', function(done) {
+			app = nock(src)
+				.get('/')
+				.reply(200);
+
+			const action = buildAction();
+			sirenSuperagent.perform(request(src), action)
+				.expect(200)
+				.end(done);
+		});
+
+		function testMethodWithQuery(method) {
+			it('should perform a ' + method + ' action with fields', function(done) {
+				app = nock(src)
+					[method.toLowerCase()]('/')
+					.query({query: 'parameter'})
+					.reply(200);
+
+				resource.method = method;
+				resource.fields = [
+					{
+						name: 'query',
+						value: 'parameter'
+					}
+				];
+				const action = buildAction();
+				sirenSuperagent.perform(request(src), action)
+					.expect(200)
+					.end(done);
+			});
+		}
+
+		function testMethodWithBody(method) {
+			it('should perform a ' + method + ' action with fields', function(done) {
+				app = nock(src)
+					[method.toLowerCase()]('/', 'query=parameter')
+					.reply(200);
+
+				resource.method = method;
+				resource.fields = [
+					{
+						name: 'query',
+						value: 'parameter'
+					}
+				];
+				const action = buildAction();
+				sirenSuperagent.perform(request(src), action)
+					.expect(200)
+					.end(done);
+			});
+		}
+
+		testMethodWithQuery('GET');
+		testMethodWithQuery('HEAD');
+		testMethodWithBody('POST');
+		testMethodWithBody('PUT');
+		testMethodWithBody('PATCH');
+		testMethodWithBody('DELETE');
+
+		it('should add list of fields on performed action', function(done) {
+			app = nock(src)
+				.get('/')
+				.query({query: 'parameter'})
+				.reply(200);
+
+			const action = buildAction();
+			sirenSuperagent.perform(request(src), action)
+				.submit([
+					{
+						name: 'query',
+						value: 'parameter'
+					}
+				])
+				.expect(200)
+				.end(done);
+		});
+
+		it('should add fields on performed action', function(done) {
+			app = nock(src)
+				.get('/')
+				.query({query: 'parameter'})
+				.reply(200);
+
+			const action = buildAction();
+			sirenSuperagent.perform(request(src), action)
+				.submit({query: 'parameter'})
+				.expect(200)
+				.end(done);
+		});
+
+		it('should add fields string on performed action', function(done) {
+			app = nock(src)
+				.get('/')
+				.query({query: 'parameter'})
+				.reply(200);
+
+			const action = buildAction();
+			sirenSuperagent.perform(request(src), action)
+				.submit('query=parameter')
+				.expect(200)
+				.end(done);
 		});
 	});
 });
