@@ -12,10 +12,10 @@ const
 
 const
 	Action = require('../src/Action'),
-	Entity = require('../src/index'),
+	Entity = require('../'),
 	Field = require('../src/Field'),
 	Link = require('../src/Link'),
-	sirenChai = require('../src/chaiPlugin'),
+	sirenChai = require('../chai'),
 	sirenSuperagent = require('../superagent');
 
 chai.use(sinonChai);
