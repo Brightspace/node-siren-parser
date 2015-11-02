@@ -60,6 +60,7 @@ function Entity(entity) {
 		});
 	}
 
+	self._linkRels = {};
 	self._linksByRel = {};
 	if (entity.links) {
 		self.links = [];
@@ -68,11 +69,18 @@ function Entity(entity) {
 			self.links.push(linkInstance);
 
 			link.rel.forEach(function(rel) {
-				self._linksByRel[rel] = linkInstance;
+				self._linkRels[rel] = true;
+
+				/* istanbul ignore else */
+				if (!(self._linksByRel[rel])) {
+					self._linksByRel[rel] = [];
+				}
+				self._linksByRel[rel].push(linkInstance);
 			});
 		});
 	}
 
+	self._entityRels = {};
 	self._entitiesByRel = {};
 	self._entitiesByClass = {};
 	if (entity.entities) {
@@ -89,7 +97,13 @@ function Entity(entity) {
 			self.entities.push(subEntityInstance);
 
 			subEntity.rel.forEach(function(rel) {
-				self._entitiesByRel[rel] = subEntityInstance;
+				self._entityRels[rel] = true;
+
+				/* istanbul ignore else */
+				if (!self._entitiesByRel[rel]) {
+					self._entitiesByRel[rel] = [];
+				}
+				self._entitiesByRel[rel].push(subEntityInstance);
 			});
 
 			if (Array.isArray(subEntity.class)) {
@@ -114,11 +128,11 @@ Entity.prototype.hasClass = function(cls) {
 };
 
 Entity.prototype.hasEntity = function(entityRel) {
-	return this._entitiesByRel.hasOwnProperty(entityRel);
+	return this._entityRels.hasOwnProperty(entityRel);
 };
 
 Entity.prototype.hasLink = function(linkRel) {
-	return this._linksByRel.hasOwnProperty(linkRel);
+	return this._linkRels.hasOwnProperty(linkRel);
 };
 
 Entity.prototype.hasProperty = function(property) {
@@ -130,11 +144,32 @@ Entity.prototype.getAction = function(actionName) {
 };
 
 Entity.prototype.getLink = function(linkRel) {
+	const links = this.getLinks(linkRel);
+	if (Array.isArray(links)) {
+		return links[0];
+	}
+};
+
+Entity.prototype.getLinks = function(linkRel) {
 	return this._linksByRel[linkRel];
 };
 
 Entity.prototype.getSubEntity = function(entityRel) {
+	const entities = this.getSubEntities(entityRel);
+	if (Array.isArray(entities)) {
+		return entities[0];
+	}
+};
+
+Entity.prototype.getSubEntities = function(entityRel) {
 	return this._entitiesByRel[entityRel];
+};
+
+Entity.prototype.getSubEntityByClass = function(cls) {
+	const entities = this.getSubEntitiesByClass(cls);
+	if (Array.isArray(entities)) {
+		return entities[0];
+	}
 };
 
 Entity.prototype.getSubEntitiesByClass = function(cls) {

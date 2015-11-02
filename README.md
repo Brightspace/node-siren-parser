@@ -16,6 +16,9 @@ const sirenJson = {
 	links: [{
 		rel: ['self', 'crazy'],
 		href: 'http://example.com'
+	}, {
+		rel: ['crazy'],
+		href: 'http://example2.com'
 	}],
 	actions: [{
 		name: 'fancy-action',
@@ -41,7 +44,6 @@ const sirenJson = {
 		two: 2,
 		pi: 'is exactly three'
 	}
-}
 };
 
 const resource = sirenParser(sirenJson);
@@ -87,20 +89,24 @@ Each of these can be accessed as `Entity.attribute`, e.g. if one of the input's 
 
 > Note that only those attributes present in the input will be copied into the `Entity`, i.e. if your input has no links, `Entity.links` will not be set, rather than being an empty array.
 
-#### `Entity.hasClass(String class)`
+#### `Entity.hasX(String key)`
 
-Returns true if the Entity has the specified `class`, otherwise false.
+Returns true if the Entity has the specified _X_, otherwise false.
+
+_X_ can be any one of:
+
+* _Action_ - must have an Action with the name `key`
+* _Class_ - must have a class `key`
+* _Entity_ - must have a sub-entity whose `rel` includes `key`
+* _Link_ - must have a link whose `rel` includes `key`
+* _Property_ - must have a `property` with the name `key`
 
 ```js
-resource.hasClass('foo'); // false
-```
-
-#### `Entity.hasProperty(String property)`
-
-Returns true if the Entity has the specified `property`, otherwise false.
-
-```js
-resource.hasProperty('pi'); // true
+resource.hasAction('fancy-action'); // true
+resource.hasClass('inner'); // false
+resource.hasEntity('child'); // true
+resource.hasLink('crazy'); // true
+resource.hasProperty('three'); // false
 ```
 
 #### `Entity.getAction(String name)`
@@ -112,31 +118,34 @@ resource.getAction('fancy-action'); // The 'fancy-action' Action instance
 resource.getAction('fancy-action').title; // 'A fancy action!'
 ```
 
-#### `Entity.getLink(String rel)`
+#### `Entity.getLinks(String rel)` and `Entity.getLink(String rel)`
 
-Returns the [Link](#link) with the specified `rel` if it exists, otherwise `undefined`. Links are indexed by `rel` upon parse, so this is O(1).
+Returns the [Links](#link) with the specified `rel` if there any, otherwise `undefined`. Links are indexed by `rel` upon parse, so this is O(1). `getLink` is simply a convenience method that will return the first Link with the given `rel`.
 
 ```js
+resource.getLinks('crazy'); // Array containing two Links
 resource.getLink('self'); // The 'self' Link instance
 resource.getLink('crazy'); // The same Link instance as above
 resource.getLink('self').rel; // ['self', 'crazy']
 ```
 
-#### `Entity.getSubEntity(String rel)`
+#### `Entity.getSubEntities(String rel)` and `Entity.getSubEntity(String rel)`
 
-Returns the sub-Entity with the specified `rel` if it exists, otherwise `undefined`. Sub-entities are indexed by `rel` upon parse, so this is O(1).
+Returns the sub-Entities with the specified `rel` if there are any, otherwise `undefined`. Sub-entities are indexed by `rel` upon parse, so this is O(1). `getSubEntity` is simply a convenience method that will return the first Entity with the given `rel`.
 
 ```js
-// Whoo chaining!
+resource.getSubEntities('child'); // Array of two entities
+resource.getSubEntity('child'); // Single entity
 resource.getSubEntity('child').getLink('self').title; // 'Child entity'
 ```
 
-#### `Entity.getSubEntitiesByClass(String class)`
+#### `Entity.getSubEntitiesByClass(String class)` and `Entity.getSubEntityByClass(String rel)`
 
-Returns an array containing all sub-entities with the given `class`, otherwise `undefined`. Sub-entities are indexed by `rel` upon parse, so this is O(1).
+Returns the sub-Entities with the specified `class` if there are any, otherwise `undefined`. Sub-entities are indexed by `rel` upon parse, so this is O(1). `getSubEntityByClass` is simply a convenience method that will return the first Entity with the given `class`.
 
 ```js
-resource.getSubEntitiesByClass('inner'); // [ Entity/Entities with 'inner' class ]
+resource.getSubEntitiesByClass('inner'); // [ All Entities with 'inner' class ]
+resource.getSubEntityByClass('inner'); // Entity with 'inner' class
 ```
 
 ---

@@ -166,13 +166,25 @@ describe('Siren Parser', function() {
 				expect(siren.hasLink('foo')).to.be.true;
 			});
 
-			it('should be able to retrieve links based off their rel', function() {
-				resource.links = [{
-					rel: ['foo'],
-					href: 'bar'
-				}];
-				siren = buildEntity();
-				expect(siren.getLink('foo')).to.have.property('href', 'bar');
+			describe('getLink/getLinks', function() {
+				beforeEach('', function() {
+					resource.links = [{
+						rel: ['foo'],
+						href: 'bar'
+					}, {
+						rel: ['foo', 'foo2'],
+						href: 'bar2'
+					}];
+					siren = buildEntity();
+				});
+
+				it('should be able to retrieve the first link with a given rel', function() {
+					expect(siren.getLink('foo')).to.have.property('href', 'bar');
+				});
+
+				it('should be able to retrieve all links with a given rel', function() {
+					expect(siren.getLinks('foo')).to.be.an.instanceof(Array).with.lengthOf(2);
+				});
 			});
 		});
 
@@ -195,50 +207,6 @@ describe('Siren Parser', function() {
 				expect(buildEntity.bind()).to.throw();
 			});
 
-			it('should be able to retieve sub-entities based off their rel', function() {
-				resource.entities = [{
-					rel: ['foo'],
-					title: 'bar'
-				}];
-				siren = buildEntity();
-				expect(siren.getSubEntity('foo')).to.have.property('title', 'bar');
-			});
-
-			it('should correctly identify link sub-entities', function() {
-				resource.entities = [{
-					rel: ['foo'],
-					href: 'bar'
-				}];
-				siren = buildEntity();
-				expect(siren.getSubEntity('foo')).to.be.an.instanceof(Link);
-			});
-
-			it('should correctly identify entity sub-entities', function() {
-				resource.entities = [{
-					rel: ['foo']
-				}];
-				siren = buildEntity();
-				expect(siren.getSubEntity('foo')).to.be.an.instanceof(Entity);
-			});
-
-			it('should be able to retrieve sub-entities based off their class', function() {
-				resource.entities = [{
-					rel: ['foo'],
-					class: ['bar', 'baz']
-				}];
-				siren = buildEntity();
-				expect(siren.getSubEntitiesByClass('bar')).to.be.an.instanceof(Array);
-				expect(siren.getSubEntitiesByClass('bar')[0].hasClass('baz')).to.equal.true;
-			});
-
-			it('should not duplicate sub-entities with the same rel', function() {
-				resource.entities = [{
-					rel: ['foo', 'bar']
-				}];
-				siren = buildEntity();
-				expect(siren.getSubEntity('foo')).to.equal(siren.getSubEntity('bar'));
-			});
-
 			it('should work with chained Entity/Action/Links', function() {
 				resource.entities = [{
 					rel: ['foo'],
@@ -251,6 +219,76 @@ describe('Siren Parser', function() {
 				expect(siren.getSubEntity('foo').getAction('bar'))
 					.to.be.an.instanceof(Action)
 					.with.property('href', 'baz');
+			});
+
+			it('should correctly identify entity sub-entities', function() {
+				resource.entities = [{
+					rel: ['foo'],
+					title: 'bar'
+				}];
+				siren = buildEntity();
+				expect(siren.getSubEntity('foo')).to.be.an.instanceof(Entity);
+			});
+
+			it('should correctly identify link sub-entities', function() {
+				resource.entities = [{
+					rel: ['foo'],
+					href: 'bar'
+				}];
+				siren = buildEntity();
+				expect(siren.getSubEntity('foo')).to.be.an.instanceof(Link);
+			});
+
+			it('should not duplicate sub-entities with the same rel', function() {
+				resource.entities = [{
+					rel: ['foo', 'bar']
+				}];
+				siren = buildEntity();
+				expect(siren.getSubEntity('foo')).to.equal(siren.getSubEntity('bar'));
+			});
+
+			describe('getSubEntityByClass/getSubEntitiesByClass', function() {
+				beforeEach('', function() {
+					resource.entities = [{
+						class: ['foo'],
+						rel: ['bar'],
+						title: 'baz'
+					}, {
+						class: ['foo', 'foo2'],
+						rel: ['bar2'],
+						title: 'baz2'
+					}];
+					siren = buildEntity();
+				});
+
+				it('should retrieve the first sub-entity with a given class', function() {
+					expect(siren.getSubEntityByClass('foo')).to.have.property('title', 'baz');
+				});
+
+				it('should retrieve all sub-entities with a given class', function() {
+					expect(siren.getSubEntitiesByClass('foo')).to.be.an.instanceof(Array).with.lengthOf(2);
+				});
+			});
+
+			describe('getSubEntity/getSubEntities', function() {
+				beforeEach('', function() {
+					resource.entities = [{
+						rel: ['foo'],
+						title: 'bar'
+					}, {
+						rel: ['foo', 'foo2'],
+						href: 'bar2'
+					}];
+					siren = buildEntity();
+				});
+
+				it('should be able to retieve the first sub-entity with a given rel', function() {
+					expect(siren.getSubEntity('foo')).to.have.property('title', 'bar');
+				});
+
+				it('should be able to retrieve all sub-entities with a given rel', function() {
+					expect(siren.getSubEntities('foo')).to.be.an.instanceof(Array).with.lengthOf(2);
+				});
 			});
 		});
 	});
