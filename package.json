@@ -38,5 +38,12 @@
       "es6": true,
       "node": true
     }
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify"
+      ]
+    ]
   }
 }
