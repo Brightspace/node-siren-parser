@@ -185,6 +185,22 @@ describe('Siren Parser', function() {
 				it('should be able to retrieve all links with a given rel', function() {
 					expect(siren.getLinks('foo')).to.be.an.instanceof(Array).with.lengthOf(2);
 				});
+
+				it('should return a new array when retrieving all links', function() {
+					expect(siren.getLinks('foo')).to.not.equal(siren.getLinks('foo'));
+				});
+
+				describe('when there is no link of the given rel', function() {
+					it('should return undefined when retrieving the first link', function() {
+						expect(siren.getLink('baz')).to.not.be.defined;
+					});
+
+					it('should return ann empty array when retrieving all links', function() {
+						expect(siren.getLinks('baz'))
+							.to.be.an.instanceof(Array)
+							.and.to.be.empty;
+					});
+				});
 			});
 		});
 
@@ -268,6 +284,22 @@ describe('Siren Parser', function() {
 				it('should retrieve all sub-entities with a given class', function() {
 					expect(siren.getSubEntitiesByClass('foo')).to.be.an.instanceof(Array).with.lengthOf(2);
 				});
+
+				it('should return a new array when retrieving all sub-entities', function() {
+					expect(siren.getSubEntitiesByClass('foo')).to.not.equal(siren.getSubEntitiesByClass('foo'));
+				});
+
+				describe('when there is no sub-entity of the given class', function() {
+					it('should return undefined when retrieving the first sub-entity', function() {
+						expect(siren.getSubEntityByClass('baz')).to.not.be.defined;
+					});
+
+					it('should return an empty array when retrieving all sub-entities', function() {
+						expect(siren.getSubEntitiesByClass('baz'))
+							.to.be.an.instanceof(Array)
+							.and.to.be.empty;
+					});
+				});
 			});
 
 			describe('getSubEntity/getSubEntities', function() {
@@ -288,6 +320,22 @@ describe('Siren Parser', function() {
 
 				it('should be able to retrieve all sub-entities with a given rel', function() {
 					expect(siren.getSubEntities('foo')).to.be.an.instanceof(Array).with.lengthOf(2);
+				});
+
+				it('should return a new array when retrieving all sub-entities', function() {
+					expect(siren.getSubEntities('foo')).to.not.equal(siren.getSubEntities('foo'));
+				});
+
+				describe('when there is no sub-entity of the given rel', function() {
+					it('should return undefined when retrieving the first sub-entity', function() {
+						expect(siren.getSubEntity('baz')).to.not.be.defined;
+					});
+
+					it('should return an empty array when retrieving all sub-entities', function() {
+						expect(siren.getSubEntities('baz'))
+							.to.be.an.instanceof(Array)
+							.and.to.be.empty;
+					});
 				});
 			});
 		});

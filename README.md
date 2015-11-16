@@ -120,7 +120,7 @@ resource.getAction('fancy-action').title; // 'A fancy action!'
 
 #### `Entity.getLinks(String rel)` and `Entity.getLink(String rel)`
 
-Returns the [Links](#link) with the specified `rel` if there any, otherwise `undefined`. Links are indexed by `rel` upon parse, so this is O(1). `getLink` is simply a convenience method that will return the first Link with the given `rel`.
+Returns the [Links](#link) with the specified `rel`, or an empty array. Links are indexed by `rel` upon parse, so this is O(1). `getLink` is simply a convenience method that will return the first Link with the given `rel` (or `undefined`).
 
 ```js
 resource.getLinks('crazy'); // Array containing two Links
@@ -131,7 +131,7 @@ resource.getLink('self').rel; // ['self', 'crazy']
 
 #### `Entity.getSubEntities(String rel)` and `Entity.getSubEntity(String rel)`
 
-Returns the sub-Entities with the specified `rel` if there are any, otherwise `undefined`. Sub-entities are indexed by `rel` upon parse, so this is O(1). `getSubEntity` is simply a convenience method that will return the first Entity with the given `rel`.
+Returns the sub-Entities with the specified `rel`, or an empty array. Sub-entities are indexed by `rel` upon parse, so this is O(1). `getSubEntity` is simply a convenience method that will return the first Entity with the given `rel` (or `undefined`).
 
 ```js
 resource.getSubEntities('child'); // Array of two entities
@@ -141,7 +141,7 @@ resource.getSubEntity('child').getLink('self').title; // 'Child entity'
 
 #### `Entity.getSubEntitiesByClass(String class)` and `Entity.getSubEntityByClass(String rel)`
 
-Returns the sub-Entities with the specified `class` if there are any, otherwise `undefined`. Sub-entities are indexed by `rel` upon parse, so this is O(1). `getSubEntityByClass` is simply a convenience method that will return the first Entity with the given `class`.
+Returns the sub-Entities with the specified `class`, or an empty array.. Sub-entities are indexed by `rel` upon parse, so this is O(1). `getSubEntityByClass` is simply a convenience method that will return the first Entity with the given (or `undefined`).
 
 ```js
 resource.getSubEntitiesByClass('inner'); // [ All Entities with 'inner' class ]

@@ -144,36 +144,39 @@ Entity.prototype.getAction = function(actionName) {
 };
 
 Entity.prototype.getLink = function(linkRel) {
-	const links = this.getLinks(linkRel);
-	if (Array.isArray(links)) {
-		return links[0];
-	}
+	return this._getFirstOrUndefined('_linksByRel', linkRel);
 };
 
 Entity.prototype.getLinks = function(linkRel) {
-	return this._linksByRel[linkRel];
+	return this._getSetOrEmpty('_linksByRel', linkRel);
 };
 
 Entity.prototype.getSubEntity = function(entityRel) {
-	const entities = this.getSubEntities(entityRel);
-	if (Array.isArray(entities)) {
-		return entities[0];
-	}
+	return this._getFirstOrUndefined('_entitiesByRel', entityRel);
 };
 
 Entity.prototype.getSubEntities = function(entityRel) {
-	return this._entitiesByRel[entityRel];
+	return this._getSetOrEmpty('_entitiesByRel', entityRel);
 };
 
 Entity.prototype.getSubEntityByClass = function(cls) {
-	const entities = this.getSubEntitiesByClass(cls);
-	if (Array.isArray(entities)) {
-		return entities[0];
-	}
+	return this._getFirstOrUndefined('_entitiesByClass', cls);
 };
 
 Entity.prototype.getSubEntitiesByClass = function(cls) {
-	return this._entitiesByClass[cls];
+	return this._getSetOrEmpty('_entitiesByClass', cls);
+};
+
+Entity.prototype._getFirstOrUndefined = function(set, key) {
+	const vals = this[set][key];
+
+	return vals ? vals[0] : undefined;
+};
+
+Entity.prototype._getSetOrEmpty = function(set, key) {
+	const vals = this[set][key];
+
+	return vals ? vals.slice() : [];
 };
 
 module.exports = Entity;
