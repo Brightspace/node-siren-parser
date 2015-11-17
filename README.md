@@ -134,7 +134,7 @@ resource.getLink('self').rel; // ['self', 'crazy']
 Returns the sub-Entities with the specified `rel`, or an empty array. Sub-entities are indexed by `rel` upon parse, so this is O(1). `getSubEntity` is simply a convenience method that will return the first Entity with the given `rel` (or `undefined`).
 
 ```js
-resource.getSubEntities('child'); // Array of two entities
+resource.getSubEntities('child'); // Array containing 'child' entity
 resource.getSubEntity('child'); // Single entity
 resource.getSubEntity('child').getLink('self').title; // 'Child entity'
 ```
@@ -165,7 +165,7 @@ Attributes:
 Returns true if the Link has the specified `class`, otherwise false.
 
 ```js
-resource.hasClass('foo'); // false
+resource.getLink('crazy').hasClass('foo'); // false
 ```
 
 ---
@@ -187,7 +187,7 @@ Attributes:
 Returns true if the Action has the specified `class`, otherwise false.
 
 ```js
-resource.hasClass('foo'); // false
+resource.getAction('fancy-action').hasClass('foo'); // false
 ```
 
 #### `Action.hasField(String name)`
@@ -224,7 +224,7 @@ Attributes:
 Returns true if the Field has the specified `class`, otherwise false.
 
 ```js
-resource.hasClass('foo'); // false
+resource.getAction('fancy-action').getField('max').hasClass('foo'); // false
 ```
 
 ## `chai` interface
