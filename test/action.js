@@ -94,16 +94,6 @@ describe('Action', function() {
 			resource.class = 1;
 			expect(buildAction.bind()).to.throw();
 		});
-
-		it('should be able to determine if an action has a given class', function() {
-			resource.class = ['foo'];
-			siren = buildAction();
-			expect(siren.hasClass('foo')).to.be.true;
-
-			resource.class = undefined;
-			siren = buildAction();
-			expect(siren.hasClass('foo')).to.be.false;
-		});
 	});
 
 	describe('method', function() {
@@ -182,6 +172,106 @@ describe('Action', function() {
 			}];
 			siren = buildAction();
 			expect(siren.getField('foo')).to.have.property('title', 'bar');
+		});
+	});
+
+	describe('Helper functions', function() {
+		describe('has...', function() {
+			describe('Class', function() {
+				it('should be able to determine if an action has a given class', function() {
+					resource.class = ['foo'];
+					siren = buildAction();
+					expect(siren.hasClass('foo')).to.be.true;
+
+					resource.class = undefined;
+					siren = buildAction();
+					expect(siren.hasClass('foo')).to.be.false;
+				});
+			});
+
+			describe('Field', function() {
+				it('hasFieldByName (hasField)', function() {
+					resource.fields = [{
+						name: 'foo'
+					}];
+					siren = buildAction();
+					expect(siren.hasField('foo')).to.be.true;
+
+					resource.fields = undefined;
+					siren = buildAction();
+					expect(siren.hasField('foo')).to.be.false;
+				});
+
+				it('hasFieldByClass', function() {
+					resource.fields = [{
+						name: 'foo',
+						class: ['bar']
+					}];
+					siren = buildAction();
+					expect(siren.hasFieldByClass('bar')).to.be.true;
+
+					resource.fields = undefined;
+					siren = buildAction();
+					expect(siren.hasFieldByClass('bar')).to.be.false;
+				});
+
+				it('hasFieldByType', function() {
+					resource.fields = [{
+						name: 'foo',
+						type: 'text'
+					}];
+					siren = buildAction();
+					expect(siren.hasFieldByType('text')).to.be.true;
+
+					resource.fields = undefined;
+					siren = buildAction();
+					expect(siren.hasFieldByType('text')).to.be.false;
+				});
+			});
+		});
+
+		describe('get...', function() {
+			describe('Field', function() {
+				beforeEach(function() {
+					resource.fields = [{
+						name: 'foo',
+						title: 'bar',
+						class: ['baz'],
+						type: 'text'
+					}, {
+						name: 'foo2',
+						title: 'bar2',
+						class: ['baz'],
+						type: 'text'
+					}];
+					siren = buildAction();
+				});
+
+				it('getFieldByName (getField)', function() {
+					expect(siren.getField('foo')).to.have.property('title', 'bar');
+					expect(siren.getField('nope')).to.be.undefined;
+				});
+
+				it('getFieldByClass', function() {
+					expect(siren.getFieldByClass('baz')).to.have.property('title', 'bar');
+					expect(siren.getFieldByClass('nope')).to.be.undefined;
+				});
+
+				it('getFieldsByClass', function() {
+					expect(siren.getFieldsByClass('baz')).to.be.an.instanceof(Array).with.lengthOf(2);
+					expect(siren.getFieldsByClass('nope')).to.be.an.instanceof(Array).and.to.be.empty;
+				});
+
+				it('getFieldByType', function() {
+					expect(siren.getFieldByType('text')).to.have.property('title', 'bar');
+					expect(siren.getFieldByType('nope')).to.be.undefined;
+				});
+
+				it('getFieldsByType', function() {
+					expect(siren.getFieldsByType('text')).to.be.an.instanceof(Array).with.lengthOf(2);
+					expect(siren.getFieldsByType('nope')).to.be.an.instanceof(Array).and.to.be.empty;
+				});
+			});
 		});
 	});
 });
