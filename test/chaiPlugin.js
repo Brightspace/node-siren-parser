@@ -26,21 +26,26 @@ describe('Chai Plugin', function() {
 	beforeEach(function() {
 		field = new Field({
 			name: 'field-foo',
-			type: 'text'
+			type: 'text',
+			class: ['field-class-foo']
 		});
 		action = new Action({
 			name: 'action-foo',
 			href: 'http://example.com',
-			fields: [field]
+			fields: [field],
+			class: ['action-class']
 		});
 		link = new Link({
 			rel: ['rel-foo', 'rel-bar'],
-			href: 'http://example.com'
+			href: 'http://example.com',
+			class: ['link-class-foo', 'link-class-bar'],
+			type: 'link-type'
 		});
 		subEntity = new Entity({
 			rel: ['sub-rel-foo', 'sub-rel-bar'],
 			class: ['sub-class-foo', 'sub-class-bar'],
-			title: 'sub-title-foo'
+			title: 'sub-title-foo',
+			type: 'sub-type'
 		});
 
 		entity = new Entity({
@@ -76,6 +81,18 @@ describe('Chai Plugin', function() {
 			}).to.throw();
 		});
 
+		it('expect().to.have.sirenActionByName()', function() {
+			expect(entity).to.have.sirenActionByName('action-foo');
+			expect(entity).to.have.sirenActionByName('action-foo').with.property('href', 'http://example.com');
+			expect(entity).to.not.have.sirenActionByName('action-bar');
+			expect(function() {
+				expect(entity).to.have.sirenActionByName('action-bar');
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenActionByName('action-foo');
+			}).to.throw();
+		});
+
 		it('expect().to.have.sirenActions()', function() {
 			expect(entity).to.have.sirenActions(['action-foo']);
 			expect(entity).to.not.have.sirenActions(['action-bar']);
@@ -84,6 +101,40 @@ describe('Chai Plugin', function() {
 			}).to.throw();
 			expect(function() {
 				expect(entity).to.not.have.sirenActions(['action-foo']);
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenActionsByName()', function() {
+			expect(entity).to.have.sirenActionsByName(['action-foo']);
+			expect(entity).to.not.have.sirenActionsByName(['action-bar']);
+			expect(function() {
+				expect(entity).to.have.sirenActionsByName(['action-bar']);
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenActionsByName(['action-foo']);
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenActionByClass()', function() {
+			expect(entity).to.have.sirenActionByClass('action-class');
+			expect(entity).to.have.sirenActionByClass('action-class').with.property('href', 'http://example.com');
+			expect(entity).to.not.have.sirenActionByClass('action-bar');
+			expect(function() {
+				expect(entity).to.have.sirenActionByClass('action-bar');
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenActionByClass('action-class');
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenActionsByClass()', function() {
+			expect(entity).to.have.sirenActionsByClass(['action-class']);
+			expect(entity).to.not.have.sirenActionsByClass(['action-bar']);
+			expect(function() {
+				expect(entity).to.have.sirenActionsByClass(['action-bar']);
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenActionsByClass(['action-class']);
 			}).to.throw();
 		});
 	});
@@ -144,6 +195,18 @@ describe('Chai Plugin', function() {
 			}).to.throw();
 		});
 
+		it('expect().to.have.sirenEntityByRel()', function() {
+			expect(entity).to.have.sirenEntityByRel('sub-rel-foo');
+			expect(entity).to.have.sirenEntityByRel('sub-rel-foo').with.property('title', 'sub-title-foo');
+			expect(entity).to.not.have.sirenEntityByRel('foo');
+			expect(function() {
+				expect(entity).to.have.sirenEntityByRel('foo');
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenEntityByRel('sub-rel-foo');
+			}).to.throw();
+		});
+
 		it('expect().to.have.sirenEntities()', function() {
 			expect(entity).to.have.sirenEntities(['sub-rel-foo', 'sub-rel-bar']);
 			expect(entity).to.not.have.sirenEntities(['foo', 'bar']);
@@ -152,6 +215,63 @@ describe('Chai Plugin', function() {
 			}).to.throw();
 			expect(function() {
 				expect(entity).to.not.have.sirenEntities(['sub-rel-foo', 'bar']);
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenEntitiesByRel()', function() {
+			expect(entity).to.have.sirenEntitiesByRel(['sub-rel-foo', 'sub-rel-bar']);
+			expect(entity).to.not.have.sirenEntitiesByRel(['foo', 'bar']);
+			expect(function() {
+				expect(entity).to.have.sirenEntitiesByRel(['sub-rel-foo', 'foo']);
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenEntitiesByRel(['sub-rel-foo', 'bar']);
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenEntityByClass()', function() {
+			expect(entity).to.have.sirenEntityByClass('sub-class-foo');
+			expect(entity).to.have.sirenEntityByClass('sub-class-foo').with.property('title', 'sub-title-foo');
+			expect(entity).to.not.have.sirenEntityByClass('foo');
+			expect(function() {
+				expect(entity).to.have.sirenEntityByClass('foo');
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenEntityByClass('sub-class-foo');
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenEntitiesByClass()', function() {
+			expect(entity).to.have.sirenEntitiesByClass(['sub-class-foo', 'sub-class-bar']);
+			expect(entity).to.not.have.sirenEntitiesByClass(['foo', 'bar']);
+			expect(function() {
+				expect(entity).to.have.sirenEntitiesByClass(['sub-class-foo', 'foo']);
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenEntitiesByClass(['sub-class-foo', 'bar']);
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenEntityByType()', function() {
+			expect(entity).to.have.sirenEntityByType('sub-type');
+			expect(entity).to.have.sirenEntityByType('sub-type').with.property('title', 'sub-title-foo');
+			expect(entity).to.not.have.sirenEntityByType('foo');
+			expect(function() {
+				expect(entity).to.have.sirenEntityByType('foo');
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenEntityByType('sub-type');
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenEntitiesByType()', function() {
+			expect(entity).to.have.sirenEntitiesByType(['sub-type']);
+			expect(entity).to.not.have.sirenEntitiesByType(['foo', 'bar']);
+			expect(function() {
+				expect(entity).to.have.sirenEntitiesByType(['sub-type', 'foo']);
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenEntitiesByType(['sub-type', 'bar']);
 			}).to.throw();
 		});
 	});
@@ -177,6 +297,18 @@ describe('Chai Plugin', function() {
 			}).to.throw();
 		});
 
+		it('expect().to.have.sirenFieldByName()', function() {
+			expect(entity.getAction('action-foo')).to.have.sirenFieldByName('field-foo');
+			expect(entity.getAction('action-foo')).to.have.sirenFieldByName('field-foo').with.property('type', 'text');
+			expect(entity.getAction('action-foo')).to.not.have.sirenFieldByName('foo');
+			expect(function() {
+				expect(entity.getAction('action-foo')).to.have.sirenFieldByName('foo');
+			}).to.throw();
+			expect(function() {
+				expect(entity.getAction('action-foo')).to.not.have.sirenFieldByName('field-foo');
+			}).to.throw();
+		});
+
 		it('expect().to.have.sirenFields()', function() {
 			expect(entity.getAction('action-foo')).to.have.sirenFields(['field-foo']);
 			expect(entity.getAction('action-foo')).to.not.have.sirenFields(['field-bar']);
@@ -185,6 +317,63 @@ describe('Chai Plugin', function() {
 			}).to.throw();
 			expect(function() {
 				expect(entity.getAction('action-foo')).to.not.have.sirenFields(['field-foo']);
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenFieldsByName()', function() {
+			expect(entity.getAction('action-foo')).to.have.sirenFieldsByName(['field-foo']);
+			expect(entity.getAction('action-foo')).to.not.have.sirenFieldsByName(['field-bar']);
+			expect(function() {
+				expect(entity.getAction('action-foo')).to.have.sirenFieldsByName(['field-bar']);
+			}).to.throw();
+			expect(function() {
+				expect(entity.getAction('action-foo')).to.not.have.sirenFieldsByName(['field-foo']);
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenFieldByClass()', function() {
+			expect(entity.getAction('action-foo')).to.have.sirenFieldByClass('field-class-foo');
+			expect(entity.getAction('action-foo')).to.have.sirenFieldByClass('field-class-foo').with.property('type', 'text');
+			expect(entity.getAction('action-foo')).to.not.have.sirenFieldByClass('foo');
+			expect(function() {
+				expect(entity.getAction('action-foo')).to.have.sirenFieldByClass('foo');
+			}).to.throw();
+			expect(function() {
+				expect(entity.getAction('action-foo')).to.not.have.sirenFieldByClass('field-class-foo');
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenFieldsByClass()', function() {
+			expect(entity.getAction('action-foo')).to.have.sirenFieldsByClass(['field-class-foo']);
+			expect(entity.getAction('action-foo')).to.not.have.sirenFieldsByClass(['field-bar']);
+			expect(function() {
+				expect(entity.getAction('action-foo')).to.have.sirenFieldsByClass(['field-bar']);
+			}).to.throw();
+			expect(function() {
+				expect(entity.getAction('action-foo')).to.not.have.sirenFieldsByClass(['field-class-foo']);
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenFieldByType()', function() {
+			expect(entity.getAction('action-foo')).to.have.sirenFieldByType('text');
+			expect(entity.getAction('action-foo')).to.have.sirenFieldByType('text').with.property('type', 'text');
+			expect(entity.getAction('action-foo')).to.not.have.sirenFieldByType('foo');
+			expect(function() {
+				expect(entity.getAction('action-foo')).to.have.sirenFieldByType('foo');
+			}).to.throw();
+			expect(function() {
+				expect(entity.getAction('action-foo')).to.not.have.sirenFieldByType('text');
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenFieldsByType()', function() {
+			expect(entity.getAction('action-foo')).to.have.sirenFieldsByType(['text']);
+			expect(entity.getAction('action-foo')).to.not.have.sirenFieldsByType(['field-bar']);
+			expect(function() {
+				expect(entity.getAction('action-foo')).to.have.sirenFieldsByType(['field-bar']);
+			}).to.throw();
+			expect(function() {
+				expect(entity.getAction('action-foo')).to.not.have.sirenFieldsByType(['text']);
 			}).to.throw();
 		});
 	});
@@ -210,6 +399,18 @@ describe('Chai Plugin', function() {
 			}).to.throw();
 		});
 
+		it('expect().to.have.sirenLinkByRel()', function() {
+			expect(entity).to.have.sirenLinkByRel('rel-foo');
+			expect(entity).to.have.sirenLinkByRel('rel-foo').with.property('href', 'http://example.com');
+			expect(entity).to.not.have.sirenLinkByRel('foo');
+			expect(function() {
+				expect(entity).to.have.sirenLinkByRel('foo');
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenLinkByRel('rel-foo');
+			}).to.throw();
+		});
+
 		it('expect().to.have.sirenLinks()', function() {
 			expect(entity).to.have.sirenLinks(['rel-foo', 'rel-bar']);
 			expect(entity).to.not.have.sirenLinks(['foo', 'bar']);
@@ -218,6 +419,63 @@ describe('Chai Plugin', function() {
 			}).to.throw();
 			expect(function() {
 				expect(entity).to.not.have.sirenLinks(['rel-foo', 'bar']);
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenLinksByRel()', function() {
+			expect(entity).to.have.sirenLinksByRel(['rel-foo', 'rel-bar']);
+			expect(entity).to.not.have.sirenLinksByRel(['foo', 'bar']);
+			expect(function() {
+				expect(entity).to.have.sirenLinksByRel(['rel-foo', 'foo']);
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenLinksByRel(['rel-foo', 'bar']);
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenLinkByClass()', function() {
+			expect(entity).to.have.sirenLinkByClass('link-class-foo');
+			expect(entity).to.have.sirenLinkByClass('link-class-foo').with.property('href', 'http://example.com');
+			expect(entity).to.not.have.sirenLinkByClass('foo');
+			expect(function() {
+				expect(entity).to.have.sirenLinkByClass('foo');
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenLinkByClass('link-class-foo');
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenLinksByClass()', function() {
+			expect(entity).to.have.sirenLinksByClass(['link-class-foo', 'link-class-bar']);
+			expect(entity).to.not.have.sirenLinksByClass(['foo', 'bar']);
+			expect(function() {
+				expect(entity).to.have.sirenLinksByClass(['link-class-foo', 'foo']);
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenLinksByClass(['link-class-foo', 'bar']);
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenLinkByType()', function() {
+			expect(entity).to.have.sirenLinkByType('link-type');
+			expect(entity).to.have.sirenLinkByType('link-type').with.property('href', 'http://example.com');
+			expect(entity).to.not.have.sirenLinkByType('foo');
+			expect(function() {
+				expect(entity).to.have.sirenLinkByType('foo');
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenLinkByType('link-type');
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenLinksByType()', function() {
+			expect(entity).to.have.sirenLinksByType(['link-type']);
+			expect(entity).to.not.have.sirenLinksByType(['foo', 'bar']);
+			expect(function() {
+				expect(entity).to.have.sirenLinksByType(['link-type', 'foo']);
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenLinksByType(['link-type', 'bar']);
 			}).to.throw();
 		});
 	});

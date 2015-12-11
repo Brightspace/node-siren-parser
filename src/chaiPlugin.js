@@ -153,7 +153,7 @@ module.exports = function(chai, utils) {
 		utils.flag(this, 'object', this._obj.getSubEntityByRel(entityRel));
 	};
 	Assertion.addChainableMethod('sirenEntity', entityByRel);
-	Assertion.addChainableMethod('sirenEntityByName', entityByRel);
+	Assertion.addChainableMethod('sirenEntityByRel', entityByRel);
 
 	// expect(entity).to.have.sirenEntities(['rel1', 'rel2', ...])
 	// expect(entity).to.have.sirenEntitiesByRel(['rel1', 'rel2', ...])
@@ -175,13 +175,13 @@ module.exports = function(chai, utils) {
 	// expect(entity).to.have.sirenEntityByClass('class');
 	const entityByClass = /* @this */ function(entityClass) {
 		new Assertion(this._obj).to.be.an.instanceof(Entity);
-		const entity = this._obj.getEntityByClass(entityClass);
 
 		this.assert(
-			entity instanceof Entity || entity instanceof Link,
+			this._obj.hasEntityByClass(entityClass),
 			'expected #{this} to have a sub-entity with class #{exp}',
 			'expected #{this} to not have a sub-entity with class #{exp}',
 			entityClass);
+		utils.flag(this, 'object', this._obj.getSubEntityByClass(entityClass));
 	};
 	Assertion.addChainableMethod('sirenEntityByClass', entityByClass);
 	// expect(entity).to.have.sirenEntitiesByClass(['class1', 'class2', ...])
@@ -202,13 +202,13 @@ module.exports = function(chai, utils) {
 	// expect(entity).to.have.sirenEntityByType('type');
 	const entityByType = /* @this */ function(entityType) {
 		new Assertion(this._obj).to.be.an.instanceof(Entity);
-		const entity = this._obj.getEntityByType(entityType);
 
 		this.assert(
-			entity instanceof Entity || entity instanceof Link,
+			this._obj.hasEntityByType(entityType),
 			'expected #{this} to have a sub-entity with type #{exp}',
 			'expected #{this} to not have a sub-entity with type #{exp}',
 			entityType);
+		utils.flag(this, 'object', this._obj.getSubEntityByType(entityType));
 	};
 	Assertion.addChainableMethod('sirenEntityByType', entityByType);
 	// expect(entity).to.have.sirenEntitiesByType(['type1', 'type2', ...])
@@ -260,13 +260,13 @@ module.exports = function(chai, utils) {
 	// expect(entity).to.have.sirenLinkByClass('class');
 	const linkByClass = /* @this */ function(linkClass) {
 		new Assertion(this._obj).to.be.an.instanceof(Entity);
-		const link = this._obj.getLinkByClass(linkClass);
 
 		this.assert(
-			link instanceof Link,
+			this._obj.hasLinkByClass(linkClass),
 			'expected #{this} to have a link with class #{exp}',
 			'expected #{this} to not have a link with class #{exp}',
 			linkClass);
+		utils.flag(this, 'object', this._obj.getLinkByClass(linkClass));
 	};
 	Assertion.addChainableMethod('sirenLinkByClass', linkByClass);
 	// expect(entity).to.have.sirenLinksByClass(['class1', 'class2', ...])
@@ -287,13 +287,13 @@ module.exports = function(chai, utils) {
 	// expect(entity).to.have.sirenLinkByType('type');
 	const linkByType = /* @this */ function(linkType) {
 		new Assertion(this._obj).to.be.an.instanceof(Entity);
-		const link = this._obj.getLinkByType(linkType);
 
 		this.assert(
-			link instanceof Link,
+			this._obj.hasLinkByType(linkType),
 			'expected #{this} to have a link with type #{exp}',
 			'expected #{this} to not have a link with type #{exp}',
 			linkType);
+		utils.flag(this, 'object', this._obj.getLinkByType(linkType));
 	};
 	Assertion.addChainableMethod('sirenLinkByType', linkByType);
 	// expect(entity).to.have.sirenLinkByType(['type1', 'type2', ...])
@@ -386,7 +386,7 @@ module.exports = function(chai, utils) {
 
 		for (let i = 0; i < fieldClasses.length; i++) {
 			this.assert(
-				this._obj.hasFieldByName(fieldClasses[i]),
+				this._obj.hasFieldByClass(fieldClasses[i]),
 				'expected #{this} to have field with class #{exp}',
 				'expected #{this} to not have field with class #{exp}',
 				fieldClasses[i]);
