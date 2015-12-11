@@ -11,7 +11,6 @@ function Action(action) {
 	if (!(this instanceof Action)) {
 		return new Action(action);
 	}
-	const self = this;
 
 	assert('object' === typeof action);
 	assert('string' === typeof action.name);
@@ -22,30 +21,47 @@ function Action(action) {
 	assert('undefined' === typeof action.type || 'string' === typeof action.type);
 	assert('undefined' === typeof action.fields || Array.isArray(action.fields));
 
-	self.name = action.name;
-	self.href = action.href;
+	this.name = action.name;
+	this.href = action.href;
 
 	if (action.class) {
-		self.class = action.class;
+		this.class = action.class;
 	}
 
-	self.method = action.method || 'GET';
+	this.method = action.method || 'GET';
 
 	if (action.title) {
-		self.title = action.title;
+		this.title = action.title;
 	}
 
-	self.type = action.type || 'application/x-www-form-urlencoded';
+	this.type = action.type || 'application/x-www-form-urlencoded';
 
-	self._fieldsByName = {};
+	this._fieldsByName = {};
+	this._fieldsByClass = {};
+	this._fieldsByType = {};
 	if (action.fields) {
-		self.fields = [];
-		action.fields.forEach(function(field) {
+		this.fields = [];
+
+		action.fields.forEach(field => {
 			const fieldInstance = new Field(field);
-			self.fields.push(fieldInstance);
-			self._fieldsByName[field.name] = fieldInstance;
+			this.fields.push(fieldInstance);
+
+			this._fieldsByName[field.name] = fieldInstance;
+
+			if (field.type) {
+				this._fieldsByType[field.type] = this._fieldsByType[field.type] || [];
+				this._fieldsByType[field.type].push(fieldInstance);
+			}
+
+			if (field.class) {
+				field.class.forEach(cls => {
+					this._fieldsByClass[cls] = this._fieldsByClass[cls] || [];
+					this._fieldsByClass[cls].push(fieldInstance);
+				});
+			}
 		});
-		self.fields = action.fields;
+
+		this.fields = action.fields;
 	}
 }
 
@@ -54,11 +70,55 @@ Action.prototype.hasClass = function(cls) {
 };
 
 Action.prototype.hasField = function(fieldName) {
+	return this.hasFieldByName(fieldName);
+};
+
+Action.prototype.hasFieldByName = function(fieldName) {
 	return this._fieldsByName.hasOwnProperty(fieldName);
 };
 
+Action.prototype.hasFieldByClass = function(fieldClass) {
+	return this._fieldsByClass.hasOwnProperty(fieldClass);
+};
+
+Action.prototype.hasFieldByType = function(fieldType) {
+	return this._fieldsByType.hasOwnProperty(fieldType);
+};
+
 Action.prototype.getField = function(fieldName) {
+	return this.getFieldByName(fieldName);
+};
+
+Action.prototype.getFieldByName = function(fieldName) {
 	return this._fieldsByName[fieldName];
+};
+
+Action.prototype.getFieldByClass = function(fieldClass) {
+	return this._getFirstOrUndefined('_fieldsByClass', fieldClass);
+};
+
+Action.prototype.getFieldsByClass = function(fieldClass) {
+	return this._getSetOrEmpty('_fieldsByClass', fieldClass);
+};
+
+Action.prototype.getFieldByType = function(fieldType) {
+	return this._getFirstOrUndefined('_fieldsByType', fieldType);
+};
+
+Action.prototype.getFieldsByType = function(fieldType) {
+	return this._getSetOrEmpty('_fieldsByType', fieldType);
+};
+
+Action.prototype._getFirstOrUndefined = function(set, key) {
+	const vals = this[set][key];
+
+	return vals ? vals[0] : undefined;
+};
+
+Action.prototype._getSetOrEmpty = function(set, key) {
+	const vals = this[set][key];
+
+	return vals ? vals.slice() : [];
 };
 
 module.exports = Action;
