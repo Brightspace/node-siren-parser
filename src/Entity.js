@@ -50,12 +50,24 @@ function Entity(entity) {
 
 	this._actionsByName = {};
 	this._actionsByClass = {};
+	this._actionsByMethod = {};
+	this._actionsByType = {};
 	if (entity.actions) {
 		this.actions = [];
 		entity.actions.forEach(action => {
 			const actionInstance = new Action(action);
 			this.actions.push(actionInstance);
 			this._actionsByName[action.name] = actionInstance;
+
+			if (action.method) {
+				this._actionsByMethod[action.method] = this._actionsByMethod[action.method] || [];
+				this._actionsByMethod[action.method].push(actionInstance);
+			}
+
+			if (action.type) {
+				this._actionsByType[action.type] = this._actionsByType[action.type] || [];
+				this._actionsByType[action.type].push(actionInstance);
+			}
 
 			if (action.class) {
 				action.class.forEach(cls => {
@@ -143,6 +155,14 @@ Entity.prototype.hasActionByClass = function(actionClass) {
 	return this._actionsByClass.hasOwnProperty(actionClass);
 };
 
+Entity.prototype.hasActionByMethod = function(actionMethod) {
+	return this._actionsByMethod.hasOwnProperty(actionMethod);
+};
+
+Entity.prototype.hasActionByType = function(actionType) {
+	return this._actionsByType.hasOwnProperty(actionType);
+};
+
 Entity.prototype.hasClass = function(cls) {
 	return this.class instanceof Array && this.class.indexOf(cls) > -1;
 };
@@ -197,6 +217,22 @@ Entity.prototype.getActionByClass = function(actionClass) {
 
 Entity.prototype.getActionsByClass = function(actionClass) {
 	return this._getSetOrEmpty('_actionsByClass', actionClass);
+};
+
+Entity.prototype.getActionByMethod = function(actionMethod) {
+	return this._getFirstOrUndefined('_actionsByMethod', actionMethod);
+};
+
+Entity.prototype.getActionsByMethod = function(actionMethod) {
+	return this._getSetOrEmpty('_actionsByMethod', actionMethod);
+};
+
+Entity.prototype.getActionByType = function(actionType) {
+	return this._getFirstOrUndefined('_actionsByType', actionType);
+};
+
+Entity.prototype.getActionsByType = function(actionType) {
+	return this._getSetOrEmpty('_actionsByType', actionType);
 };
 
 Entity.prototype.getLink = function(linkRel) {

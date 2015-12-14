@@ -140,6 +140,62 @@ module.exports = function(chai, utils) {
 	};
 	Assertion.addChainableMethod('sirenActionsByClass', actionsByClass);
 
+	// expect(entity).to.have.sirenActionByMethod('actionMethod')
+	const actionByMethod = /* @this */ function(actionMethod) {
+		new Assertion(this._obj).to.be.an.instanceof(Entity);
+		const action = this._obj.getActionByMethod(actionMethod);
+
+		this.assert(
+			action instanceof Action,
+			'expected #{this} to have Action with method #{exp}',
+			'expected #{this} to not have Action with method #{exp}',
+			actionMethod);
+		utils.flag(this, 'object', this._obj.getActionByMethod(actionMethod));
+	};
+	Assertion.addChainableMethod('sirenActionByMethod', actionByMethod);
+	// expect(entity).to.have.sirenActionsByMethod(['actionMethod1', 'actionMethod2', ...])
+	const actionsByMethod = /* @this */ function(actionMethods) {
+		new Assertion(this._obj).to.be.an.instanceof(Entity);
+		new Assertion(actionMethods).to.be.an.instanceof(Array);
+
+		for (var i = 0; i < actionMethods.length; i++) {
+			this.assert(
+				this._obj.hasActionByMethod(actionMethods[i]),
+				'expected #{exp} to be among actions of #{this}',
+				'expected #{exp} to not be among actions of #{this}',
+				actionMethods[i]);
+		}
+	};
+	Assertion.addChainableMethod('sirenActionsByMethod', actionsByMethod);
+
+	// expect(entity).to.have.sirenActionByType('actionType')
+	const actionByType = /* @this */ function(actionType) {
+		new Assertion(this._obj).to.be.an.instanceof(Entity);
+		const action = this._obj.getActionByType(actionType);
+
+		this.assert(
+			action instanceof Action,
+			'expected #{this} to have Action with type #{exp}',
+			'expected #{this} to not have Action with type #{exp}',
+			actionType);
+		utils.flag(this, 'object', this._obj.getActionByType(actionType));
+	};
+	Assertion.addChainableMethod('sirenActionByType', actionByType);
+	// expect(entity).to.have.sirenActionsByType(['actionType1', 'actionType2', ...])
+	const actionsByType = /* @this */ function(actionTypes) {
+		new Assertion(this._obj).to.be.an.instanceof(Entity);
+		new Assertion(actionTypes).to.be.an.instanceof(Array);
+
+		for (var i = 0; i < actionTypes.length; i++) {
+			this.assert(
+				this._obj.hasActionByType(actionTypes[i]),
+				'expected #{exp} to be among actions of #{this}',
+				'expected #{exp} to not be among actions of #{this}',
+				actionTypes[i]);
+		}
+	};
+	Assertion.addChainableMethod('sirenActionsByType', actionsByType);
+
 	// expect(entity).to.have.sirenEntity('rel')
 	// expect(entity).to.have.sirenEntityByRel('rel')
 	const entityByRel = /* @this */ function(entityRel) {

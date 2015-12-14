@@ -220,6 +220,34 @@ describe('Entity', function() {
 					siren = buildEntity();
 					expect(siren.hasActionByClass('baz')).to.be.false;
 				});
+
+				it('hasActionByMethod', function() {
+					resource.actions = [{
+						name: 'foo',
+						href: 'bar',
+						method: 'GET'
+					}];
+					siren = buildEntity();
+					expect(siren.hasActionByMethod('GET')).to.be.true;
+
+					resource.actions = undefined;
+					siren = buildEntity();
+					expect(siren.hasActionByMethod('GET')).to.be.false;
+				});
+
+				it('hasActionByType', function() {
+					resource.actions = [{
+						name: 'foo',
+						href: 'bar',
+						type: 'application/x-www-form-urlencoded'
+					}];
+					siren = buildEntity();
+					expect(siren.hasActionByType('application/x-www-form-urlencoded')).to.be.true;
+
+					resource.actions = undefined;
+					siren = buildEntity();
+					expect(siren.hasActionByType('application/x-www-form-urlencoded')).to.be.false;
+				});
 			});
 
 			describe('Class', function() {
@@ -363,6 +391,54 @@ describe('Entity', function() {
 					}];
 					siren = buildEntity();
 					expect(siren.getActionsByClass('baz')).to.have.lengthOf(2);
+				});
+
+				it('getActionByMethod', function() {
+					resource.actions = [{
+						name: 'foo',
+						href: 'bar',
+						method: 'GET'
+					}];
+					siren = buildEntity();
+					expect(siren.getActionByMethod('GET')).to.have.property('href', 'bar');
+				});
+
+				it('getActionsByMethod', function() {
+					resource.actions = [{
+						name: 'foo',
+						href: 'bar',
+						method: 'GET'
+					}, {
+						name: 'foo2',
+						href: 'bar2',
+						method: 'GET'
+					}];
+					siren = buildEntity();
+					expect(siren.getActionsByMethod('GET')).to.have.lengthOf(2);
+				});
+
+				it('getActionByType', function() {
+					resource.actions = [{
+						name: 'foo',
+						href: 'bar',
+						type: 'application/x-www-form-urlencoded'
+					}];
+					siren = buildEntity();
+					expect(siren.getActionByType('application/x-www-form-urlencoded')).to.have.property('href', 'bar');
+				});
+
+				it('getActionsByType', function() {
+					resource.actions = [{
+						name: 'foo',
+						href: 'bar',
+						type: 'application/x-www-form-urlencoded'
+					}, {
+						name: 'foo2',
+						href: 'bar2',
+						type: 'application/x-www-form-urlencoded'
+					}];
+					siren = buildEntity();
+					expect(siren.getActionsByType('application/x-www-form-urlencoded')).to.have.lengthOf(2);
 				});
 			});
 

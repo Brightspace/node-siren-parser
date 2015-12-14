@@ -33,7 +33,9 @@ describe('Chai Plugin', function() {
 			name: 'action-foo',
 			href: 'http://example.com',
 			fields: [field],
-			class: ['action-class']
+			class: ['action-class'],
+			method: 'GET',
+			type: 'application/x-www-form-urlencoded'
 		});
 		link = new Link({
 			rel: ['rel-foo', 'rel-bar'],
@@ -135,6 +137,52 @@ describe('Chai Plugin', function() {
 			}).to.throw();
 			expect(function() {
 				expect(entity).to.not.have.sirenActionsByClass(['action-class']);
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenActionByMethod()', function() {
+			expect(entity).to.have.sirenActionByMethod('GET');
+			expect(entity).to.have.sirenActionByMethod('GET').with.property('href', 'http://example.com');
+			expect(entity).to.not.have.sirenActionByMethod('action-bar');
+			expect(function() {
+				expect(entity).to.have.sirenActionByMethod('action-bar');
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenActionByMethod('GET');
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenActionsByMethod()', function() {
+			expect(entity).to.have.sirenActionsByMethod(['GET']);
+			expect(entity).to.not.have.sirenActionsByMethod(['action-bar']);
+			expect(function() {
+				expect(entity).to.have.sirenActionsByMethod(['action-bar']);
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenActionsByMethod(['GET']);
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenActionByType()', function() {
+			expect(entity).to.have.sirenActionByType('application/x-www-form-urlencoded');
+			expect(entity).to.have.sirenActionByType('application/x-www-form-urlencoded').with.property('href', 'http://example.com');
+			expect(entity).to.not.have.sirenActionByType('action-bar');
+			expect(function() {
+				expect(entity).to.have.sirenActionByType('action-bar');
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenActionByType('application/x-www-form-urlencoded');
+			}).to.throw();
+		});
+
+		it('expect().to.have.sirenActionsByType()', function() {
+			expect(entity).to.have.sirenActionsByType(['application/x-www-form-urlencoded']);
+			expect(entity).to.not.have.sirenActionsByType(['action-bar']);
+			expect(function() {
+				expect(entity).to.have.sirenActionsByType(['action-bar']);
+			}).to.throw();
+			expect(function() {
+				expect(entity).to.not.have.sirenActionsByType(['application/x-www-form-urlencoded']);
 			}).to.throw();
 		});
 	});
