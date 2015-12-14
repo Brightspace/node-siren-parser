@@ -72,6 +72,18 @@ Returns an [Entity](#entity) object with all Siren attributes specified. Input c
 
 ---
 
+### Helper functions
+
+A set of helper functions are defined in the parser to help make working with the Siren resources easier. In general, each resource type has a set of `hasXByY` and `getXByY` functions, where X and Y are Siren resource types and Siren resource properties, respectively. There are some "shortcut" functions that are kept around for compatibility (e.g. `Entity.hasAction(name)`), but these are less explicit, so it is recommended to use the newer, more explicit functions (i.e. `Entity.hasActionByName(name)`).
+
+These are contextually correct with respect to the Siren spec - as an example, there is no `Entity.getActionsByName` (only `Entity.getActionByName`, singular), as Action names must be unique on an Entity, meaning only one would ever be returned anyway.
+
+It is also important to note that any "singular" functions (e.g. `Entity.getActionByName`, as opposed to `Entity.getActionsByName`) just returns the first matching resource, with no guarantees of order. This is useful in situations where you know there is only one matching resource, but do be careful with its use.
+
+See each resource section for a full list of helper functions for that resource type.
+
+---
+
 ### `Entity`
 
 Attributes:
@@ -89,63 +101,62 @@ Each of these can be accessed as `Entity.attribute`, e.g. if one of the input's 
 
 > Note that only those attributes present in the input will be copied into the `Entity`, i.e. if your input has no links, `Entity.links` will not be set, rather than being an empty array.
 
-#### `Entity.hasX(String key)`
+#### `Entity.hasXByY(String key)`
 
-Returns true if the Entity has the specified _X_, otherwise false.
+Returns true if the Entity has an _X_ with a _Y_ of `key`, otherwise false.
 
-_X_ can be any one of:
-
-* _Action_ - must have an Action with the name `key`
-* _Class_ - must have a class `key`
-* _Entity_ - must have a sub-entity whose `rel` includes `key`
-* _Link_ - must have a link whose `rel` includes `key`
-* _Property_ - must have a `property` with the name `key`
+* `hasActionByName(name)` (`hasAction(name)`) - returns true if any action on the entity has an action named `name`
+* `hasActionByClass(class)`
+* `hasClass(class)`
+* `hasEntityByRel(rel)` (`hasEntity(rel)`)
+* `hasEntityByClass(class)`
+* `hasEntityByType(type)`
+* `hasLinkByRel(rel)` (`hasLink(rel)`)
+* `hasLinkByClass(class)`
+* `hasLinkByType(type)`
+* `hasProperty(prop)`
 
 ```js
-resource.hasAction('fancy-action'); // true
+resource.hasActionByName('fancy-action'); // true
 resource.hasClass('inner'); // false
-resource.hasEntity('child'); // true
-resource.hasLink('crazy'); // true
+resource.hasEntityByRel('child'); // true
+resource.hasEntityByType('child'); // false
+resource.hasLinkByRel('crazy'); // true
 resource.hasProperty('three'); // false
 ```
 
-#### `Entity.getAction(String name)`
+#### `Entity.getXByY(String key)`
 
-Returns the [Action](#action) with the specified `name` if it exists, otherwise `undefined`. Actions are indexed by `name` upon parse, so this is O(1).
+Returns the resource(s) of type _X_ with a _Y_ value of `key`. If the requested _X_ is singular, then the result is either the matching instance of _X_, or undefined. If the requested _X_ is plural, then the result is either an Array of the matching instances of _X_, or an empty Array.
 
-```js
-resource.getAction('fancy-action'); // The 'fancy-action' Action instance
-resource.getAction('fancy-action').title; // 'A fancy action!'
-```
-
-#### `Entity.getLinks(String rel)` and `Entity.getLink(String rel)`
-
-Returns the [Links](#link) with the specified `rel`, or an empty array. Links are indexed by `rel` upon parse, so this is O(1). `getLink` is simply a convenience method that will return the first Link with the given `rel` (or `undefined`).
-
-```js
-resource.getLinks('crazy'); // Array containing two Links
-resource.getLink('self'); // The 'self' Link instance
-resource.getLink('crazy'); // The same Link instance as above
-resource.getLink('self').rel; // ['self', 'crazy']
-```
-
-#### `Entity.getSubEntities(String rel)` and `Entity.getSubEntity(String rel)`
-
-Returns the sub-Entities with the specified `rel`, or an empty array. Sub-entities are indexed by `rel` upon parse, so this is O(1). `getSubEntity` is simply a convenience method that will return the first Entity with the given `rel` (or `undefined`).
+* `getActionByName(name)` (`getAction(name)`) - returns [Action](#action) or undefined
+* `getActionByClass(class)` - returns [Action](#action) or undefined
+* `getLinkByRel(rel)` (`getLink(rel)`) - returns [Link](#link) or undefined
+* `getLinkByClass(class)` - returns [Link](#link) or undefined
+* `getLinkByType(type)` - returns [Link](#link) or undefined
+* `getSubEntityByRel(rel)` (`getSubEntity(rel)`) - returns [Entity](#entity) or undefined
+* `getSubEntityByClass(class)` - returns [Entity](#entity) or undefined
+* `getSubEntityByType(type)` - returns [Entity](#entity) or undefined
+* `getActionsByClass(class)` - returns Array of [Actions](#action) (empty Array if none match)
+* `getLinksByRel(rel)` (`getLinks(rel)`) - returns Array of [Links](#link) (empty Array if none match)
+* `getLinksByClass(class)` - returns Array of [Links](#link) (empty Array if none match)
+* `getLinksByType(type)` - returns Array of [Links](#link) (empty Array if none match)
+* `getSubEntitiesByRel(rel)` (`getSubEntities(rel)`) - returns Array of [Entities](#entity) (empty Array if none match)
+* `getSubEntitiesByClass(class)` - returns Array of [Entities](#entity) (empty Array if none match)
+* `getSubEntitiesByType(type)` - returns Array of [Entities](#entity) (empty Array if none match)
 
 ```js
-resource.getSubEntities('child'); // Array containing 'child' entity
-resource.getSubEntity('child'); // Single entity
-resource.getSubEntity('child').getLink('self').title; // 'Child entity'
-```
-
-#### `Entity.getSubEntitiesByClass(String class)` and `Entity.getSubEntityByClass(String rel)`
-
-Returns the sub-Entities with the specified `class`, or an empty array.. Sub-entities are indexed by `rel` upon parse, so this is O(1). `getSubEntityByClass` is simply a convenience method that will return the first Entity with the given (or `undefined`).
-
-```js
-resource.getSubEntitiesByClass('inner'); // [ All Entities with 'inner' class ]
+resource.getActionByName('fancy-action'); // The 'fancy-action' Action instance
+resource.getActionByName('fancy-action').title; // 'A fancy action!'
+resource.getLinkByRel('self'); // The 'self' Link instance
+resource.getLinkByRel('crazy'); // The same Link instance as above
+resource.getLinkByRel('self').rel; // ['self', 'crazy']
+resource.getLinksByRel('crazy'); // Array containing two Links
+resource.getSubEntitiesByRel('child'); // Array of two entities
+resource.getSubEntityByRel('child'); // Single entity
+resource.getSubEntityByRel('child').getLink('self').title; // 'Child entity'
 resource.getSubEntityByClass('inner'); // Entity with 'inner' class
+resource.getSubEntitiesByClass('inner'); // [ All Entities with 'inner' class ]
 ```
 
 ---
@@ -162,7 +173,7 @@ Attributes:
 
 #### `Link.hasClass(String class)`
 
-Returns true if the Link has the specified `class`, otherwise false.
+Links only have this one helper function. Returns true if the Link has the specified `class`, otherwise false.
 
 ```js
 resource.getLink('crazy').hasClass('foo'); // false
@@ -182,29 +193,33 @@ Attributes:
 * `type` (string)
 * `fields` (array of [Fields](#field))
 
-#### `Action.hasClass(String class)`
+#### `Action.hasXByY(String key)`
 
-Returns true if the Action has the specified `class`, otherwise false.
+Returns true if the Action has an _X_ with a _Y_ of `key`, otherwise false.
+
+* `hasFieldByName(name)` (`hasField(name)`) - returns true if any action on the entity has an action named `name`
+* `hasFieldByClass(class)`
+* `hasFieldByType(type)`
+* `hasClass(class)`
 
 ```js
-resource.getAction('fancy-action').hasClass('foo'); // false
+resource.hasClass('foo'); // false
+resource.getActionByName('fancy-action').hasFieldByName('max'); // true
 ```
 
-#### `Action.hasField(String name)`
+#### `Action.getXByY(String key)`
 
-Returns true if Action has a field with the name `name`, otherwise false.
+Returns the resource(s) of type _X_ with a _Y_ value of `key`. If the requested _X_ is singular, then the result is either the matching instance of _X_, or undefined. If the requested _X_ is plural, then the result is either an Array of the matching instances of _X_, or an empty Array.
 
-```js
-resource.getAction('fancy-action').hasField('max'); // true
-```
-
-#### `Action.getField(String name)`
-
-Returns the [Field](#field) with the specified `name` if it exists, otherwise `undefined`. Fields are indexed by `name` upon parse, so this is O(1).
+* `getFieldByName(name)` (`getField(name)`) - returns [Field](#field) or undefined
+* `getFieldByClass(class)` - returns [Field](#field) or undefined
+* `getFieldByType(type)` - returns [Field](#field) or undefined
+* `getFieldsByClass(class)` - returns Array of [Fields](#field) (empty Array if none match)
+* `getFieldsByType(type)` - returns Array of [Fields](#field) (empty Array if none match)
 
 ```js
-resource.getAction('fancy-action').getField('max'); // The 'max' Field instance
-resource.getAction('fancy-action').getField('max').title; // 'Maximum value'
+resource.getActionByName('fancy-action').getFieldByName('max'); // The 'max' Field instance
+resource.getActionByName('fancy-action').getFieldByName('max').title; // 'Maximum value'
 ```
 
 ---
@@ -221,7 +236,7 @@ Attributes:
 
 #### `Field.hasClass(String class)`
 
-Returns true if the Field has the specified `class`, otherwise false.
+Fields only have this one helper function. Returns true if the Field has the specified `class`, otherwise false.
 
 ```js
 resource.getAction('fancy-action').getField('max').hasClass('foo'); // false
@@ -229,7 +244,9 @@ resource.getAction('fancy-action').getField('max').hasClass('foo'); // false
 
 ## `chai` interface
 
-There are a few helper `chai` methods included with this module, under `./chai`. These are mostly equivalents of the `hasX` methods in the API (and take generally the same arguments), to make testing with `chai` cleaner. Can also test whether a given resource is a particular Siren type.
+There are a few helper `chai` methods included with this module, under `./chai`. These are the equivalents of the `hasXByY` methods in the API (and take the same arguments), to make testing with `chai` cleaner. Can also test whether a given resource is a particular Siren type.
+
+Like the helper functions on which they are based, there are several "shorthand" functions left in for compatibility, but it is recommended to use the longer, more explicit ones (i.e. use `expect(resource).to.have.sirenActionByName(name)` rather than the shorthand `expect(resource).to.have.sirenAction(name)`).
 
 ```js
 // Without chai plugin, boo ugly!
@@ -238,32 +255,49 @@ expect(resource.hasClass('foo')).to.be.true;
 expect(resource).to.have.sirenClass('foo');
 
 // Importing a bunch of classes? Gross!
-const Entity = require('./src/Entity');
+const Entity = require('@d2l/siren-parser/Entity');
 expect(resource).to.be.an.instanceof(Entity);
 // 50% fewer lines of code = 2000% better tests, guaranteed!
 expect(resource).to.be.a.siren('entity');
 ```
 
+The "singular" chai methods will change the subject of the assertion, whereas the "plural" ones will not. For example, `expect(entity).to.have.sirenActionByName('foo').with.property('href', 'bar')` will work, as the subject is changed to the _foo_ Action. However, `expect(entity).to.have.sirenActionsByName(['foo', 'bar']).with.property('href', 'bar')` will check if the `entity` has an _href_ of _bar_, not if one of its Actions does.
+
+Also worth noting is that the "plural" assertions will pass if each given value is present on any given sub-resource, _not_ only if a single sub-resource has all of the given values. For example, `expect(entity).to.have.sirenActionByClass(['foo', 'bar'])` does not require that a single Action on the `entity` has both _foo_ and _bar_ as classes, only that _foo_ and _bar_ be among the set of all classes held by all Actions on the `entity`.
+
 The available assertions are:
 
-* `expect(resource).to.have.sirenAction('foo')`
-* `expect(resource).to.have.sirenAction('foo').with.property('href', 'foo')`
-* `expect(resource).to.have.sirenActions(['foo', 'bar'])`
-* `expect(resource).to.have.sirenClass('foo')`
-* `expect(resource).to.have.sirenClasses(['foo', 'bar', 'baz'])`
-* `expect(resource).to.have.sirenEntity('foo')`
-* `expect(resource).to.have.sirenEntity('foo').with.property('title', 'foo')`
-* `expect(resource).to.have.sirenEntities(['foo', 'bar', 'baz'])`
-* `expect(resource).to.have.sirenField('foo')`
-* `expect(resource).to.have.sirenField('foo').with.property('name', 'foo')`
-* `expect(resource).to.have.sirenFields(['foo', 'bar', 'baz'])`
-* `expect(resource).to.have.sirenLink('foo')`
-* `expect(resource).to.have.sirenLink('foo').with.property('href', 'foo')`
-* `expect(resource).to.have.sirenLinks(['foo', 'bar', 'baz'])`
-* `expect(resource).to.have.sirenProperty('foo')`
-* `expect(resource).to.have.sirenProperty('foo').that.equals('bar')`
-* `expect(resource).to.have.sirenProperties(['foo', 'bar', 'baz'])`
 * `expect(resource).to.be.a.siren('entity')` - checks if `resource` is a Siren entity. Other types include action, class, field, and link.
+* `expect(entity|action|link|field).to.have.sirenClass('foo')`
+* `expect(entity|action|link|field).to.have.sirenClasses(['foo', 'bar'])`
+* `expect(entity).to.have.sirenActionByName('foo')` (`expect(entity).to.have.sirenAction('foo')`)
+* `expect(entity).to.have.sirenActionsByName(['foo', 'bar'])` (`expect(entity).to.have.sirenActions(['foo', 'bar']))`
+* `expect(entity).to.have.sirenActionByClass('foo')
+* `expect(entity).to.have.sirenActionsByClass(['foo', 'bar'])
+* `expect(entity).to.have.sirenActionByMethod('foo')
+* `expect(entity).to.have.sirenActionsByMethod(['foo', 'bar'])
+* `expect(entity).to.have.sirenActionByType('foo')
+* `expect(entity).to.have.sirenActionsByType(['foo', 'bar'])
+* `expect(entity).to.have.sirenEntityByRel('foo')` (`expect(entity).to.have.sirenEntity('foo')`)
+* `expect(entity).to.have.sirenEntitiesByRel(['foo', 'bar'])` (`expect(entity).to.have.sirenEntities(['foo', 'bar'])`)
+* `expect(entity).to.have.sirenEntityByClass('foo')`
+* `expect(entity).to.have.sirenEntitiesByClass(['foo', 'bar'])`
+* `expect(entity).to.have.sirenEntityByType('foo')`
+* `expect(entity).to.have.sirenEntitiesByType(['foo', 'bar'])`
+* `expect(entity).to.have.sirenLinkByRel('foo')` (`expect(entity).to.have.sirenLink('foo')`)
+* `expect(entity).to.have.sirenLinksByRel(['foo', 'bar'])` (`expect(entity).to.have.sirenLinks(['foo', 'bar'])`)
+* `expect(entity).to.have.sirenLinkByClass('foo')`
+* `expect(entity).to.have.sirenLinksByClass(['foo', 'bar'])`
+* `expect(entity).to.have.sirenLinkByType('foo')`
+* `expect(entity).to.have.sirenLinksByType(['foo', 'bar'])`
+* `expect(entity).to.have.sirenProperty('foo')`
+* `expect(entity).to.have.sirenProperties(['foo', 'bar', 'baz'])`
+* `expect(action).to.have.sirenFieldByName('foo')` (`expect(action).to.have.sirenField('foo')`)
+* `expect(action).to.have.sirenFieldsByName(['foo', 'bar', 'baz'])` (`expect(action).to.have.sirenFields(['foo', 'bar'])`)
+* `expect(action).to.have.sirenFieldByClass('foo')`
+* `expect(action).to.have.sirenFieldsByClass(['foo', 'bar'])`
+* `expect(action).to.have.sirenFieldByType('foo')`
+* `expect(action).to.have.sirenFieldsByType(['foo', 'bar'])`
 
 ## `superagent` interface
 
