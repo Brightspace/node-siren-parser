@@ -272,12 +272,12 @@ The available assertions are:
 * `expect(entity|action|link|field).to.have.sirenClasses(['foo', 'bar'])`
 * `expect(entity).to.have.sirenActionByName('foo')` (`expect(entity).to.have.sirenAction('foo')`)
 * `expect(entity).to.have.sirenActionsByName(['foo', 'bar'])` (`expect(entity).to.have.sirenActions(['foo', 'bar']))`
-* `expect(entity).to.have.sirenActionByClass('foo')
-* `expect(entity).to.have.sirenActionsByClass(['foo', 'bar'])
-* `expect(entity).to.have.sirenActionByMethod('foo')
-* `expect(entity).to.have.sirenActionsByMethod(['foo', 'bar'])
-* `expect(entity).to.have.sirenActionByType('foo')
-* `expect(entity).to.have.sirenActionsByType(['foo', 'bar'])
+* `expect(entity).to.have.sirenActionByClass('foo')`
+* `expect(entity).to.have.sirenActionsByClass(['foo', 'bar'])`
+* `expect(entity).to.have.sirenActionByMethod('foo')`
+* `expect(entity).to.have.sirenActionsByMethod(['foo', 'bar'])`
+* `expect(entity).to.have.sirenActionByType('foo')`
+* `expect(entity).to.have.sirenActionsByType(['foo', 'bar'])`
 * `expect(entity).to.have.sirenEntityByRel('foo')` (`expect(entity).to.have.sirenEntity('foo')`)
 * `expect(entity).to.have.sirenEntitiesByRel(['foo', 'bar'])` (`expect(entity).to.have.sirenEntities(['foo', 'bar'])`)
 * `expect(entity).to.have.sirenEntityByClass('foo')`
