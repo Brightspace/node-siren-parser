@@ -48,13 +48,13 @@ function Action(action) {
 
 			this._fieldsByName[field.name] = fieldInstance;
 
-			if (field.type) {
-				this._fieldsByType[field.type] = this._fieldsByType[field.type] || [];
-				this._fieldsByType[field.type].push(fieldInstance);
+			if (fieldInstance.type) {
+				this._fieldsByType[fieldInstance.type] = this._fieldsByType[fieldInstance.type] || [];
+				this._fieldsByType[fieldInstance.type].push(fieldInstance);
 			}
 
-			if (field.class) {
-				field.class.forEach(cls => {
+			if (fieldInstance.class) {
+				fieldInstance.class.forEach(cls => {
 					this._fieldsByClass[cls] = this._fieldsByClass[cls] || [];
 					this._fieldsByClass[cls].push(fieldInstance);
 				});

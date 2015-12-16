@@ -57,20 +57,20 @@ function Entity(entity) {
 		entity.actions.forEach(action => {
 			const actionInstance = new Action(action);
 			this.actions.push(actionInstance);
-			this._actionsByName[action.name] = actionInstance;
+			this._actionsByName[actionInstance.name] = actionInstance;
 
-			if (action.method) {
-				this._actionsByMethod[action.method] = this._actionsByMethod[action.method] || [];
-				this._actionsByMethod[action.method].push(actionInstance);
+			if (actionInstance.method) {
+				this._actionsByMethod[actionInstance.method] = this._actionsByMethod[actionInstance.method] || [];
+				this._actionsByMethod[actionInstance.method].push(actionInstance);
 			}
 
-			if (action.type) {
-				this._actionsByType[action.type] = this._actionsByType[action.type] || [];
-				this._actionsByType[action.type].push(actionInstance);
+			if (actionInstance.type) {
+				this._actionsByType[actionInstance.type] = this._actionsByType[actionInstance.type] || [];
+				this._actionsByType[actionInstance.type].push(actionInstance);
 			}
 
-			if (action.class) {
-				action.class.forEach(cls => {
+			if (actionInstance.class) {
+				actionInstance.class.forEach(cls => {
 					this._actionsByClass[cls] = this._actionsByClass[cls] || [];
 					this._actionsByClass[cls].push(actionInstance);
 				});
@@ -87,21 +87,21 @@ function Entity(entity) {
 			const linkInstance = new Link(link);
 			this.links.push(linkInstance);
 
-			link.rel.forEach(rel => {
+			linkInstance.rel.forEach(rel => {
 				this._linksByRel[rel] = this._linksByRel[rel] || [];
 				this._linksByRel[rel].push(linkInstance);
 			});
 
-			if (link.class) {
-				link.class.forEach(cls => {
+			if (linkInstance.class) {
+				linkInstance.class.forEach(cls => {
 					this._linksByClass[cls] = this._linksByClass[cls] || [];
 					this._linksByClass[cls].push(linkInstance);
 				});
 			}
 
-			if (link.type) {
-				this._linksByType[link.type] = this._linksByType[link.type] || [];
-				this._linksByType[link.type].push(linkInstance);
+			if (linkInstance.type) {
+				this._linksByType[linkInstance.type] = this._linksByType[linkInstance.type] || [];
+				this._linksByType[linkInstance.type].push(linkInstance);
 			}
 		});
 	}
@@ -123,21 +123,21 @@ function Entity(entity) {
 			}
 			this.entities.push(subEntityInstance);
 
-			subEntity.rel.forEach(rel => {
+			subEntityInstance.rel.forEach(rel => {
 				this._entitiesByRel[rel] = this._entitiesByRel[rel] || [];
 				this._entitiesByRel[rel].push(subEntityInstance);
 			});
 
-			if (subEntity.class) {
-				subEntity.class.forEach(cls => {
+			if (subEntityInstance.class) {
+				subEntityInstance.class.forEach(cls => {
 					this._entitiesByClass[cls] = this._entitiesByClass[cls] || [];
 					this._entitiesByClass[cls].push(subEntityInstance);
 				});
 			}
 
-			if (subEntity.type) {
-				this._entitiesByType[subEntity.type] = this._entitiesByType[subEntity.type] || [];
-				this._entitiesByType[subEntity.type].push(subEntityInstance);
+			if (subEntityInstance.type) {
+				this._entitiesByType[subEntityInstance.type] = this._entitiesByType[subEntityInstance.type] || [];
+				this._entitiesByType[subEntityInstance.type].push(subEntityInstance);
 			}
 		});
 	}
