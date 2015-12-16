@@ -18,8 +18,6 @@ function Entity(entity) {
 		entity = JSON.parse(entity);
 	}
 
-	const self = this;
-
 	assert('undefined' === typeof entity.rel || Array.isArray(entity.rel));
 	assert('undefined' === typeof entity.title || 'string' === typeof entity.title);
 	assert('undefined' === typeof entity.type || 'string' === typeof entity.type);
@@ -31,61 +29,90 @@ function Entity(entity) {
 
 	if (entity.rel) {
 		// Only applies to sub-entities (required for them)
-		self.rel = entity.rel;
+		this.rel = entity.rel;
 	}
 
 	if (entity.title) {
-		self.title = entity.title;
+		this.title = entity.title;
 	}
 
 	if (entity.type) {
-		self.type = entity.type;
+		this.type = entity.type;
 	}
 
 	if (entity.properties) {
-		self.properties = entity.properties;
+		this.properties = entity.properties;
 	}
 
 	if (entity.class) {
-		self.class = entity.class;
+		this.class = entity.class;
 	}
 
-	self._actionsByName = {};
+	this._actionsByName = {};
+	this._actionsByClass = {};
+	this._actionsByMethod = {};
+	this._actionsByType = {};
 	if (entity.actions) {
-		self.actions = [];
-		entity.actions.forEach(function(action) {
+		this.actions = [];
+		entity.actions.forEach(action => {
 			const actionInstance = new Action(action);
-			self.actions.push(actionInstance);
-			self._actionsByName[action.name] = actionInstance;
+			this.actions.push(actionInstance);
+			this._actionsByName[action.name] = actionInstance;
+
+			if (action.method) {
+				this._actionsByMethod[action.method] = this._actionsByMethod[action.method] || [];
+				this._actionsByMethod[action.method].push(actionInstance);
+			}
+
+			if (action.type) {
+				this._actionsByType[action.type] = this._actionsByType[action.type] || [];
+				this._actionsByType[action.type].push(actionInstance);
+			}
+
+			if (action.class) {
+				action.class.forEach(cls => {
+					this._actionsByClass[cls] = this._actionsByClass[cls] || [];
+					this._actionsByClass[cls].push(actionInstance);
+				});
+			}
 		});
 	}
 
-	self._linkRels = {};
-	self._linksByRel = {};
+	this._linksByRel = {};
+	this._linksByClass = {};
+	this._linksByType = {};
 	if (entity.links) {
-		self.links = [];
-		entity.links.forEach(function(link) {
+		this.links = [];
+		entity.links.forEach(link => {
 			const linkInstance = new Link(link);
-			self.links.push(linkInstance);
+			this.links.push(linkInstance);
 
-			link.rel.forEach(function(rel) {
-				self._linkRels[rel] = true;
-
-				/* istanbul ignore else */
-				if (!(self._linksByRel[rel])) {
-					self._linksByRel[rel] = [];
-				}
-				self._linksByRel[rel].push(linkInstance);
+			link.rel.forEach(rel => {
+				this._linksByRel[rel] = this._linksByRel[rel] || [];
+				this._linksByRel[rel].push(linkInstance);
 			});
+
+			if (link.class) {
+				link.class.forEach(cls => {
+					this._linksByClass[cls] = this._linksByClass[cls] || [];
+					this._linksByClass[cls].push(linkInstance);
+				});
+			}
+
+			if (link.type) {
+				this._linksByType[link.type] = this._linksByType[link.type] || [];
+				this._linksByType[link.type].push(linkInstance);
+			}
 		});
 	}
 
-	self._entityRels = {};
-	self._entitiesByRel = {};
-	self._entitiesByClass = {};
+	this._entitiesByRel = {};
+	this._entitiesByClass = {};
+	this._entitiesByType = {};
 	if (entity.entities) {
-		self.entities = [];
-		entity.entities.forEach(function(subEntity) {
+		this.entities = [];
+		entity.entities.forEach(subEntity => {
+			// Subentities must have a rel array
 			assert(Array.isArray(subEntity.rel));
 
 			let subEntityInstance;
@@ -94,33 +121,46 @@ function Entity(entity) {
 			} else {
 				subEntityInstance = new Entity(subEntity);
 			}
-			self.entities.push(subEntityInstance);
+			this.entities.push(subEntityInstance);
 
-			subEntity.rel.forEach(function(rel) {
-				self._entityRels[rel] = true;
-
-				/* istanbul ignore else */
-				if (!self._entitiesByRel[rel]) {
-					self._entitiesByRel[rel] = [];
-				}
-				self._entitiesByRel[rel].push(subEntityInstance);
+			subEntity.rel.forEach(rel => {
+				this._entitiesByRel[rel] = this._entitiesByRel[rel] || [];
+				this._entitiesByRel[rel].push(subEntityInstance);
 			});
 
-			if (Array.isArray(subEntity.class)) {
-				subEntity.class.forEach(function(cls) {
-					/* istanbul ignore else */
-					if (!self._entitiesByClass[cls]) {
-						self._entitiesByClass[cls] = [];
-					}
-					self._entitiesByClass[cls].push(subEntityInstance);
+			if (subEntity.class) {
+				subEntity.class.forEach(cls => {
+					this._entitiesByClass[cls] = this._entitiesByClass[cls] || [];
+					this._entitiesByClass[cls].push(subEntityInstance);
 				});
+			}
+
+			if (subEntity.type) {
+				this._entitiesByType[subEntity.type] = this._entitiesByType[subEntity.type] || [];
+				this._entitiesByType[subEntity.type].push(subEntityInstance);
 			}
 		});
 	}
 }
 
 Entity.prototype.hasAction = function(actionName) {
+	return this.hasActionByName(actionName);
+};
+
+Entity.prototype.hasActionByName = function(actionName) {
 	return this._actionsByName.hasOwnProperty(actionName);
+};
+
+Entity.prototype.hasActionByClass = function(actionClass) {
+	return this._actionsByClass.hasOwnProperty(actionClass);
+};
+
+Entity.prototype.hasActionByMethod = function(actionMethod) {
+	return this._actionsByMethod.hasOwnProperty(actionMethod);
+};
+
+Entity.prototype.hasActionByType = function(actionType) {
+	return this._actionsByType.hasOwnProperty(actionType);
 };
 
 Entity.prototype.hasClass = function(cls) {
@@ -128,43 +168,135 @@ Entity.prototype.hasClass = function(cls) {
 };
 
 Entity.prototype.hasEntity = function(entityRel) {
-	return this._entityRels.hasOwnProperty(entityRel);
+	return this.hasEntityByRel(entityRel);
+};
+
+Entity.prototype.hasEntityByRel = function(entityRel) {
+	return this._entitiesByRel.hasOwnProperty(entityRel);
+};
+
+Entity.prototype.hasEntityByClass = function(entityClass) {
+	return this._entitiesByClass.hasOwnProperty(entityClass);
+};
+
+Entity.prototype.hasEntityByType = function(entityType) {
+	return this._entitiesByType.hasOwnProperty(entityType);
 };
 
 Entity.prototype.hasLink = function(linkRel) {
-	return this._linkRels.hasOwnProperty(linkRel);
+	return this.hasLinkByRel(linkRel);
+};
+
+Entity.prototype.hasLinkByRel = function(linkRel) {
+	return this._linksByRel.hasOwnProperty(linkRel);
+};
+
+Entity.prototype.hasLinkByClass = function(linkClass) {
+	return this._linksByClass.hasOwnProperty(linkClass);
+};
+
+Entity.prototype.hasLinkByType = function(linkType) {
+	return this._linksByType.hasOwnProperty(linkType);
 };
 
 Entity.prototype.hasProperty = function(property) {
-	return this.properties.hasOwnProperty(property);
+	return this.hasOwnProperty('properties') && this.properties.hasOwnProperty(property);
 };
 
 Entity.prototype.getAction = function(actionName) {
+	return this.getActionByName(actionName);
+};
+
+Entity.prototype.getActionByName = function(actionName) {
 	return this._actionsByName[actionName];
 };
 
+Entity.prototype.getActionByClass = function(actionClass) {
+	return this._getFirstOrUndefined('_actionsByClass', actionClass);
+};
+
+Entity.prototype.getActionsByClass = function(actionClass) {
+	return this._getSetOrEmpty('_actionsByClass', actionClass);
+};
+
+Entity.prototype.getActionByMethod = function(actionMethod) {
+	return this._getFirstOrUndefined('_actionsByMethod', actionMethod);
+};
+
+Entity.prototype.getActionsByMethod = function(actionMethod) {
+	return this._getSetOrEmpty('_actionsByMethod', actionMethod);
+};
+
+Entity.prototype.getActionByType = function(actionType) {
+	return this._getFirstOrUndefined('_actionsByType', actionType);
+};
+
+Entity.prototype.getActionsByType = function(actionType) {
+	return this._getSetOrEmpty('_actionsByType', actionType);
+};
+
 Entity.prototype.getLink = function(linkRel) {
-	return this._getFirstOrUndefined('_linksByRel', linkRel);
+	return this.getLinkByRel(linkRel);
 };
 
 Entity.prototype.getLinks = function(linkRel) {
+	return this.getLinksByRel(linkRel);
+};
+
+Entity.prototype.getLinkByRel = function(linkRel) {
+	return this._getFirstOrUndefined('_linksByRel', linkRel);
+};
+
+Entity.prototype.getLinksByRel = function(linkRel) {
 	return this._getSetOrEmpty('_linksByRel', linkRel);
 };
 
+Entity.prototype.getLinkByClass = function(linkClass) {
+	return this._getFirstOrUndefined('_linksByClass', linkClass);
+};
+
+Entity.prototype.getLinksByClass = function(linkClass) {
+	return this._getSetOrEmpty('_linksByClass', linkClass);
+};
+
+Entity.prototype.getLinkByType = function(linkType) {
+	return this._getFirstOrUndefined('_linksByType', linkType);
+};
+
+Entity.prototype.getLinksByType = function(linkType) {
+	return this._getSetOrEmpty('_linksByType', linkType);
+};
+
 Entity.prototype.getSubEntity = function(entityRel) {
-	return this._getFirstOrUndefined('_entitiesByRel', entityRel);
+	return this.getSubEntityByRel(entityRel);
 };
 
 Entity.prototype.getSubEntities = function(entityRel) {
+	return this.getSubEntitiesByRel(entityRel);
+};
+
+Entity.prototype.getSubEntityByRel = function(entityRel) {
+	return this._getFirstOrUndefined('_entitiesByRel', entityRel);
+};
+
+Entity.prototype.getSubEntitiesByRel = function(entityRel) {
 	return this._getSetOrEmpty('_entitiesByRel', entityRel);
 };
 
-Entity.prototype.getSubEntityByClass = function(cls) {
-	return this._getFirstOrUndefined('_entitiesByClass', cls);
+Entity.prototype.getSubEntityByClass = function(entityClass) {
+	return this._getFirstOrUndefined('_entitiesByClass', entityClass);
 };
 
-Entity.prototype.getSubEntitiesByClass = function(cls) {
-	return this._getSetOrEmpty('_entitiesByClass', cls);
+Entity.prototype.getSubEntitiesByClass = function(entityClass) {
+	return this._getSetOrEmpty('_entitiesByClass', entityClass);
+};
+
+Entity.prototype.getSubEntityByType = function(entityType) {
+	return this._getFirstOrUndefined('_entitiesByType', entityType);
+};
+
+Entity.prototype.getSubEntitiesByType = function(entityType) {
+	return this._getSetOrEmpty('_entitiesByType', entityType);
 };
 
 Entity.prototype._getFirstOrUndefined = function(set, key) {
