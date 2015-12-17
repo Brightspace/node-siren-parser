@@ -169,7 +169,7 @@ Attributes:
 * `href` (string) _Required_
 * `class` (array of strings)
 * `title` (string)
-* `type` (string) _If specified, must be an HTML5 input type - see [this link][action types]_
+* `type` (string) _Must be a [Siren Link type][link types]_
 
 #### `Link.hasClass(String class)`
 
@@ -190,7 +190,7 @@ Attributes:
 * `class` (array of strings)
 * `method` (string)
 * `title` (string)
-* `type` (string)
+* `type` (string) _Must be a [Siren Action type][action types]_
 * `fields` (array of [Fields](#field))
 
 #### `Action.hasXByY(String key)`
@@ -231,7 +231,7 @@ Attributes:
 * `name` (string) _Required_
 * `value` (string)
 * `class` (array of strings)
-* `type` (string)
+* `type` (string) _Must be a [Siren Field type][field types]_
 * `title` (string)
 
 #### `Field.hasClass(String class)`
@@ -333,7 +333,9 @@ installing editor extensions.
 [node-siren-writer]: https://github.com/dominicbarnes/node-siren-writer
 [chai]: https://github.com/chaijs/chai
 [siren]: https://github.com/kevinswiber/siren
-[action types]: https://github.com/kevinswiber/siren#type-3
+[link types]: https://github.com/kevinswiber/siren#type-1
+[action types]: https://github.com/kevinswiber/siren#type-2
+[field types]: https://github.com/kevinswiber/siren#type-3
 [EditorConfig]: http://editorconfig.org/
 [ESLint]: http://eslint.org
 [code style]: http://docs.dev.d2l/index.php/JavaScript_Code_Style_(Personal_Learning)
