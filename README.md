@@ -244,60 +244,31 @@ resource.getAction('fancy-action').getField('max').hasClass('foo'); // false
 
 ## `chai` interface
 
-There are a few helper `chai` methods included with this module, under `./chai`. These are the equivalents of the `hasXByY` methods in the API (and take the same arguments), to make testing with `chai` cleaner. Can also test whether a given resource is a particular Siren type.
+There are a few helper `chai` methods included with this module, under `./chai`. These are intended to make testing with `chai` cleaner. The chai interface adds the following methods and properties:
 
-Like the helper functions on which they are based, there are several "shorthand" functions left in for compatibility, but it is recommended to use the longer, more explicit ones (i.e. use `expect(resource).to.have.sirenActionByName(name)` rather than the shorthand `expect(resource).to.have.sirenAction(name)`).
+* Properties
+** sirenAction/sirenActions - changes the subject of the assertion to the entity's Actions (or throws if it has none)
+** sirenEntity/sirenEntities - changes the subject of the assertion to the entity's sub-Entities (or throws if it has none)
+** sirenLink/sirenLinks - changes the subject of the assertion to the entity's Links (or throws if it has none)
+** sirenProperty/sirenProperties - changes the subject of the assertion to the entity's Properties (or throws if it has none)
+** sirenField/sirenFields - changes the subject of the assertion to the action's Fields (or throws if it has none)
+** all - flags further operations to occur on all of the subject, rather than just any
+* Methods:
+** classes(cls1, cls2, ...) - asserts whether the subject has all the given classes
+** href(href) - asserts whether the subject has the given href
+** method(method) - asserts whether the subject has the given method
+** name(name) - asserts whether the subject (Action(s)) has the given name
+** rels(rel1, rel2, ...) - asserts whether the subject has all the given rels
+** title(title) - asserts whether the subject has the given title
+** type(type) - asserts whether the subject has the given title
+** value(value) - asserts whether the subject (Field(s)) has the given value
 
 ```js
-// Without chai plugin, boo ugly!
-expect(resource.hasClass('foo')).to.be.true;
-// With chai plugin magic!
-expect(resource).to.have.sirenClass('foo');
-
-// Importing a bunch of classes? Gross!
-const Entity = require('@d2l/siren-parser/Entity');
-expect(resource).to.be.an.instanceof(Entity);
-// 50% fewer lines of code = 2000% better tests, guaranteed!
-expect(resource).to.be.a.siren('entity');
+expect(resource).to.have.a.sirenAction.with.method('GET');
+expect(resource).to.have.sirenLinks.with.classes('foo', 'bar'); // Will pass if at least 1 of resource's actions have each given class
+expect(resource).to.have.sirenLinks.all.with.classes('foo', 'bar'); // Passes only if all of resource's actions have all given class
+expect(resource).to.have.a.sirenEntity.with.a.sirenEntity.with.title('foo'); // Check a sub-sub-entity's title
 ```
-
-The "singular" chai methods will change the subject of the assertion, whereas the "plural" ones will not. For example, `expect(entity).to.have.sirenActionByName('foo').with.property('href', 'bar')` will work, as the subject is changed to the _foo_ Action. However, `expect(entity).to.have.sirenActionsByName(['foo', 'bar']).with.property('href', 'bar')` will check if the `entity` has an _href_ of _bar_, not if one of its Actions does.
-
-Also worth noting is that the "plural" assertions will pass if each given value is present on any given sub-resource, _not_ only if a single sub-resource has all of the given values. For example, `expect(entity).to.have.sirenActionByClass(['foo', 'bar'])` does not require that a single Action on the `entity` has both _foo_ and _bar_ as classes, only that _foo_ and _bar_ be among the set of all classes held by all Actions on the `entity`.
-
-The available assertions are:
-
-* `expect(resource).to.be.a.siren('entity')` - checks if `resource` is a Siren entity. Other types include action, class, field, and link.
-* `expect(entity|action|link|field).to.have.sirenClass('foo')`
-* `expect(entity|action|link|field).to.have.sirenClasses(['foo', 'bar'])`
-* `expect(entity).to.have.sirenActionByName('foo')` (`expect(entity).to.have.sirenAction('foo')`)
-* `expect(entity).to.have.sirenActionsByName(['foo', 'bar'])` (`expect(entity).to.have.sirenActions(['foo', 'bar']))`
-* `expect(entity).to.have.sirenActionByClass('foo')`
-* `expect(entity).to.have.sirenActionsByClass(['foo', 'bar'])`
-* `expect(entity).to.have.sirenActionByMethod('foo')`
-* `expect(entity).to.have.sirenActionsByMethod(['foo', 'bar'])`
-* `expect(entity).to.have.sirenActionByType('foo')`
-* `expect(entity).to.have.sirenActionsByType(['foo', 'bar'])`
-* `expect(entity).to.have.sirenEntityByRel('foo')` (`expect(entity).to.have.sirenEntity('foo')`)
-* `expect(entity).to.have.sirenEntitiesByRel(['foo', 'bar'])` (`expect(entity).to.have.sirenEntities(['foo', 'bar'])`)
-* `expect(entity).to.have.sirenEntityByClass('foo')`
-* `expect(entity).to.have.sirenEntitiesByClass(['foo', 'bar'])`
-* `expect(entity).to.have.sirenEntityByType('foo')`
-* `expect(entity).to.have.sirenEntitiesByType(['foo', 'bar'])`
-* `expect(entity).to.have.sirenLinkByRel('foo')` (`expect(entity).to.have.sirenLink('foo')`)
-* `expect(entity).to.have.sirenLinksByRel(['foo', 'bar'])` (`expect(entity).to.have.sirenLinks(['foo', 'bar'])`)
-* `expect(entity).to.have.sirenLinkByClass('foo')`
-* `expect(entity).to.have.sirenLinksByClass(['foo', 'bar'])`
-* `expect(entity).to.have.sirenLinkByType('foo')`
-* `expect(entity).to.have.sirenLinksByType(['foo', 'bar'])`
-* `expect(entity).to.have.sirenProperty('foo')`
-* `expect(entity).to.have.sirenProperties(['foo', 'bar', 'baz'])`
-* `expect(action).to.have.sirenFieldByName('foo')` (`expect(action).to.have.sirenField('foo')`)
-* `expect(action).to.have.sirenFieldsByName(['foo', 'bar', 'baz'])` (`expect(action).to.have.sirenFields(['foo', 'bar'])`)
-* `expect(action).to.have.sirenFieldByClass('foo')`
-* `expect(action).to.have.sirenFieldsByClass(['foo', 'bar'])`
-* `expect(action).to.have.sirenFieldByType('foo')`
-* `expect(action).to.have.sirenFieldsByType(['foo', 'bar'])`
 
 ## `superagent` interface
 
