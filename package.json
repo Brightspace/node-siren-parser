@@ -1,6 +1,6 @@
 {
   "name": "@d2l/siren-parser",
-  "version": "3.1.1",
+  "version": "4.0.0",
   "description": "Pretty much the opposite of dominicbarnes/node-siren-writer",
   "main": "src/Entity.js",
   "scripts": {
@@ -44,7 +44,9 @@
       [
         "babelify",
         {
-          "presets": [ "es2015" ]
+          "presets": [
+            "es2015"
+          ]
         }
       ]
     ]
