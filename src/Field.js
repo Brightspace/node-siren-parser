@@ -49,7 +49,7 @@ function Field(field) {
 		this.type = field.type;
 	}
 
-	if (field.value) {
+	if (field.hasOwnProperty('value')) {
 		this.value = field.value;
 	}
 
