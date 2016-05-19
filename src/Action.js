@@ -12,14 +12,19 @@ function Action(action) {
 		return new Action(action);
 	}
 
-	assert('object' === typeof action);
-	assert('string' === typeof action.name);
-	assert('string' === typeof action.href);
-	assert('undefined' === typeof action.class || Array.isArray(action.class));
-	assert('undefined' === typeof action.method || 'string' === typeof action.method);
-	assert('undefined' === typeof action.title || 'string' === typeof action.title);
-	assert('undefined' === typeof action.type || 'string' === typeof action.type);
-	assert('undefined' === typeof action.fields || Array.isArray(action.fields));
+	assert('object' === typeof action, 'action must be an object');
+	assert('string' === typeof action.name, 'action.name must be a string');
+	assert('string' === typeof action.href, 'action.href must be a string');
+	assert('undefined' === typeof action.class || Array.isArray(action.class),
+		'action.class must be an array or undefined');
+	assert('undefined' === typeof action.method || 'string' === typeof action.method,
+		'action.method must be a string or undefined');
+	assert('undefined' === typeof action.title || 'string' === typeof action.title,
+		'action.title must be a string or undefined');
+	assert('undefined' === typeof action.type || 'string' === typeof action.type,
+		'action.type must be a string or undefined');
+	assert('undefined' === typeof action.fields || Array.isArray(action.fields),
+		'action.fields must be an array or undefined');
 
 	this.name = action.name;
 	this.href = action.href;

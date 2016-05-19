@@ -18,14 +18,22 @@ function Entity(entity) {
 		entity = JSON.parse(entity);
 	}
 
-	assert('undefined' === typeof entity.rel || Array.isArray(entity.rel));
-	assert('undefined' === typeof entity.title || 'string' === typeof entity.title);
-	assert('undefined' === typeof entity.type || 'string' === typeof entity.type);
-	assert('undefined' === typeof entity.properties || 'object' === typeof entity.properties);
-	assert('undefined' === typeof entity.class || Array.isArray(entity.class));
-	assert('undefined' === typeof entity.actions || Array.isArray(entity.actions));
-	assert('undefined' === typeof entity.links || Array.isArray(entity.links));
-	assert('undefined' === typeof entity.entities || Array.isArray(entity.entities));
+	assert('undefined' === typeof entity.rel || Array.isArray(entity.rel),
+		'entity.rel must be an array or undefined');
+	assert('undefined' === typeof entity.title || 'string' === typeof entity.title,
+		'entity.title must be a string or undefined');
+	assert('undefined' === typeof entity.type || 'string' === typeof entity.type,
+		'entity.type must be a string or undefined');
+	assert('undefined' === typeof entity.properties || 'object' === typeof entity.properties,
+		'entity.properties must be an object or undefined');
+	assert('undefined' === typeof entity.class || Array.isArray(entity.class),
+		'entity.class must be an array or undefined');
+	assert('undefined' === typeof entity.actions || Array.isArray(entity.actions),
+		'entity.actions must be an array or undefined');
+	assert('undefined' === typeof entity.links || Array.isArray(entity.links),
+		'entity.links must be an array or undefined');
+	assert('undefined' === typeof entity.entities || Array.isArray(entity.entities),
+		'entity.entities must be an array or undefined');
 
 	if (entity.rel) {
 		// Only applies to sub-entities (required for them)
