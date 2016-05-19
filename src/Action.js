@@ -1,7 +1,7 @@
 'use strict';
 
 const
-	assert = require('assert'),
+	assert = require('./assert'),
 	Field = require('./Field');
 
 function Action(action) {
