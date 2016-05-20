@@ -247,21 +247,21 @@ resource.getAction('fancy-action').getField('max').hasClass('foo'); // false
 There are a few helper `chai` methods included with this module, under `./chai`. These are intended to make testing with `chai` cleaner. The chai interface adds the following methods and properties:
 
 * Properties
-** sirenAction/sirenActions - changes the subject of the assertion to the entity's Actions (or throws if it has none)
-** sirenEntity/sirenEntities - changes the subject of the assertion to the entity's sub-Entities (or throws if it has none)
-** sirenLink/sirenLinks - changes the subject of the assertion to the entity's Links (or throws if it has none)
-** sirenProperty/sirenProperties - changes the subject of the assertion to the entity's Properties (or throws if it has none)
-** sirenField/sirenFields - changes the subject of the assertion to the action's Fields (or throws if it has none)
-** all - flags further operations to occur on all of the subject, rather than just any
+  * sirenAction/sirenActions - changes the subject of the assertion to the entity's Actions (or throws if it has none)
+  * sirenEntity/sirenEntities - changes the subject of the assertion to the entity's sub-Entities (or throws if it has none)
+  * sirenLink/sirenLinks - changes the subject of the assertion to the entity's Links (or throws if it has none)
+  * sirenProperty/sirenProperties - changes the subject of the assertion to the entity's Properties (or throws if it has none)
+  * sirenField/sirenFields - changes the subject of the assertion to the action's Fields (or throws if it has none)
+  * all - flags further operations to occur on all of the subject, rather than just any
 * Methods:
-** classes(cls1, cls2, ...) - asserts whether the subject has all the given classes
-** href(href) - asserts whether the subject has the given href
-** method(method) - asserts whether the subject has the given method
-** name(name) - asserts whether the subject (Action(s)) has the given name
-** rels(rel1, rel2, ...) - asserts whether the subject has all the given rels
-** title(title) - asserts whether the subject has the given title
-** type(type) - asserts whether the subject has the given title
-** value(value) - asserts whether the subject (Field(s)) has the given value
+  * classes(cls1, cls2, ...) - asserts whether the subject has all the given classes
+  * href(href) - asserts whether the subject has the given href
+  * method(method) - asserts whether the subject has the given method
+  * name(name) - asserts whether the subject (Action(s)) has the given name
+  * rels(rel1, rel2, ...) - asserts whether the subject has all the given rels
+  * title(title) - asserts whether the subject has the given title
+  * type(type) - asserts whether the subject has the given title
+  * value(value) - asserts whether the subject (Field(s)) has the given value
 
 ```js
 expect(resource).to.have.a.sirenAction.with.method('GET');
