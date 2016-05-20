@@ -1,6 +1,6 @@
 # node-siren-parser
 
-[![Build Status](https://magnum.travis-ci.com/Brightspace/node-siren-parser.svg?token=Cab9cPiYKusHs1TWpuUv&branch=master)](https://magnum.travis-ci.com/Brightspace/node-siren-parser) [![Coverage Status](https://coveralls.io/repos/Brightspace/node-siren-parser/badge.svg?branch=master&service=github&t=smOGqn)](https://coveralls.io/github/Brightspace/node-siren-parser?branch=master)
+[![Build Status](https://travis-ci.org/Brightspace/node-siren-parser.svg?branch=master)](https://travis-ci.org/Brightspace/node-siren-parser) [![Coverage Status](https://coveralls.io/repos/Brightspace/node-siren-parser/badge.svg?branch=master&service=github&t=smOGqn)](https://coveralls.io/github/Brightspace/node-siren-parser?branch=master)
 
 Parses a Siren object (or Siren JSON string) into an Entity object that is intended to be easier to work with and test, and prevent having to parse replies from Siren APIs manually. Fully implements the [Siren spec](siren), including all restrictions and requirements on entities, links, fields, etc. Kinda complements [node-siren-writer](node-siren-writer), in that they're inteded to sort of be opposites. Also includes a plugin for use with [chai](chai).
 
