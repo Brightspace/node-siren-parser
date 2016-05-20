@@ -96,8 +96,7 @@ describe('Siren Superagent Plugin', function() {
 
 		function testMethodWithQuery(method) {
 			it('should perform a ' + method + ' action with fields', function(done) {
-				app = nock(src)
-					[method.toLowerCase()]('/')
+				app = nock(src)[method.toLowerCase()]('/')
 					.query({query: 'parameter'})
 					.reply(200);
 
@@ -117,8 +116,7 @@ describe('Siren Superagent Plugin', function() {
 
 		function testMethodWithBody(method) {
 			it('should perform a ' + method + ' action with fields', function(done) {
-				app = nock(src)
-					[method.toLowerCase()]('/', 'query=parameter')
+				app = nock(src)[method.toLowerCase()]('/', 'query=parameter')
 					.reply(200);
 
 				resource.method = method;

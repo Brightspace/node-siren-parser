@@ -1,0 +1,14 @@
+sudo: false
+language: node_js
+node_js:
+- '5'
+after_success:
+- npm run report-cov
+deploy:
+  provider: npm
+  email: d2ltravisdeploy@d2l.com
+  api_key:
+    secure: BO76yBzWimVtXmKw1We24WLijOETEKEgtVm9Hok4BpiUwqQTczocS+MTKkXrzahddbzkr3Jwzgta5aDS+WpcYQMS1N47z8aMHKspeXH9uLLdQf/cUre25l6xBsFQkwUJ8+sBzc6uh9Am79LwUZqhjnkqj2wlNM2jlTtlrIvmhg5HzIE8wIofB8l7lZRMujoqMoFudGxmRd+b07TveE5uBDW8o3BgtFccufIu3yZKNQkCBB0MxpeFOxoZIWO+GHUnC7v9cixVOdhQy0rtvsKeuhpKNaA4PUe1BMkFhpRxX3p8k+MKjPuxf0YbtB58b1Uq9af7Kcr/12pmCiTz0Xqt/CTkaLNrHV8AXLIaHpTULVniWdPKurhxM/wWA8X6FlmJ2svKeZzWzo9xNkNaEst2hwnulHWHj+so3nGmkqqSbITOPsR+tP0u6Rh8WGxTKiP3gdA4v0C4ieqyRIBhXR4Zj0xS/N6Cv8CFKedOiI3AUG7tSkSCFup7yMr91nUbTJrdQRDPDswl2kxbxJFWvomnuZSBdZD+Sb5Fp4BqItuvBnEGj5++6eOCG+YpSzEsbNs/hrHNoymwYXr5Kfq3m0IHwA1F68yBQG3z9vq2Bsz2cxnlEi/icpiGlCMA6JzzlGYyM+nKmAoSxfdeySnz7fnAxckSOQpKOM1pAbPJH4VI5Ec=
+  on:
+    tags: true
+    repo: Brightspace/node-siren-parser

@@ -33,7 +33,7 @@ module.exports = function(chai, utils) {
 					});
 				} else {
 					desiredValues.forEach(desiredValue => {
-						let found = this._obj.some(obj => {
+						const found = this._obj.some(obj => {
 							new Assertion(obj.constuctor in validTypes);
 							return Array.isArray(obj[key]) && obj[key].indexOf(desiredValue) > -1;
 						});
@@ -73,7 +73,7 @@ module.exports = function(chai, utils) {
 							desiredValue);
 					});
 				} else {
-					let found = this._obj.some(obj => {
+					const found = this._obj.some(obj => {
 						new Assertion(obj.constuctor in validTypes);
 						return desiredValue === obj[key];
 					});
