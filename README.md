@@ -7,9 +7,9 @@ Parses a Siren object (or Siren JSON string) into an Entity object that is inten
 ## Usage
 
 ```js
-const sirenParser = require('@d2l/siren-parser');
-const sirenParserChai = require('@d2l/siren-parser/chai');
-const sirenSuperagent = require('@d2l/siren-parser/superagent');
+const sirenParser = require('siren-parser');
+const sirenParserChai = require('siren-parser/chai');
+const sirenSuperagent = require('siren-parser/superagent');
 const sirenJson = {
 	title: 'My title',
 	class: ['outer'],
