@@ -1,6 +1,6 @@
 'use strict';
 
-const assert = require('assert');
+const assert = require('./assert');
 
 const VALID_TYPES = [
 	'hidden',
@@ -32,12 +32,15 @@ function Field(field) {
 		return new Field(field);
 	}
 
-	assert('object' === typeof field);
-	assert('string' === typeof field.name);
-	assert('undefined' === typeof field.class || Array.isArray(field.class));
+	assert('object' === typeof field, 'field must be an object');
+	assert('string' === typeof field.name, 'field.name must be a string');
+	assert('undefined' === typeof field.class || Array.isArray(field.class),
+		'field.class must be an array or undefined');
 	assert('undefined' === typeof field.type
-		|| ('string' === typeof field.type && VALID_TYPES.indexOf(field.type.toLowerCase()) > -1));
-	assert('undefined' === typeof field.title || 'string' === typeof field.title);
+		|| ('string' === typeof field.type && VALID_TYPES.indexOf(field.type.toLowerCase()) > -1),
+		'field.type must be a valid field type string or undefined');
+	assert('undefined' === typeof field.title || 'string' === typeof field.title,
+		'field.title must be a string or undefined');
 
 	this.name = field.name;
 
