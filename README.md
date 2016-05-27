@@ -298,8 +298,7 @@ npm test
 ## Code Style
 
 This repository is configured with [EditorConfig][EditorConfig] and [ESLint][ESLint]
-and rules. See the [docs.dev code style article][code style] for information on
-installing editor extensions.
+and rules.
 
 [node-siren-writer]: https://github.com/dominicbarnes/node-siren-writer
 [chai]: https://github.com/chaijs/chai
@@ -309,4 +308,3 @@ installing editor extensions.
 [field types]: https://github.com/kevinswiber/siren#type-3
 [EditorConfig]: http://editorconfig.org/
 [ESLint]: http://eslint.org
-[code style]: http://docs.dev.d2l/index.php/JavaScript_Code_Style_(Personal_Learning)
