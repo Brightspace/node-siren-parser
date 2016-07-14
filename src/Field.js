@@ -1,6 +1,8 @@
 'use strict';
 
-const assert = require('./assert');
+const
+	assert = require('./assert'),
+	util = require('./util');
 
 const VALID_TYPES = [
 	'hidden',
@@ -62,7 +64,7 @@ function Field(field) {
 }
 
 Field.prototype.hasClass = function(cls) {
-	return this.class instanceof Array && this.class.indexOf(cls) > -1;
+	return this.class instanceof Array && util.contains(this.class, cls);
 };
 
 module.exports = Field;
