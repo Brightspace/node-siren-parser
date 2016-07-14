@@ -100,6 +100,9 @@ describe('Link', function() {
 			siren = buildLink();
 			expect(siren.hasClass('foo')).to.be.true;
 
+			expect(siren.hasClass(/foo/)).to.be.true;
+			expect(siren.hasClass(/bar/)).to.be.false;
+
 			resource.class = undefined;
 			siren = buildLink();
 			expect(siren.hasClass('foo')).to.be.false;

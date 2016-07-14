@@ -101,9 +101,9 @@ Each of these can be accessed as `Entity.attribute`, e.g. if one of the input's 
 
 > Note that only those attributes present in the input will be copied into the `Entity`, i.e. if your input has no links, `Entity.links` will not be set, rather than being an empty array.
 
-#### `Entity.hasXByY(String key)`
+#### `Entity.hasXByY(String|RegExp key)`
 
-Returns true if the Entity has an _X_ with a _Y_ of `key`, otherwise false.
+Returns true if the Entity has an _X_ with a _Y_ of `key` (or which matches `RegExp key`), otherwise false.
 
 * `hasActionByName(name)` (`hasAction(name)`) - returns true if any action on the entity has an action named `name`
 * `hasActionByClass(class)`
@@ -125,9 +125,9 @@ resource.hasLinkByRel('crazy'); // true
 resource.hasProperty('three'); // false
 ```
 
-#### `Entity.getXByY(String key)`
+#### `Entity.getXByY(String|RegExp key)`
 
-Returns the resource(s) of type _X_ with a _Y_ value of `key`. If the requested _X_ is singular, then the result is either the matching instance of _X_, or undefined. If the requested _X_ is plural, then the result is either an Array of the matching instances of _X_, or an empty Array.
+Returns the resource(s) of type _X_ with a _Y_ value of `key` (or which matches `RegExp key`). If the requested _X_ is singular, then the result is either the matching instance of _X_, or undefined. If the requested _X_ is plural, then the result is either an Array of the matching instances of _X_, or an empty Array.
 
 * `getActionByName(name)` (`getAction(name)`) - returns [Action](#action) or undefined
 * `getActionByClass(class)` - returns [Action](#action) or undefined
@@ -193,9 +193,9 @@ Attributes:
 * `type` (string) _Must be a [Siren Action type][action types]_
 * `fields` (array of [Fields](#field))
 
-#### `Action.hasXByY(String key)`
+#### `Action.hasXByY(String|RegExp key)`
 
-Returns true if the Action has an _X_ with a _Y_ of `key`, otherwise false.
+Returns true if the Action has an _X_ with a _Y_ of `key` (or which matches `RegExp key`), otherwise false.
 
 * `hasFieldByName(name)` (`hasField(name)`) - returns true if any action on the entity has an action named `name`
 * `hasFieldByClass(class)`
@@ -207,9 +207,9 @@ resource.hasClass('foo'); // false
 resource.getActionByName('fancy-action').hasFieldByName('max'); // true
 ```
 
-#### `Action.getXByY(String key)`
+#### `Action.getXByY(String|RegExp key)`
 
-Returns the resource(s) of type _X_ with a _Y_ value of `key`. If the requested _X_ is singular, then the result is either the matching instance of _X_, or undefined. If the requested _X_ is plural, then the result is either an Array of the matching instances of _X_, or an empty Array.
+Returns the resource(s) of type _X_ with a _Y_ value of `key` (or which matches `RegExp key`). If the requested _X_ is singular, then the result is either the matching instance of _X_, or undefined. If the requested _X_ is plural, then the result is either an Array of the matching instances of _X_, or an empty Array.
 
 * `getFieldByName(name)` (`getField(name)`) - returns [Field](#field) or undefined
 * `getFieldByClass(class)` - returns [Field](#field) or undefined

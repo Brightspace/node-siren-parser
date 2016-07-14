@@ -2,7 +2,8 @@
 
 const
 	assert = require('./assert'),
-	Field = require('./Field');
+	Field = require('./Field'),
+	util = require('./util');
 
 function Action(action) {
 	if (action instanceof Action) {
@@ -71,7 +72,7 @@ function Action(action) {
 }
 
 Action.prototype.hasClass = function(cls) {
-	return this.class instanceof Array && this.class.indexOf(cls) > -1;
+	return this.class instanceof Array && util.contains(this.class, cls);
 };
 
 Action.prototype.hasField = function(fieldName) {
@@ -79,15 +80,15 @@ Action.prototype.hasField = function(fieldName) {
 };
 
 Action.prototype.hasFieldByName = function(fieldName) {
-	return this._fieldsByName.hasOwnProperty(fieldName);
+	return util.hasProperty(this._fieldsByName, fieldName);
 };
 
 Action.prototype.hasFieldByClass = function(fieldClass) {
-	return this._fieldsByClass.hasOwnProperty(fieldClass);
+	return util.hasProperty(this._fieldsByClass, fieldClass);
 };
 
 Action.prototype.hasFieldByType = function(fieldType) {
-	return this._fieldsByType.hasOwnProperty(fieldType);
+	return util.hasProperty(this._fieldsByType, fieldType);
 };
 
 Action.prototype.getField = function(fieldName) {
@@ -95,34 +96,26 @@ Action.prototype.getField = function(fieldName) {
 };
 
 Action.prototype.getFieldByName = function(fieldName) {
-	return this._fieldsByName[fieldName];
+	return util.getMatchingValue(this._fieldsByName, fieldName);
 };
 
 Action.prototype.getFieldByClass = function(fieldClass) {
-	return this._getFirstOrUndefined('_fieldsByClass', fieldClass);
-};
-
-Action.prototype.getFieldsByClass = function(fieldClass) {
-	return this._getSetOrEmpty('_fieldsByClass', fieldClass);
-};
-
-Action.prototype.getFieldByType = function(fieldType) {
-	return this._getFirstOrUndefined('_fieldsByType', fieldType);
-};
-
-Action.prototype.getFieldsByType = function(fieldType) {
-	return this._getSetOrEmpty('_fieldsByType', fieldType);
-};
-
-Action.prototype._getFirstOrUndefined = function(set, key) {
-	const vals = this[set][key];
-
+	const vals = util.getMatchingValue(this._fieldsByClass, fieldClass);
 	return vals ? vals[0] : undefined;
 };
 
-Action.prototype._getSetOrEmpty = function(set, key) {
-	const vals = this[set][key];
+Action.prototype.getFieldsByClass = function(fieldClass) {
+	const vals = util.getMatchingValue(this._fieldsByClass, fieldClass);
+	return vals ? vals.slice() : [];
+};
 
+Action.prototype.getFieldByType = function(fieldType) {
+	const vals = util.getMatchingValue(this._fieldsByType, fieldType);
+	return vals ? vals[0] : undefined;
+};
+
+Action.prototype.getFieldsByType = function(fieldType) {
+	const vals = util.getMatchingValue(this._fieldsByType, fieldType);
 	return vals ? vals.slice() : [];
 };
 

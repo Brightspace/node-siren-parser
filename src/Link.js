@@ -1,6 +1,8 @@
 'use strict';
 
-const assert = require('./assert');
+const
+	assert = require('./assert'),
+	util = require('./util');
 
 function Link(link) {
 	if (link instanceof Link) {
@@ -37,7 +39,7 @@ function Link(link) {
 }
 
 Link.prototype.hasClass = function(cls) {
-	return this.class instanceof Array && this.class.indexOf(cls) > -1;
+	return this.class instanceof Array && util.contains(this.class, cls);
 };
 
 module.exports = Link;

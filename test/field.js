@@ -90,6 +90,9 @@ describe('Field', function() {
 			siren = buildField();
 			expect(siren.hasClass('foo')).to.be.true;
 
+			expect(siren.hasClass(/foo/)).to.be.true;
+			expect(siren.hasClass(/bar/)).to.be.false;
+
 			resource.class = undefined;
 			siren = buildField();
 			expect(siren.hasClass('foo')).to.be.false;

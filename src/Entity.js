@@ -1,6 +1,8 @@
 'use strict';
 
-const assert = require('./assert');
+const
+	assert = require('./assert'),
+	util = require('./util');
 
 const
 	Action = require('./Action'),
@@ -156,23 +158,23 @@ Entity.prototype.hasAction = function(actionName) {
 };
 
 Entity.prototype.hasActionByName = function(actionName) {
-	return this._actionsByName.hasOwnProperty(actionName);
+	return util.hasProperty(this._actionsByName, actionName);
 };
 
 Entity.prototype.hasActionByClass = function(actionClass) {
-	return this._actionsByClass.hasOwnProperty(actionClass);
+	return util.hasProperty(this._actionsByClass, actionClass);
 };
 
 Entity.prototype.hasActionByMethod = function(actionMethod) {
-	return this._actionsByMethod.hasOwnProperty(actionMethod);
+	return util.hasProperty(this._actionsByMethod, actionMethod);
 };
 
 Entity.prototype.hasActionByType = function(actionType) {
-	return this._actionsByType.hasOwnProperty(actionType);
+	return util.hasProperty(this._actionsByType, actionType);
 };
 
 Entity.prototype.hasClass = function(cls) {
-	return this.class instanceof Array && this.class.indexOf(cls) > -1;
+	return this.class instanceof Array && util.contains(this.class, cls);
 };
 
 Entity.prototype.hasEntity = function(entityRel) {
@@ -180,15 +182,15 @@ Entity.prototype.hasEntity = function(entityRel) {
 };
 
 Entity.prototype.hasEntityByRel = function(entityRel) {
-	return this._entitiesByRel.hasOwnProperty(entityRel);
+	return util.hasProperty(this._entitiesByRel, entityRel);
 };
 
 Entity.prototype.hasEntityByClass = function(entityClass) {
-	return this._entitiesByClass.hasOwnProperty(entityClass);
+	return util.hasProperty(this._entitiesByClass, entityClass);
 };
 
 Entity.prototype.hasEntityByType = function(entityType) {
-	return this._entitiesByType.hasOwnProperty(entityType);
+	return util.hasProperty(this._entitiesByType, entityType);
 };
 
 Entity.prototype.hasLink = function(linkRel) {
@@ -196,19 +198,19 @@ Entity.prototype.hasLink = function(linkRel) {
 };
 
 Entity.prototype.hasLinkByRel = function(linkRel) {
-	return this._linksByRel.hasOwnProperty(linkRel);
+	return util.hasProperty(this._linksByRel, linkRel);
 };
 
 Entity.prototype.hasLinkByClass = function(linkClass) {
-	return this._linksByClass.hasOwnProperty(linkClass);
+	return util.hasProperty(this._linksByClass, linkClass);
 };
 
 Entity.prototype.hasLinkByType = function(linkType) {
-	return this._linksByType.hasOwnProperty(linkType);
+	return util.hasProperty(this._linksByType, linkType);
 };
 
 Entity.prototype.hasProperty = function(property) {
-	return this.hasOwnProperty('properties') && this.properties.hasOwnProperty(property);
+	return util.hasProperty(this, 'properties') && util.hasProperty(this.properties, property);
 };
 
 Entity.prototype.getAction = function(actionName) {
@@ -216,31 +218,37 @@ Entity.prototype.getAction = function(actionName) {
 };
 
 Entity.prototype.getActionByName = function(actionName) {
-	return this._actionsByName[actionName];
+	return util.getMatchingValue(this._actionsByName, actionName);
 };
 
 Entity.prototype.getActionByClass = function(actionClass) {
-	return this._getFirstOrUndefined('_actionsByClass', actionClass);
+	const vals = util.getMatchingValue(this._actionsByClass, actionClass);
+	return vals ? vals[0] : undefined;
 };
 
 Entity.prototype.getActionsByClass = function(actionClass) {
-	return this._getSetOrEmpty('_actionsByClass', actionClass);
+	const vals = util.getMatchingValue(this._actionsByClass, actionClass);
+	return vals ? vals.slice() : [];
 };
 
 Entity.prototype.getActionByMethod = function(actionMethod) {
-	return this._getFirstOrUndefined('_actionsByMethod', actionMethod);
+	const vals = util.getMatchingValue(this._actionsByMethod, actionMethod);
+	return vals ? vals[0] : undefined;
 };
 
 Entity.prototype.getActionsByMethod = function(actionMethod) {
-	return this._getSetOrEmpty('_actionsByMethod', actionMethod);
+	const vals = util.getMatchingValue(this._actionsByMethod, actionMethod);
+	return vals ? vals.slice() : [];
 };
 
 Entity.prototype.getActionByType = function(actionType) {
-	return this._getFirstOrUndefined('_actionsByType', actionType);
+	const vals = util.getMatchingValue(this._actionsByType, actionType);
+	return vals ? vals[0] : undefined;
 };
 
 Entity.prototype.getActionsByType = function(actionType) {
-	return this._getSetOrEmpty('_actionsByType', actionType);
+	const vals = util.getMatchingValue(this._actionsByType, actionType);
+	return vals ? vals.slice() : [];
 };
 
 Entity.prototype.getLink = function(linkRel) {
@@ -252,27 +260,33 @@ Entity.prototype.getLinks = function(linkRel) {
 };
 
 Entity.prototype.getLinkByRel = function(linkRel) {
-	return this._getFirstOrUndefined('_linksByRel', linkRel);
+	const vals = util.getMatchingValue(this._linksByRel, linkRel);
+	return vals ? vals[0] : undefined;
 };
 
 Entity.prototype.getLinksByRel = function(linkRel) {
-	return this._getSetOrEmpty('_linksByRel', linkRel);
+	const vals = util.getMatchingValue(this._linksByRel, linkRel);
+	return vals ? vals.slice() : [];
 };
 
 Entity.prototype.getLinkByClass = function(linkClass) {
-	return this._getFirstOrUndefined('_linksByClass', linkClass);
+	const vals = util.getMatchingValue(this._linksByClass, linkClass);
+	return vals ? vals[0] : undefined;
 };
 
 Entity.prototype.getLinksByClass = function(linkClass) {
-	return this._getSetOrEmpty('_linksByClass', linkClass);
+	const vals = util.getMatchingValue(this._linksByClass, linkClass);
+	return vals ? vals.slice() : [];
 };
 
 Entity.prototype.getLinkByType = function(linkType) {
-	return this._getFirstOrUndefined('_linksByType', linkType);
+	const vals = util.getMatchingValue(this._linksByType, linkType);
+	return vals ? vals[0] : undefined;
 };
 
 Entity.prototype.getLinksByType = function(linkType) {
-	return this._getSetOrEmpty('_linksByType', linkType);
+	const vals = util.getMatchingValue(this._linksByType, linkType);
+	return vals ? vals.slice() : [];
 };
 
 Entity.prototype.getSubEntity = function(entityRel) {
@@ -284,38 +298,32 @@ Entity.prototype.getSubEntities = function(entityRel) {
 };
 
 Entity.prototype.getSubEntityByRel = function(entityRel) {
-	return this._getFirstOrUndefined('_entitiesByRel', entityRel);
-};
-
-Entity.prototype.getSubEntitiesByRel = function(entityRel) {
-	return this._getSetOrEmpty('_entitiesByRel', entityRel);
-};
-
-Entity.prototype.getSubEntityByClass = function(entityClass) {
-	return this._getFirstOrUndefined('_entitiesByClass', entityClass);
-};
-
-Entity.prototype.getSubEntitiesByClass = function(entityClass) {
-	return this._getSetOrEmpty('_entitiesByClass', entityClass);
-};
-
-Entity.prototype.getSubEntityByType = function(entityType) {
-	return this._getFirstOrUndefined('_entitiesByType', entityType);
-};
-
-Entity.prototype.getSubEntitiesByType = function(entityType) {
-	return this._getSetOrEmpty('_entitiesByType', entityType);
-};
-
-Entity.prototype._getFirstOrUndefined = function(set, key) {
-	const vals = this[set][key];
-
+	const vals = util.getMatchingValue(this._entitiesByRel, entityRel);
 	return vals ? vals[0] : undefined;
 };
 
-Entity.prototype._getSetOrEmpty = function(set, key) {
-	const vals = this[set][key];
+Entity.prototype.getSubEntitiesByRel = function(entityRel) {
+	const vals = util.getMatchingValue(this._entitiesByRel, entityRel);
+	return vals ? vals.slice() : [];
+};
 
+Entity.prototype.getSubEntityByClass = function(entityClass) {
+	const vals = util.getMatchingValue(this._entitiesByClass, entityClass);
+	return vals ? vals[0] : undefined;
+};
+
+Entity.prototype.getSubEntitiesByClass = function(entityClass) {
+	const vals = util.getMatchingValue(this._entitiesByClass, entityClass);
+	return vals ? vals.slice() : [];
+};
+
+Entity.prototype.getSubEntityByType = function(entityType) {
+	const vals = util.getMatchingValue(this._entitiesByType, entityType);
+	return vals ? vals[0] : undefined;
+};
+
+Entity.prototype.getSubEntitiesByType = function(entityType) {
+	const vals = util.getMatchingValue(this._entitiesByType, entityType);
 	return vals ? vals.slice() : [];
 };
 

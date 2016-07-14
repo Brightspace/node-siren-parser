@@ -183,6 +183,9 @@ describe('Action', function() {
 					siren = buildAction();
 					expect(siren.hasClass('foo')).to.be.true;
 
+					expect(siren.hasClass(/foo/)).to.be.true;
+					expect(siren.hasClass(/bar/)).to.be.false;
+
 					resource.class = undefined;
 					siren = buildAction();
 					expect(siren.hasClass('foo')).to.be.false;
@@ -197,6 +200,9 @@ describe('Action', function() {
 					siren = buildAction();
 					expect(siren.hasField('foo')).to.be.true;
 
+					expect(siren.hasField(/foo/)).to.be.true;
+					expect(siren.hasField(/bar/)).to.be.false;
+
 					resource.fields = undefined;
 					siren = buildAction();
 					expect(siren.hasField('foo')).to.be.false;
@@ -210,6 +216,9 @@ describe('Action', function() {
 					siren = buildAction();
 					expect(siren.hasFieldByClass('bar')).to.be.true;
 
+					expect(siren.hasFieldByClass(/bar/)).to.be.true;
+					expect(siren.hasFieldByClass(/foo/)).to.be.false;
+
 					resource.fields = undefined;
 					siren = buildAction();
 					expect(siren.hasFieldByClass('bar')).to.be.false;
@@ -222,6 +231,9 @@ describe('Action', function() {
 					}];
 					siren = buildAction();
 					expect(siren.hasFieldByType('text')).to.be.true;
+
+					expect(siren.hasFieldByType(/text/)).to.be.true;
+					expect(siren.hasFieldByType(/nope/)).to.be.false;
 
 					resource.fields = undefined;
 					siren = buildAction();
@@ -250,26 +262,41 @@ describe('Action', function() {
 				it('getFieldByName (getField)', function() {
 					expect(siren.getField('foo')).to.have.property('title', 'bar');
 					expect(siren.getField('nope')).to.be.undefined;
+
+					expect(siren.getField(/foo/)).to.not.be.undefined;
+					expect(siren.getField(/bar/)).to.be.undefined;
 				});
 
 				it('getFieldByClass', function() {
 					expect(siren.getFieldByClass('baz')).to.have.property('title', 'bar');
 					expect(siren.getFieldByClass('nope')).to.be.undefined;
+
+					expect(siren.getFieldByClass(/baz/)).to.not.be.undefined;
+					expect(siren.getFieldByClass(/foo/)).to.be.undefined;
 				});
 
 				it('getFieldsByClass', function() {
 					expect(siren.getFieldsByClass('baz')).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getFieldsByClass('nope')).to.be.an.instanceof(Array).and.to.be.empty;
+
+					expect(siren.getFieldsByClass(/baz/)).to.be.an.instanceof(Array).with.lengthOf(2);
+					expect(siren.getFieldsByClass(/foo/)).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
 				it('getFieldByType', function() {
 					expect(siren.getFieldByType('text')).to.have.property('title', 'bar');
 					expect(siren.getFieldByType('nope')).to.be.undefined;
+
+					expect(siren.getFieldByType(/text/)).to.have.property('title', 'bar');
+					expect(siren.getFieldByType(/nope/)).to.be.undefined;
 				});
 
 				it('getFieldsByType', function() {
 					expect(siren.getFieldsByType('text')).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getFieldsByType('nope')).to.be.an.instanceof(Array).and.to.be.empty;
+
+					expect(siren.getFieldsByType(/text/)).to.be.an.instanceof(Array).with.lengthOf(2);
+					expect(siren.getFieldsByType(/nope/)).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 			});
 		});
