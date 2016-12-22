@@ -45,6 +45,11 @@ describe('Entity', function() {
 		expect(buildEntity()).to.be.an('object');
 	});
 
+	it('should return an empty entity if nothing is passed', function() {
+		resource = undefined;
+		expect(buildEntity()).to.be.an('object');
+	});
+
 	describe('title', function() {
 		it('should parse title', function() {
 			resource.title = 'A title!';

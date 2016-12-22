@@ -9,6 +9,8 @@ const
 	Link = require('./Link');
 
 function Entity(entity) {
+	entity = entity || {};
+
 	if (entity instanceof Entity) {
 		return entity;
 	}
