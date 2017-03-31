@@ -4,11 +4,26 @@
   "description": "Pretty much the opposite of dominicbarnes/node-siren-writer",
   "main": "src/Entity.js",
   "scripts": {
-    "check-style": "eslint --ignore-path .gitignore .",
-    "test": "npm run check-style && npm run test-no-style",
+    "prebrowserify": "rimraf dist && mkdir dist",
+    "browserify": "browserify -g uglifyify -s 'D2L.Hypermedia.Siren.Parser' src/Entity.js > ./dist/siren-parser.js",
+    "lint": "eslint --ignore-path .gitignore .",
+    "test": "npm run lint && npm run test-no-style",
     "test-no-style": "export NODE_ENV=test; istanbul cover --source-map --dir ./coverage/unit --root src/ node_modules/.bin/_mocha -- --recursive ./test",
     "posttest": "istanbul report text-summary lcov",
-    "report-cov": "istanbul report lcovonly && coveralls < ./coverage/lcov.info"
+    "report-cov": "istanbul report lcovonly && coveralls < ./coverage/lcov.info",
+    "publish:cdn": "frau-publisher"
+  },
+  "config": {
+    "frauPublisher": {
+      "files": "./dist/*.js",
+      "moduleType": "lib",
+      "targetDirectory": "siren-parser",
+      "creds": {
+        "key": "AKIAIX7THWM4IO4CULRA",
+        "secretVar": "CDN_SECRET"
+      },
+      "versionVar": "TRAVIS_TAG"
+    }
   },
   "author": "D2L Corporation",
   "license": "Apache-2.0",
@@ -21,16 +36,23 @@
     "url": "https://github.com/Brightspace/node-siren-parser/issues"
   },
   "devDependencies": {
+    "babel-preset-latest": "^6.24.0",
+    "babelify": "^7.3.0",
+    "browserify": "^14.1.0",
     "chai": "^3.3.0",
     "coveralls": "^2.11.4",
-    "eslint": "^2.10.2",
-    "eslint-config-brightspace": "0.2.1",
-    "istanbul": "0.4.3",
-    "mocha": "^2.3.3",
-    "nock": "^8.0.0",
-    "sinon": "^1.17.0",
+    "eslint": "^3.18.0",
+    "eslint-config-brightspace": "0.2.4",
+    "frau-publisher": "^2.6.2",
+    "istanbul": "0.4.5",
+    "mocha": "^3.2.0",
+    "nock": "^9.0.10",
+    "peanut-gallery": "^1.1.1",
+    "rimraf": "^2.6.1",
+    "sinon": "^2.1.0",
     "sinon-chai": "^2.8.0",
-    "supertest": "^1.1.0"
+    "supertest": "^3.0.0",
+    "uglifyify": "^3.0.4"
   },
   "eslintConfig": {
     "extends": "brightspace",
@@ -45,7 +67,7 @@
         "babelify",
         {
           "presets": [
-            "es2015"
+            "latest"
           ]
         }
       ]
