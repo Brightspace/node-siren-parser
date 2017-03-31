@@ -1,6 +1,6 @@
 {
   "name": "siren-parser",
-  "version": "5.1.1",
+  "version": "5.2.0",
   "description": "Pretty much the opposite of dominicbarnes/node-siren-writer",
   "main": "src/Entity.js",
   "scripts": {
