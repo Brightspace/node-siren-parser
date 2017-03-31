@@ -16,6 +16,10 @@ and then `require` it as you would any other npm package. Alternatively, the par
 
 ```html
 <script src="https://s.brightspace.com/lib/siren-parser/{version}/siren-parser.js"></script>
+
+<script>
+var parsedEntity = window.D2L.Hypermedia.Siren.Parser('{"class":["foo","bar"]}');
+</script>
 ```
 
 ## API
