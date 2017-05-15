@@ -180,30 +180,18 @@ Entity.prototype.hasClass = function(cls) {
 };
 
 Entity.prototype.hasEntity = function(entityRel) {
-	return this.hasSubEntityByRel(entityRel);
+	return this.hasEntityByRel(entityRel);
 };
 
 Entity.prototype.hasEntityByRel = function(entityRel) {
-	return this.hasSubEntityByRel(entityRel);
-};
-
-Entity.prototype.hasSubEntityByRel = function(entityRel) {
 	return util.hasProperty(this._entitiesByRel, entityRel);
 };
 
 Entity.prototype.hasEntityByClass = function(entityClass) {
-	return this.hasSubEntityByClass(entityClass);
-};
-
-Entity.prototype.hasSubEntityByClass = function(entityClass) {
 	return util.hasProperty(this._entitiesByClass, entityClass);
 };
 
 Entity.prototype.hasEntityByType = function(entityType) {
-	return this.hasSubEntityByType(entityType);
-};
-
-Entity.prototype.hasSubEntityByType = function(entityType) {
 	return util.hasProperty(this._entitiesByType, entityType);
 };
 
