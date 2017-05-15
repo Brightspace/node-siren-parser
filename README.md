@@ -123,13 +123,13 @@ Each of these can be accessed as `Entity.attribute`, e.g. if one of the input's 
 
 Returns true if the Entity has an _X_ with a _Y_ of `key` (or which matches `RegExp key`), otherwise false.
 
-* `hasActionByName(name)`
+* `hasActionByName(name)` (`hasAction(name)`) - returns true if any action on the entity has an action named `name`
 * `hasActionByClass(class)`
 * `hasClass(class)`
-* `hasSubEntityByRel(rel)`
-* `hasSubEntityByClass(class)`
-* `hasSubEntityByType(type)`
-* `hasLinkByRel(rel)`
+* `hasEntityByRel(rel)` (`hasEntity(rel)`)
+* `hasEntityByClass(class)`
+* `hasEntityByType(type)`
+* `hasLinkByRel(rel)` (`hasLink(rel)`)
 * `hasLinkByClass(class)`
 * `hasLinkByType(type)`
 * `hasProperty(prop)`
@@ -137,8 +137,8 @@ Returns true if the Entity has an _X_ with a _Y_ of `key` (or which matches `Reg
 ```js
 resource.hasActionByName('fancy-action'); // true
 resource.hasClass('inner'); // false
-resource.hasSubEntityByRel('child'); // true
-resource.hasSubEntityByType('child'); // false
+resource.hasEntityByRel('child'); // true
+resource.hasEntityByType('child'); // false
 resource.hasLinkByRel('crazy'); // true
 resource.hasProperty('three'); // false
 ```
@@ -147,19 +147,19 @@ resource.hasProperty('three'); // false
 
 Returns the resource(s) of type _X_ with a _Y_ value of `key` (or which matches `RegExp key`). If the requested _X_ is singular, then the result is either the matching instance of _X_, or undefined. If the requested _X_ is plural, then the result is either an Array of the matching instances of _X_, or an empty Array.
 
-* `getActionByName(name)` - returns [Action](#action) or undefined
+* `getActionByName(name)` (`getAction(name)`) - returns [Action](#action) or undefined
 * `getActionByClass(class)` - returns [Action](#action) or undefined
-* `getLinkByRel(rel)` - returns [Link](#link) or undefined
+* `getLinkByRel(rel)` (`getLink(rel)`) - returns [Link](#link) or undefined
 * `getLinkByClass(class)` - returns [Link](#link) or undefined
 * `getLinkByType(type)` - returns [Link](#link) or undefined
 * `getSubEntityByRel(rel)` (`getSubEntity(rel)`) - returns [Entity](#entity) or undefined
 * `getSubEntityByClass(class)` - returns [Entity](#entity) or undefined
 * `getSubEntityByType(type)` - returns [Entity](#entity) or undefined
 * `getActionsByClass(class)` - returns Array of [Actions](#action) (empty Array if none match)
-* `getLinksByRel(rel)` - returns Array of [Links](#link) (empty Array if none match)
+* `getLinksByRel(rel)` (`getLinks(rel)`) - returns Array of [Links](#link) (empty Array if none match)
 * `getLinksByClass(class)` - returns Array of [Links](#link) (empty Array if none match)
 * `getLinksByType(type)` - returns Array of [Links](#link) (empty Array if none match)
-* `getSubEntitiesByRel(rel)` - returns Array of [Entities](#entity) (empty Array if none match)
+* `getSubEntitiesByRel(rel)` (`getSubEntities(rel)`) - returns Array of [Entities](#entity) (empty Array if none match)
 * `getSubEntitiesByClass(class)` - returns Array of [Entities](#entity) (empty Array if none match)
 * `getSubEntitiesByType(type)` - returns Array of [Entities](#entity) (empty Array if none match)
 
