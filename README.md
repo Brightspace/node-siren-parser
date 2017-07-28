@@ -6,21 +6,27 @@ Parses a Siren object (or Siren JSON string) into an Entity object that is inten
 
 ## Usage
 
-There are two ways to use `node-siren-parser`'s functionality. You can install it from npm using
+There are two ways to use `node-siren-parser`'s functionality. 
 
-```bash
-npm install siren-parser
-```
+1. You can install it from npm using
+   ```bash
+   npm install siren-parser
+   ```
+   and then `require` it as you would any other npm package. 
 
-and then `require` it as you would any other npm package. Alternatively, the parser is browserified and stored on the Brightspace CDN for client-side usage, e.g.
-
-```html
-<script src="https://s.brightspace.com/lib/siren-parser/{version}/siren-parser.js"></script>
-
-<script>
-var parsedEntity = window.D2L.Hypermedia.Siren.Parse('{"class":["foo","bar"]}');
-</script>
-```
+2. The parser is browserified and stored on the Brightspace CDN for client-side usage
+   ```html
+   <script src="https://s.brightspace.com/lib/siren-parser/{version}/siren-parser.js"></script>
+   
+   <script>
+   var parsedEntity = window.D2L.Hypermedia.Siren.Parse('{"class":["foo","bar"]}');
+   </script>
+   ```
+   An alternate bundle of the siren parser is available that is exposed as a property of the global object.
+   ```html
+   <script src="https://s.brightspace.com/lib/siren-parser/{version}/siren-parser-global.js"></script>
+   ```
+   The client-side code will still use the `window.D2L.Hypermedia.Siren` object, but this addresses the risk of collisions with other modules on the page that are exposed by browserify's standalone UMD bundle.
 
 ## API
 
