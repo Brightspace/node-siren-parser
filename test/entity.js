@@ -283,51 +283,67 @@ describe('Entity', function() {
 			});
 
 			describe('Entity', function() {
-				it('hasEntityByRel (hasEntity)', function() {
+				it('hasSubEntityByRel (hasEntityByRel, hasEntity)', function() {
 					resource.entities = [{
 						rel: ['foo']
 					}];
 					siren = buildEntity();
 					expect(siren.hasEntity('foo')).to.be.true;
+					expect(siren.hasEntityByRel('foo')).to.be.true;
+					expect(siren.hasSubEntityByRel('foo')).to.be.true;
 
-					expect(siren.hasEntity(/foo/)).to.be.true;
 					expect(siren.hasEntity(/bar/)).to.be.false;
+					expect(siren.hasEntityByRel(/foo/)).to.be.true;
+					expect(siren.hasSubEntityByRel(/foo/)).to.be.true;
+					expect(siren.hasEntity(/bar/)).to.be.false;
+					expect(siren.hasEntityByRel(/foo/)).to.be.true;
+					expect(siren.hasSubEntityByRel(/foo/)).to.be.true;
 
 					resource.entities = undefined;
 					siren = buildEntity();
 					expect(siren.hasEntity('foo')).to.be.false;
+					expect(siren.hasEntityByRel('foo')).to.be.false;
+					expect(siren.hasSubEntityByRel('foo')).to.be.false;
 				});
 
-				it('hasEntityByClass', function() {
+				it('hasSubEntityByClass (hasEntityByClass)', function() {
 					resource.entities = [{
 						rel: ['foo'],
 						class: ['bar']
 					}];
 					siren = buildEntity();
 					expect(siren.hasEntityByClass('bar')).to.be.true;
+					expect(siren.hasSubEntityByClass('bar')).to.be.true;
 
 					expect(siren.hasEntityByClass(/bar/)).to.be.true;
+					expect(siren.hasSubEntityByClass(/bar/)).to.be.true;
 					expect(siren.hasEntityByClass(/baz/)).to.be.false;
+					expect(siren.hasSubEntityByClass(/baz/)).to.be.false;
 
 					resource.entities = undefined;
 					siren = buildEntity();
 					expect(siren.hasEntityByClass('bar')).to.be.false;
+					expect(siren.hasSubEntityByClass('bar')).to.be.false;
 				});
 
-				it('hasEntityByType', function() {
+				it('hasSubEntityByType (hasSubEntityByType)', function() {
 					resource.entities = [{
 						rel: ['foo'],
 						type: 'bar'
 					}];
 					siren = buildEntity();
 					expect(siren.hasEntityByType('bar')).to.be.true;
+					expect(siren.hasSubEntityByType('bar')).to.be.true;
 
 					expect(siren.hasEntityByType(/bar/)).to.be.true;
+					expect(siren.hasSubEntityByType(/bar/)).to.be.true;
 					expect(siren.hasEntityByType(/baz/)).to.be.false;
+					expect(siren.hasSubEntityByType(/baz/)).to.be.false;
 
 					resource.entities = undefined;
 					siren = buildEntity();
 					expect(siren.hasEntityByType('bar')).to.be.false;
+					expect(siren.hasSubEntityByType('bar')).to.be.false;
 				});
 			});
 
