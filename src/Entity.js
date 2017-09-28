@@ -155,6 +155,19 @@ function Entity(entity) {
 	}
 }
 
+Entity.prototype.toJSON = function() {
+	return {
+		rel: this.rel,
+		title: this.title,
+		type: this.type,
+		properties: this.properties,
+		class: this.class,
+		actions: this.actions,
+		links: this.links,
+		entities: this.entities
+	};
+};
+
 Entity.prototype.hasAction = function(actionName) {
 	return this.hasActionByName(actionName);
 };

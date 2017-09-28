@@ -63,6 +63,16 @@ function Field(field) {
 	}
 }
 
+Field.prototype.toJSON = function() {
+	return {
+		name: this.name,
+		class: this.class,
+		type: this.type,
+		value: this.value,
+		title: this.title
+	};
+};
+
 Field.prototype.hasClass = function(cls) {
 	return this.class instanceof Array && util.contains(this.class, cls);
 };
