@@ -129,4 +129,44 @@ describe('Field', function() {
 			expect(buildField.bind()).to.throw();
 		});
 	});
+
+	describe('toJSON', function() {
+		function toJSON() {
+			return JSON.stringify(buildField());
+		}
+
+		it('should stringify name', function() {
+			expect(toJSON()).to.equal(
+				'{"name":"foo"}'
+			);
+		});
+
+		it('should stringify value', function() {
+			resource.value = 'bar';
+			expect(toJSON()).to.equal(
+				'{"name":"foo","value":"bar"}'
+			);
+		});
+
+		it('should stringify class', function() {
+			resource.class = ['abc'];
+			expect(toJSON()).to.equal(
+				'{"name":"foo","class":["abc"]}'
+			);
+		});
+
+		it('should stringify title', function() {
+			resource.title = 'bar';
+			expect(toJSON()).to.equal(
+				'{"name":"foo","title":"bar"}'
+			);
+		});
+
+		it('should stringify type', function() {
+			resource.type = 'text';
+			expect(toJSON()).to.equal(
+				'{"name":"foo","type":"text"}'
+			);
+		});
+	});
 });

@@ -196,6 +196,80 @@ describe('Entity', function() {
 		});
 	});
 
+	describe('toJSON', function() {
+		function toJSON() {
+			return JSON.stringify(buildEntity());
+		}
+
+		it('should stringify (empty)', function() {
+			expect(toJSON()).to.equal(
+				'{}'
+			);
+		});
+
+		it('should stringify title', function() {
+			resource.title = 'A title!';
+			expect(toJSON()).to.equal(
+				'{"title":"A title!"}'
+			);
+		});
+
+		it('should stringify type', function() {
+			resource.type = 'foo';
+			expect(toJSON()).to.equal(
+				'{"type":"foo"}'
+			);
+		});
+
+		it('should stringify properties', function() {
+			resource.properties = {};
+			expect(toJSON()).to.equal(
+				'{"properties":{}}'
+			);
+		});
+
+		it('should stringify class', function() {
+			resource.class = [];
+			expect(toJSON()).to.equal(
+				'{"class":[]}'
+			);
+		});
+
+		it('should stringify actions', function() {
+			resource.actions = [],
+			expect(toJSON()).to.equal(
+				'{"actions":[]}'
+			);
+		});
+
+		it('should stringify links', function() {
+			resource.links = [],
+			expect(toJSON()).to.equal(
+				'{"links":[]}'
+			);
+		});
+
+		it('should stringify entities', function() {
+			resource.entities = [];
+			expect(toJSON()).to.equal(
+				'{"entities":[]}'
+			);
+		});
+
+		it('should stringify sub entities', function() {
+			resource.entities = [{
+				rel: ['foo'],
+				actions: [{
+					name: 'bar',
+					href: 'baz'
+				}]
+			}];
+			expect(toJSON()).to.equal(
+				'{"entities":[{"rel":["foo"],"actions":[{"name":"bar","href":"baz","method":"GET","type":"application/x-www-form-urlencoded"}]}]}'
+			);
+		});
+	});
+
 	describe('helper functions', function() {
 		describe('has...', function() {
 			describe('Action', function() {

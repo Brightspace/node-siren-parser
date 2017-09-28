@@ -134,4 +134,37 @@ describe('Link', function() {
 			expect(buildLink.bind(undefined, resource)).to.throw();
 		});
 	});
+
+	describe('toJSON', function() {
+		function toJSON() {
+			return JSON.stringify(buildLink());
+		}
+
+		it('should stringify rel and href', function() {
+			expect(toJSON()).to.equal(
+				'{"rel":[],"href":"foo"}'
+			);
+		});
+
+		it('should stringify class', function() {
+			resource.class = ['abc'];
+			expect(toJSON()).to.equal(
+				'{"rel":[],"href":"foo","class":["abc"]}'
+			);
+		});
+
+		it('should stringify title', function() {
+			resource.title = 'bar';
+			expect(toJSON()).to.equal(
+				'{"rel":[],"href":"foo","title":"bar"}'
+			);
+		});
+
+		it('should stringify type', function() {
+			resource.type = 'text/html';
+			expect(toJSON()).to.equal(
+				'{"rel":[],"href":"foo","type":"text/html"}'
+			);
+		});
+	});
 });

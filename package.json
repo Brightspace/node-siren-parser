@@ -10,7 +10,7 @@
     "browserify:global": "browserify -g uglifyify -p deumdify -s 'D2L.Hypermedia.Siren.Parse' src/Entity.js > ./dist/siren-parser-global.js",
     "lint": "eslint --ignore-path .gitignore .",
     "test": "npm run lint && npm run test-no-style",
-    "test-no-style": "export NODE_ENV=test; istanbul cover --source-map --dir ./coverage/unit --root src/ node_modules/.bin/_mocha -- --recursive ./test",
+    "test-no-style": "cross-env NODE_ENV=test istanbul cover --source-map --dir ./coverage/unit --root src/ node_modules/mocha/bin/_mocha -- --recursive ./test",
     "posttest": "istanbul report text-summary lcov",
     "report-cov": "istanbul report lcovonly && coveralls < ./coverage/lcov.info",
     "publish:cdn": "frau-publisher"
@@ -43,6 +43,7 @@
     "browserify": "^14.1.0",
     "chai": "^3.3.0",
     "coveralls": "^2.11.4",
+    "cross-env": "^5.0.5",
     "deumdify": "^1.2.4",
     "eslint": "^3.18.0",
     "eslint-config-brightspace": "0.2.4",
