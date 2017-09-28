@@ -66,8 +66,6 @@ function Action(action) {
 				});
 			}
 		});
-
-		this.fields = action.fields;
 	}
 }
 
