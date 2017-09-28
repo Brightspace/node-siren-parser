@@ -173,6 +173,16 @@ describe('Action', function() {
 			siren = buildAction();
 			expect(siren.getField('foo')).to.have.property('title', 'bar');
 		});
+
+		it('should be able to use field helper methods', function() {
+			resource.fields = [{
+				class: ['abc'],
+				name: 'foo',
+				title: 'bar'
+			}];
+			siren = buildAction();
+			expect(siren.fields[0].hasClass('abc')).to.be.true;
+		});
 	});
 
 	describe('toJSON', function() {
