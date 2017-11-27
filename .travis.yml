@@ -6,6 +6,8 @@ after_success:
 - npm run browserify
 - '[ "$TRAVIS_SECURE_ENV_VARS" = "true" ] && [ "x$TRAVIS_TAG" != "x" ] && npm run publish:cdn'
 deploy:
+  # Travis will remove the dist/ folder before deploy if we don't include this
+  skip_cleanup: true
   provider: npm
   email: d2ltravisdeploy@d2l.com
   api_key:
