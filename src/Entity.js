@@ -23,21 +23,21 @@ function Entity(entity) {
 	}
 
 	assert('undefined' === typeof entity.rel || Array.isArray(entity.rel),
-		'entity.rel must be an array or undefined');
+		'entity.rel must be an array or undefined, got ' + JSON.stringify(entity.rel));
 	assert('undefined' === typeof entity.title || 'string' === typeof entity.title,
-		'entity.title must be a string or undefined');
+		'entity.title must be a string or undefined, got ' + JSON.stringify(entity.title));
 	assert('undefined' === typeof entity.type || 'string' === typeof entity.type,
-		'entity.type must be a string or undefined');
+		'entity.type must be a string or undefined, got ' + JSON.stringify(entity.type));
 	assert('undefined' === typeof entity.properties || 'object' === typeof entity.properties,
-		'entity.properties must be an object or undefined');
+		'entity.properties must be an object or undefined, got ' + JSON.stringify(entity.properties));
 	assert('undefined' === typeof entity.class || Array.isArray(entity.class),
-		'entity.class must be an array or undefined');
+		'entity.class must be an array or undefined, got ' + JSON.stringify(entity.class));
 	assert('undefined' === typeof entity.actions || Array.isArray(entity.actions),
-		'entity.actions must be an array or undefined');
+		'entity.actions must be an array or undefined, got ' + JSON.stringify(entity.actions));
 	assert('undefined' === typeof entity.links || Array.isArray(entity.links),
-		'entity.links must be an array or undefined');
+		'entity.links must be an array or undefined, got ' + JSON.stringify(entity.links));
 	assert('undefined' === typeof entity.entities || Array.isArray(entity.entities),
-		'entity.entities must be an array or undefined');
+		'entity.entities must be an array or undefined, got ' + JSON.stringify(entity.entities));
 
 	if (entity.rel) {
 		// Only applies to sub-entities (required for them)
@@ -125,7 +125,8 @@ function Entity(entity) {
 		this.entities = [];
 		entity.entities.forEach(subEntity => {
 			// Subentities must have a rel array
-			assert(Array.isArray(subEntity.rel));
+			assert(Array.isArray(subEntity.rel),
+				'sub-entities must have a rel array, got ' + JSON.stringify(subEntity.rel));
 
 			let subEntityInstance;
 			if ('string' === typeof subEntity.href) {

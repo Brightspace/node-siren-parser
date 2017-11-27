@@ -59,7 +59,7 @@ describe('Entity', function() {
 
 		it('should require title be a string, if supplied', function() {
 			resource.title = 1;
-			expect(buildEntity.bind()).to.throw();
+			expect(buildEntity.bind()).to.throw('entity.title must be a string or undefined, got 1');
 		});
 	});
 
@@ -72,7 +72,7 @@ describe('Entity', function() {
 
 		it('should require type be a string, if supplied', function() {
 			resource.type = 1;
-			expect(buildEntity.bind()).to.throw();
+			expect(buildEntity.bind()).to.throw('entity.type must be a string or undefined, got 1');
 		});
 	});
 
@@ -85,7 +85,7 @@ describe('Entity', function() {
 
 		it('should require properties be an object, if supplied', function() {
 			resource.properties = 1;
-			expect(buildEntity.bind()).to.throw();
+			expect(buildEntity.bind()).to.throw('entity.properties must be an object or undefined, got 1');
 		});
 
 		it('should be able to determine if an entity has a given property', function() {
@@ -106,7 +106,7 @@ describe('Entity', function() {
 
 		it('should require class be an array, if supplied', function() {
 			resource.class = 1;
-			expect(buildEntity.bind()).to.throw();
+			expect(buildEntity.bind()).to.throw('entity.class must be an array or undefined, got 1');
 		});
 	});
 
@@ -119,7 +119,7 @@ describe('Entity', function() {
 
 		it('should require actions be an array, if supplied', function() {
 			resource.actions = 1;
-			expect(buildEntity.bind()).to.throw();
+			expect(buildEntity.bind()).to.throw('entity.actions must be an array or undefined, got 1');
 		});
 	});
 
@@ -132,7 +132,7 @@ describe('Entity', function() {
 
 		it('should require links be an array, if supplied', function() {
 			resource.links = 1;
-			expect(buildEntity.bind()).to.throw();
+			expect(buildEntity.bind()).to.throw('entity.links must be an array or undefined, got 1');
 		});
 	});
 
@@ -145,14 +145,14 @@ describe('Entity', function() {
 
 		it('should require (sub)entities be an array, if supplied', function() {
 			resource.entities = 1;
-			expect(buildEntity.bind()).to.throw();
+			expect(buildEntity.bind()).to.throw('entity.entities must be an array or undefined, got 1');
 		});
 
 		it('should require (sub)entities have a rel', function() {
 			resource.entities = [{
 				foo: 'bar'
 			}];
-			expect(buildEntity.bind()).to.throw();
+			expect(buildEntity.bind()).to.throw('sub-entities must have a rel array, got undefined');
 		});
 
 		it('should work with chained Entity/Action/Links', function() {
