@@ -46,18 +46,18 @@ describe('Action', function() {
 
 	it('should require the action be an object', function() {
 		resource = 1;
-		expect(buildAction.bind()).to.throw();
+		expect(buildAction.bind()).to.throw('action must be an object, got 1');
 	});
 
 	describe('name', function() {
 		it('should require a name', function() {
 			resource.name = undefined;
-			expect(buildAction.bind()).to.throw();
+			expect(buildAction.bind()).to.throw('action.name must be a string, got undefined');
 		});
 
 		it('should require name be a string', function() {
 			resource.name = 1;
-			expect(buildAction.bind()).to.throw();
+			expect(buildAction.bind()).to.throw('action.name must be a string, got 1');
 		});
 
 		it('should parse name', function() {
@@ -69,12 +69,12 @@ describe('Action', function() {
 	describe('href', function() {
 		it('should require a href', function() {
 			resource.href = undefined;
-			expect(buildAction.bind()).to.throw();
+			expect(buildAction.bind()).to.throw('action.href must be a string, got undefined');
 		});
 
 		it('should require href be a string', function() {
 			resource.href = 1;
-			expect(buildAction.bind()).to.throw();
+			expect(buildAction.bind()).to.throw('action.href must be a string, got 1');
 		});
 
 		it('should parse href', function() {
@@ -92,7 +92,7 @@ describe('Action', function() {
 
 		it('should require class be an array, if supplied', function() {
 			resource.class = 1;
-			expect(buildAction.bind()).to.throw();
+			expect(buildAction.bind()).to.throw('action.class must be an array or undefined, got 1');
 		});
 	});
 
@@ -110,7 +110,7 @@ describe('Action', function() {
 
 		it('should require method be a string, if supplied', function() {
 			resource.method = 1;
-			expect(buildAction.bind(undefined, resource)).to.throw();
+			expect(buildAction.bind(undefined, resource)).to.throw('action.method must be a string or undefined, got 1');
 		});
 	});
 
@@ -123,7 +123,7 @@ describe('Action', function() {
 
 		it('should require title be a string, if supplied', function() {
 			resource.title = 1;
-			expect(buildAction.bind(undefined, resource)).to.throw();
+			expect(buildAction.bind(undefined, resource)).to.throw('action.title must be a string or undefined, got 1');
 		});
 	});
 
@@ -141,7 +141,7 @@ describe('Action', function() {
 
 		it('should require type be a string, if supplied', function() {
 			resource.type = 1;
-			expect(buildAction.bind(undefined, resource)).to.throw();
+			expect(buildAction.bind(undefined, resource)).to.throw('action.type must be a string or undefined, got 1');
 		});
 	});
 
@@ -154,7 +154,7 @@ describe('Action', function() {
 
 		it('should require fields be an array, if supplied', function() {
 			resource.fields = 1;
-			expect(buildAction.bind(undefined, resource)).to.throw();
+			expect(buildAction.bind(undefined, resource)).to.throw('action.fields must be an array or undefined, got 1');
 		});
 
 		it('should be able to determine if an Action has a given Field', function() {

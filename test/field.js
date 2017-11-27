@@ -45,18 +45,18 @@ describe('Field', function() {
 
 	it('should require the field be an object', function() {
 		resource = 1;
-		expect(buildField.bind()).to.throw();
+		expect(buildField.bind()).to.throw('field must be an object, got 1');
 	});
 
 	describe('name', function() {
 		it('should require a name', function() {
 			resource.name = undefined;
-			expect(buildField.bind()).to.throw();
+			expect(buildField.bind()).to.throw('field.name must be a string, got undefined');
 		});
 
 		it('should require name be a string', function() {
 			resource.name = 1;
-			expect(buildField.bind()).to.throw();
+			expect(buildField.bind()).to.throw('field.name must be a string, got 1');
 		});
 
 		it('should parse name', function() {
@@ -82,7 +82,7 @@ describe('Field', function() {
 
 		it('should require class be an array, if supplied', function() {
 			resource.class = 1;
-			expect(buildField.bind()).to.throw();
+			expect(buildField.bind()).to.throw('field.class must be an array or undefined, got 1');
 		});
 
 		it('should be able to determine if a field has a given class', function() {
@@ -108,7 +108,7 @@ describe('Field', function() {
 
 		it('should require title be a string, if supplied', function() {
 			resource.title = 1;
-			expect(buildField.bind(undefined, resource)).to.throw();
+			expect(buildField.bind(undefined, resource)).to.throw('field.title must be a string or undefined, got 1');
 		});
 	});
 
@@ -121,12 +121,12 @@ describe('Field', function() {
 
 		it('should require type be a string, if supplied', function() {
 			resource.type = 1;
-			expect(buildField.bind(undefined, resource)).to.throw();
+			expect(buildField.bind(undefined, resource)).to.throw('field.type must be a valid field type string or undefined, got 1');
 		});
 
 		it('should require type be a valid HTML5 input type, if specified', function() {
 			resource.type = 'bar';
-			expect(buildField.bind()).to.throw();
+			expect(buildField.bind()).to.throw('field.type must be a valid field type string or undefined, got "bar"');
 		});
 	});
 });
