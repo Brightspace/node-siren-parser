@@ -246,6 +246,16 @@ Entity.prototype.getActionsByClass = function(actionClass) {
 	return vals ? vals.slice() : [];
 };
 
+Entity.prototype.getActionByClasses = function(actionClasses) {
+	const vals = util.getMatchingValuesByAll(this.actions, actionClasses);
+	return vals && vals.length > 0 ? vals[0] : undefined;
+};
+
+Entity.prototype.getActionsByClasses = function(actionClasses) {
+	const vals = util.getMatchingValuesByAll(this.actions, actionClasses);
+	return vals && vals.length > 0 ? vals.slice() : [];
+};
+
 Entity.prototype.getActionByMethod = function(actionMethod) {
 	const vals = util.getMatchingValue(this._actionsByMethod, actionMethod);
 	return vals ? vals[0] : undefined;
@@ -294,6 +304,16 @@ Entity.prototype.getLinksByClass = function(linkClass) {
 	return vals ? vals.slice() : [];
 };
 
+Entity.prototype.getLinkByClasses = function(linkClasses) {
+	const vals = util.getMatchingValuesByAll(this.links, linkClasses);
+	return vals && vals.length > 0 ? vals[0] : undefined;
+};
+
+Entity.prototype.getLinksByClasses = function(linkClasses) {
+	const vals = util.getMatchingValuesByAll(this.links, linkClasses);
+	return vals && vals.length > 0 ? vals.slice() : [];
+};
+
 Entity.prototype.getLinkByType = function(linkType) {
 	const vals = util.getMatchingValue(this._linksByType, linkType);
 	return vals ? vals[0] : undefined;
@@ -330,6 +350,16 @@ Entity.prototype.getSubEntityByClass = function(entityClass) {
 Entity.prototype.getSubEntitiesByClass = function(entityClass) {
 	const vals = util.getMatchingValue(this._entitiesByClass, entityClass);
 	return vals ? vals.slice() : [];
+};
+
+Entity.prototype.getSubEntityByClasses = function(entityClasses) {
+	const vals = util.getMatchingValuesByAll(this.entities, entityClasses);
+	return vals && vals.length > 0 ? vals[0] : undefined;
+};
+
+Entity.prototype.getSubEntitiesByClasses = function(entityClasses) {
+	const vals = util.getMatchingValuesByAll(this.entities, entityClasses);
+	return vals && vals.length > 0 ? vals.slice() : [];
 };
 
 Entity.prototype.getSubEntityByType = function(entityType) {

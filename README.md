@@ -6,18 +6,18 @@ Parses a Siren object (or Siren JSON string) into an Entity object that is inten
 
 ## Usage
 
-There are two ways to use `node-siren-parser`'s functionality. 
+There are two ways to use `node-siren-parser`'s functionality.
 
 1. You can install it from npm using
    ```bash
    npm install siren-parser
    ```
-   and then `require` it as you would any other npm package. 
+   and then `require` it as you would any other npm package.
 
 2. The parser is browserified and stored on the Brightspace CDN for client-side usage
    ```html
    <script src="https://s.brightspace.com/lib/siren-parser/{version}/siren-parser.js"></script>
-   
+
    <script>
    var parsedEntity = window.D2L.Hypermedia.Siren.Parse('{"class":["foo","bar"]}');
    </script>
@@ -181,6 +181,17 @@ resource.getSubEntityByRel('child'); // Single entity
 resource.getSubEntityByRel('child').getLink('self').title; // 'Child entity'
 resource.getSubEntityByClass('inner'); // Entity with 'inner' class
 resource.getSubEntitiesByClass('inner'); // [ All Entities with 'inner' class ]
+```
+
+#### `Entity.getXByY'es(Array[String|RegExp key])`
+Returns the resource(s) of type _X_ with matching _Y_ values of multiple `key` (or which matches `RegExp key`). The requested _X_ must contain each of the _Y_ values. If the requested _X_ is singular, then the result is either the matching instance of _X_, or undefined. If the requested _X_ is plural, then the result is either an Array of the matching instances of _X_, or an empty Array.
+
+* `getActionByClasses(classes)` - returns [Action](#action) or undefined
+* `getLinkByClasses(class)` - returns [Link](#link) or undefined
+
+```js
+resource.getLinkBySomeClasses(['crazy', 'self']) // A link instance that contains both 'self' and 'crazy' classes.
+resource.getLinksBySomeClasses(['crazy', 'cool']) // Array containing two links, both of which contain both 'crazy' and 'cool' classes. Note that a link containing only one of those will not be included in the array.
 ```
 
 ---

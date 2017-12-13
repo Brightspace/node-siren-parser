@@ -35,8 +35,26 @@ function getMatchingValue(objectLike, stringOrRegex) {
 	}
 }
 
+function getMatchingValuesByAll(arrayLike, arrayOfStringOrRegex) {
+	if (!Array.isArray(arrayOfStringOrRegex)) {
+		return [];
+	}
+
+	const vals = [];
+	for (var i = 0; i < arrayLike.length; i++) {
+		var like = arrayLike[i];
+
+		if (arrayOfStringOrRegex.every((cls) => { return contains(like.class, cls); })) {
+			vals.push(like);
+		}
+	}
+
+	return vals;
+}
+
 module.exports = {
 	contains: contains,
 	hasProperty: hasProperty,
-	getMatchingValue: getMatchingValue
+	getMatchingValue: getMatchingValue,
+	getMatchingValuesByAll: getMatchingValuesByAll
 };
