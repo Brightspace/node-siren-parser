@@ -35,8 +35,8 @@ function getMatchingValue(objectLike, stringOrRegex) {
 	}
 }
 
-function getMatchingValuesByAll(arrayLike, arrayOfStringOrRegex) {
-	if (!Array.isArray(arrayOfStringOrRegex)) {
+function getMatchingValuesByAll(arrayLike, arrayOfStringOrRegex, propertyToMatch) {
+	if (!Array.isArray(arrayOfStringOrRegex) || !propertyToMatch) {
 		return [];
 	}
 
@@ -45,8 +45,8 @@ function getMatchingValuesByAll(arrayLike, arrayOfStringOrRegex) {
 		var like = arrayLike[i];
 
 		if (arrayOfStringOrRegex.every(
-			function(cls) {
-				return contains(like.class, cls);
+			function(y) {
+				return contains(like[propertyToMatch], y);
 			})
 		) {
 			vals.push(like);

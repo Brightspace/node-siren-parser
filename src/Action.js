@@ -110,12 +110,12 @@ Action.prototype.getFieldsByClass = function(fieldClass) {
 };
 
 Action.prototype.getFieldByClasses = function(fieldClasses) {
-	const vals = util.getMatchingValuesByAll(this.fields, fieldClasses);
+	const vals = util.getMatchingValuesByAll(this.fields, fieldClasses, 'class');
 	return vals && vals.length > 0 ? vals[0] : undefined;
 };
 
 Action.prototype.getFieldsByClasses = function(fieldClasses) {
-	const vals = util.getMatchingValuesByAll(this.fields, fieldClasses);
+	const vals = util.getMatchingValuesByAll(this.fields, fieldClasses, 'class');
 	return vals && vals.length > 0 ? vals.slice() : [];
 };
 
