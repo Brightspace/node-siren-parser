@@ -187,11 +187,22 @@ resource.getSubEntitiesByClass('inner'); // [ All Entities with 'inner' class ]
 Returns the resource(s) of type _X_ with matching _Y_ values of multiple `key` (or which matches `RegExp key`). The requested _X_ must contain each of the _Y_ values. If the requested _X_ is singular, then the result is either the matching instance of _X_, or undefined. If the requested _X_ is plural, then the result is either an Array of the matching instances of _X_, or an empty Array.
 
 * `getActionByClasses(classes)` - returns [Action](#action) or undefined
+* `getActionsByClasses(classes)` - returns Array of [Action](#action) (empty Array if none match)
+* `getFieldByClasses(classes)` - returns [Field](#field) or undefined
+* `getFieldsByClasses(classes)` - returns Array of [Field](#field) (empty Array if none match)
 * `getLinkByClasses(class)` - returns [Link](#link) or undefined
-
+* `getLinksByClasses(class)` - return Array of [Link](#link) (empty Array if none match)
+* `getSubEntityByClasses(classes)` - returns [Entity](#entity) or undefined
+* `getSubEntitiesByClasses(classes)` - returns Array of [Entity](#entity) (empty Array if none match)
 ```js
-resource.getLinkBySomeClasses(['crazy', 'self']) // A link instance that contains both 'self' and 'crazy' classes.
-resource.getLinksBySomeClasses(['crazy', 'cool']) // Array containing two links, both of which contain both 'crazy' and 'cool' classes. Note that a link containing only one of those will not be included in the array.
+resource.getActionByClasses(['crazy', 'self']) // An action instance that contains both 'self' and 'crazy' classes.
+resource.getActionsByClasses(['crazy', 'cool']) // Array containing two actions, both of which contain both 'crazy' and 'cool' classes. Note that an action containing only one of those will not be included in the array.
+resource.getFieldByClasses(['crazy', 'self']) // A field instance that contains both 'self' and 'crazy' classes.
+resource.getFieldsByClasses(['crazy', 'cool']) // Array containing two fields, both of which contain both 'crazy' and 'cool' classes. Note that a field containing only one of those will not be included in the array.
+resource.getLinkByClasses(['crazy', 'self']) // A link instance that contains both 'self' and 'crazy' classes.
+resource.getLinksByClasses(['crazy', 'cool']) // Array containing two links, both of which contain both 'crazy' and 'cool' classes. Note that a link containing only one of those will not be included in the array.
+resource.getSubEntityByClasses(['crazy', 'self']) // Am entity instance that contains both 'self' and 'crazy' classes.
+resource.getSubEntitiesByClasses(['crazy', 'cool']) // Array containing two entities, both of which contain both 'crazy' and 'cool' classes. Note that an entity containing only one of those will not be included in the array.
 ```
 
 ---
