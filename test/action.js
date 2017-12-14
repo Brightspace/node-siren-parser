@@ -296,15 +296,19 @@ describe('Action', function() {
 				it('getFieldByClasses', function() {
 					expect(siren.getFieldByClasses(['bonk', 'bork'])).to.have.property('name', 'foo3');
 					expect(siren.getFieldByClasses([/bonk/, /bork/])).to.have.property('name', 'foo3');
+					expect(siren.getFieldByClasses(['bonk', /bork/])).to.have.property('name', 'foo3');
 					expect(siren.getFieldByClasses(['bonk', 'nope'])).to.be.undefined;
 					expect(siren.getFieldByClasses([/bonk/, /nope/])).to.be.undefined;
+					expect(siren.getFieldByClasses(['bonk', /nope/])).to.be.undefined;
 				});
 
 				it('getFieldsByClasses', function() {
 					expect(siren.getFieldsByClasses(['bonk', 'bork'])).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getFieldsByClasses([/bonk/, /bork/])).to.be.an.instanceof(Array).with.lengthOf(2);
+					expect(siren.getFieldsByClasses(['bonk', /bork/])).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getFieldsByClasses(['bonk', 'nope'])).to.be.an.instanceof(Array).and.to.be.empty;
 					expect(siren.getFieldsByClasses([/bonk/, /nope/])).to.be.an.instanceof(Array).and.to.be.empty;
+					expect(siren.getFieldsByClasses(['bonk', /nope/])).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
 				it('getFieldByType', function() {

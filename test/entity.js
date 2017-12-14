@@ -479,8 +479,10 @@ describe('Entity', function() {
 					siren = buildEntity();
 					expect(siren.getActionByClasses(['bonk', 'bork'])).to.have.property('href', 'bar3');
 					expect(siren.getActionByClasses([/bonk/, /bork/])).to.have.property('href', 'bar3');
+					expect(siren.getActionByClasses(['bonk', /bork/])).to.have.property('href', 'bar3');
 					expect(siren.getActionByClasses(['bonk', 'nope'])).to.be.undefined;
 					expect(siren.getActionByClasses([/bonk/, /nope/])).to.be.undefined;
+					expect(siren.getActionByClasses(['bonk', /nope/])).to.be.undefined;
 				});
 
 				it('getActionsByClasses', function() {
@@ -504,8 +506,10 @@ describe('Entity', function() {
 					siren = buildEntity();
 					expect(siren.getActionsByClasses(['bonk', 'bork'])).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getActionsByClasses([/bonk/, /bork/])).to.be.an.instanceof(Array).with.lengthOf(2);
+					expect(siren.getActionsByClasses(['bonk', /bork/])).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getActionsByClasses(['bonk', 'nope'])).to.be.an.instanceof(Array).and.to.be.empty;
 					expect(siren.getActionsByClasses([/bonk/, /nope/])).to.be.an.instanceof(Array).and.to.be.empty;
+					expect(siren.getActionsByClasses(['bonk', /nope/])).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
 				it('getActionByMethod', function() {
@@ -631,15 +635,19 @@ describe('Entity', function() {
 				it('getLinkByClasses', function() {
 					expect(siren.getLinkByClasses(['bonk', 'bork'])).to.have.property('href', 'bar3');
 					expect(siren.getLinkByClasses([/bonk/, /bork/])).to.have.property('href', 'bar3');
+					expect(siren.getLinkByClasses(['bonk', /bork/])).to.have.property('href', 'bar3');
 					expect(siren.getLinkByClasses(['bonk', 'nope'])).to.be.undefined;
 					expect(siren.getLinkByClasses([/bonk/, /nope/])).to.be.undefined;
+					expect(siren.getLinkByClasses(['bonk', /nope/])).to.be.undefined;
 				});
 
 				it('getLinksByClasses', function() {
 					expect(siren.getLinksByClasses(['bonk', 'bork'])).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getLinksByClasses([/bonk/, /bork/])).to.be.an.instanceof(Array).with.lengthOf(2);
+					expect(siren.getLinksByClasses(['bonk', /bork/])).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getLinksByClasses(['bonk', 'nope'])).to.be.an.instanceof(Array).and.to.be.empty;
 					expect(siren.getLinksByClasses([/bonk/, /nope/])).to.be.an.instanceof(Array).and.to.be.empty;
+					expect(siren.getLinksByClasses(['bonk', /nope/])).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
 				it('getLinkByType', function() {
@@ -719,15 +727,19 @@ describe('Entity', function() {
 				it('getSubEntityByClasses', function() {
 					expect(siren.getSubEntityByClasses(['bonk', 'bork'])).to.have.property('title', 'bar3');
 					expect(siren.getSubEntityByClasses([/bonk/, /bork/])).to.have.property('title', 'bar3');
+					expect(siren.getSubEntityByClasses(['bonk', /bork/])).to.have.property('title', 'bar3');
 					expect(siren.getSubEntityByClasses(['bonk', 'nope'])).to.be.undefined;
 					expect(siren.getSubEntityByClasses([/bonk/, /nope/])).to.be.undefined;
+					expect(siren.getSubEntityByClasses(['bonk', /nope/])).to.be.undefined;
 				});
 
 				it('getSubEntitiesByClasses', function() {
 					expect(siren.getSubEntitiesByClasses(['bonk', 'bork'])).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getSubEntitiesByClasses([/bonk/, /bork/])).to.be.an.instanceof(Array).with.lengthOf(2);
+					expect(siren.getSubEntitiesByClasses(['bonk', /bork/])).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getSubEntitiesByClasses(['bonk', 'nope'])).to.be.an.instanceof(Array).and.to.be.empty;
 					expect(siren.getSubEntitiesByClasses([/bonk/, /nope/])).to.be.an.instanceof(Array).and.to.be.empty;
+					expect(siren.getSubEntitiesByClasses(['bonk', /nope/])).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
 				it('getSubEntityByType', function() {
