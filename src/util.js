@@ -44,7 +44,11 @@ function getMatchingValuesByAll(arrayLike, arrayOfStringOrRegex) {
 	for (var i = 0; i < arrayLike.length; i++) {
 		var like = arrayLike[i];
 
-		if (arrayOfStringOrRegex.every((cls) => { return contains(like.class, cls); })) {
+		if (arrayOfStringOrRegex.every(
+			function(cls) {
+				return contains(like.class, cls);
+			})
+		) {
 			vals.push(like);
 		}
 	}
