@@ -248,13 +248,23 @@ describe('Action', function() {
 					resource.fields = [{
 						name: 'foo',
 						title: 'bar',
-						class: ['baz'],
+						class: ['baz', 'bonk'],
 						type: 'text'
 					}, {
 						name: 'foo2',
 						title: 'bar2',
-						class: ['baz'],
+						class: ['baz', 'bork'],
 						type: 'text'
+					}, {
+						name: 'foo3',
+						title: 'bar3',
+						class: ['bonk', 'bork'],
+						type: 'url'
+					}, {
+						name: 'foo4',
+						title: 'bar4',
+						class: ['bonk', 'bork'],
+						type: 'url'
 					}];
 					siren = buildAction();
 				});
@@ -281,6 +291,24 @@ describe('Action', function() {
 
 					expect(siren.getFieldsByClass(/baz/)).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getFieldsByClass(/foo/)).to.be.an.instanceof(Array).and.to.be.empty;
+				});
+
+				it('getFieldByClasses', function() {
+					expect(siren.getFieldByClasses(['bonk', 'bork'])).to.have.property('name', 'foo3');
+					expect(siren.getFieldByClasses([/bonk/, /bork/])).to.have.property('name', 'foo3');
+					expect(siren.getFieldByClasses(['bonk', /bork/])).to.have.property('name', 'foo3');
+					expect(siren.getFieldByClasses(['bonk', 'nope'])).to.be.undefined;
+					expect(siren.getFieldByClasses([/bonk/, /nope/])).to.be.undefined;
+					expect(siren.getFieldByClasses(['bonk', /nope/])).to.be.undefined;
+				});
+
+				it('getFieldsByClasses', function() {
+					expect(siren.getFieldsByClasses(['bonk', 'bork'])).to.be.an.instanceof(Array).with.lengthOf(2);
+					expect(siren.getFieldsByClasses([/bonk/, /bork/])).to.be.an.instanceof(Array).with.lengthOf(2);
+					expect(siren.getFieldsByClasses(['bonk', /bork/])).to.be.an.instanceof(Array).with.lengthOf(2);
+					expect(siren.getFieldsByClasses(['bonk', 'nope'])).to.be.an.instanceof(Array).and.to.be.empty;
+					expect(siren.getFieldsByClasses([/bonk/, /nope/])).to.be.an.instanceof(Array).and.to.be.empty;
+					expect(siren.getFieldsByClasses(['bonk', /nope/])).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
 				it('getFieldByType', function() {

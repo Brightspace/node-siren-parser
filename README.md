@@ -6,18 +6,18 @@ Parses a Siren object (or Siren JSON string) into an Entity object that is inten
 
 ## Usage
 
-There are two ways to use `node-siren-parser`'s functionality. 
+There are two ways to use `node-siren-parser`'s functionality.
 
 1. You can install it from npm using
    ```bash
    npm install siren-parser
    ```
-   and then `require` it as you would any other npm package. 
+   and then `require` it as you would any other npm package.
 
 2. The parser is browserified and stored on the Brightspace CDN for client-side usage
    ```html
    <script src="https://s.brightspace.com/lib/siren-parser/{version}/siren-parser.js"></script>
-   
+
    <script>
    var parsedEntity = window.D2L.Hypermedia.Siren.Parse('{"class":["foo","bar"]}');
    </script>
@@ -181,6 +181,36 @@ resource.getSubEntityByRel('child'); // Single entity
 resource.getSubEntityByRel('child').getLink('self').title; // 'Child entity'
 resource.getSubEntityByClass('inner'); // Entity with 'inner' class
 resource.getSubEntitiesByClass('inner'); // [ All Entities with 'inner' class ]
+```
+
+#### `Entity.getXByY'es(Array[String|RegExp key])`
+Returns the resource(s) of type _X_ with matching _Y_ values of multiple `key` (or which matches `RegExp key`). The requested _X_ must contain each of the _Y_ values. If the requested _X_ is singular, then the result is either the matching instance of _X_, or undefined. If the requested _X_ is plural, then the result is either an Array of the matching instances of _X_, or an empty Array.
+
+* `getActionByClasses(classes)` - returns [Action](#action) or undefined
+* `getActionsByClasses(classes)` - returns Array of [Action](#action) (empty Array if none match)
+* `getFieldByClasses(classes)` - returns [Field](#field) or undefined
+* `getFieldsByClasses(classes)` - returns Array of [Field](#field) (empty Array if none match)
+* `getLinkByClasses(class)` - returns [Link](#link) or undefined
+* `getLinksByClasses(class)` - return Array of [Link](#link) (empty Array if none match)
+* `getLinkByRels(class)` - returns [Link](#link) or undefined
+* `getLinksByRels(class)` - return Array of [Link](#link) (empty Array if none match)
+* `getSubEntityByClasses(classes)` - returns [Entity](#entity) or undefined
+* `getSubEntitiesByClasses(classes)` - returns Array of [Entity](#entity) (empty Array if none match)
+* `getSubEntityByRels(classes)` - returns [Entity](#entity) or undefined
+* `getSubEntitiesByRels(classes)` - returns Array of [Entity](#entity) (empty Array if none match)
+```js
+resource.getActionByClasses(['crazy', 'self']) // An action instance that contains both 'self' and 'crazy' classes.
+resource.getActionsByClasses(['crazy', 'cool']) // Array containing two actions, both of which contain both 'crazy' and 'cool' classes. Note that an action containing only one of those will not be included in the array.
+resource.getFieldByClasses(['crazy', 'self']) // A field instance that contains both 'self' and 'crazy' classes.
+resource.getFieldsByClasses(['crazy', 'cool']) // Array containing two fields, both of which contain both 'crazy' and 'cool' classes. Note that a field containing only one of those will not be included in the array.
+resource.getLinkByClasses(['crazy', 'self']) // A link instance that contains both 'self' and 'crazy' classes.
+resource.getLinksByClasses(['crazy', 'cool']) // Array containing two links, both of which contain both 'crazy' and 'cool' classes. Note that a link containing only one of those will not be included in the array.
+resource.getLinkByRels(['thing1', 'thing2']) // A link instance that contains both 'thing1' and 'thing2' rels.
+resource.getLinksByRels(['thing1', 'thing2']) // Array containing two links, both of which contain both 'thing1' and 'thing2' rels. Note that a link containing only one of those will not be included in the array.
+resource.getSubEntityByClasses(['crazy', 'self']) // An entity instance that contains both 'self' and 'crazy' classes.
+resource.getSubEntitiesByClasses(['crazy', 'cool']) // Array containing two entities, both of which contain both 'crazy' and 'cool' classes. Note that an entity containing only one of those will not be included in the array.
+resource.getSubEntityByRels(['thing1', 'thing2']) // An entity instance that contains both 'thing1' and 'thing2' rels.
+resource.getSubEntitiesByRels(['thing1', 'thing2']) // Array containing two entities, both of which contain both 'thing1' and 'thing2' rels. Note that an entity containing only one of those will not be included in the array.
 ```
 
 ---

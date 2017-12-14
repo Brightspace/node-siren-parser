@@ -109,6 +109,16 @@ Action.prototype.getFieldsByClass = function(fieldClass) {
 	return vals ? vals.slice() : [];
 };
 
+Action.prototype.getFieldByClasses = function(fieldClasses) {
+	const vals = util.getMatchingValuesByAll(this.fields, fieldClasses, 'class');
+	return vals && vals.length > 0 ? vals[0] : undefined;
+};
+
+Action.prototype.getFieldsByClasses = function(fieldClasses) {
+	const vals = util.getMatchingValuesByAll(this.fields, fieldClasses, 'class');
+	return vals && vals.length > 0 ? vals.slice() : [];
+};
+
 Action.prototype.getFieldByType = function(fieldType) {
 	const vals = util.getMatchingValue(this._fieldsByType, fieldType);
 	return vals ? vals[0] : undefined;
