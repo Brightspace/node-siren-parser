@@ -595,6 +595,9 @@ describe('Entity', function() {
 						href: 'bar4',
 						class: ['bork', 'bonk'],
 						type: 'xxuq'
+					}, {
+						rel: ['foo5'],
+						href: 'bar5'
 					}];
 					siren = buildEntity();
 				});

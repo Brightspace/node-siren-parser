@@ -40,20 +40,21 @@ function getMatchingValuesByAll(arrayLike, arrayOfStringOrRegex, propertyToMatch
 		return [];
 	}
 
-	const vals = [];
+	const results = [];
 	for (var i = 0; i < arrayLike.length; i++) {
 		var like = arrayLike[i];
+		var val = like[propertyToMatch];
 
-		if (arrayOfStringOrRegex.every(
+		if (val && arrayOfStringOrRegex.every(
 			function(y) {
-				return contains(like[propertyToMatch], y);
+				return contains(val, y);
 			})
 		) {
-			vals.push(like);
+			results.push(like);
 		}
 	}
 
-	return vals;
+	return results;
 }
 
 module.exports = {
