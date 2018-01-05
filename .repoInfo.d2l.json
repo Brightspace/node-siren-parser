@@ -1,0 +1,9 @@
+{
+ "mirrormereProductId": 0,
+ "repoOwner": "email@d2l.com" | null,
+ "platform": ".net" | "js" | "php" | "go" | "ios" | "android",
+ "codeType": "service" | "library" | "prototype" | "not code",
+ "deployment": "prod" | "internal only" | "not deployed",
+ "devStatus": "active" | "maintenance" | "end of life",
+ "awsAccountNames": {"prod": "aws-account-name", "dev": "aws-account-name"} | null
+}
