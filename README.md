@@ -6,15 +6,17 @@ Parses a Siren object (or Siren JSON string) into an Entity object that is inten
 
 ## Usage
 
-There are two ways to use `node-siren-parser`'s functionality.
+There are three ways to use `node-siren-parser`'s functionality.
 
 1. You can install it from npm using
    ```bash
    npm install siren-parser
    ```
    and then `require` it as you would any other npm package.
+   
+2. An HTML import version of the parser is available via [`siren-parser-import`](https://github.com/Brightspace/siren-parser-import) (recommended approach for client-side usage).
 
-2. The parser is browserified and stored on the Brightspace CDN for client-side usage
+3. Alternatively, the parser is browserified and stored on the Brightspace CDN for client-side usage
    ```html
    <script src="https://s.brightspace.com/lib/siren-parser/{version}/siren-parser.js"></script>
 
