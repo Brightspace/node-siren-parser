@@ -13,7 +13,7 @@ There are three ways to use `node-siren-parser`'s functionality.
    npm install siren-parser
    ```
    and then `require` it as you would any other npm package.
-   
+
 2. An HTML import version of the parser is available via [`siren-parser-import`](https://github.com/Brightspace/siren-parser-import) (recommended approach for client-side usage).
 
 3. Alternatively, the parser is browserified and stored on the Brightspace CDN for client-side usage
@@ -24,11 +24,9 @@ There are three ways to use `node-siren-parser`'s functionality.
    var parsedEntity = window.D2L.Hypermedia.Siren.Parse('{"class":["foo","bar"]}');
    </script>
    ```
-   An alternate bundle of the siren parser is available that is exposed as a property of the global object.
-   ```html
-   <script src="https://s.brightspace.com/lib/siren-parser/{version}/siren-parser-global.js"></script>
-   ```
-   The client-side code will still use the `window.D2L.Hypermedia.Siren` object, but this addresses the risk of collisions with other modules on the page that are exposed by browserify's standalone UMD bundle.
+   Note that this is a `deumdify`'d browser bundle, which should prevent collisions with other modules on the page that are exposed by browserify's standalone UMD bundle.
+
+   (There is also a `siren-parser-global.js`, but as of v6.6.0 it is equivalent to `siren-parser.js`, as both are being `deumdify`'d. This version will be removed in the next major version bump.)
 
 ## API
 
