@@ -5,9 +5,7 @@
   "main": "src/Entity.js",
   "scripts": {
     "prebrowserify": "rimraf dist && mkdir dist",
-    "browserify": "npm run browserify:umd && npm run browserify:global",
-    "browserify:umd": "browserify -g uglifyify -p deumdify -s 'D2L.Hypermedia.Siren.Parse' src/Entity.js > ./dist/siren-parser.js",
-    "browserify:global": "browserify -g uglifyify -p deumdify -s 'D2L.Hypermedia.Siren.Parse' src/Entity.js > ./dist/siren-parser-global.js",
+    "browserify": "browserify -g uglifyify -p deumdify -s 'D2L.Hypermedia.Siren.Parse' src/Entity.js > ./dist/siren-parser.js",
     "lint": "eslint --ignore-path .gitignore .",
     "test": "npm run lint && npm run test-no-style",
     "test-no-style": "export NODE_ENV=test; istanbul cover --source-map --dir ./coverage/unit --root src/ node_modules/.bin/_mocha -- --recursive ./test",
