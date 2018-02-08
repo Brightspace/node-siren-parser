@@ -26,8 +26,6 @@ There are three ways to use `node-siren-parser`'s functionality.
    ```
    Note that this is a `deumdify`'d browser bundle, which should prevent collisions with other modules on the page that are exposed by browserify's standalone UMD bundle.
 
-   (There is also a `siren-parser-global.js`, but as of v6.6.0 it is equivalent to `siren-parser.js`, as both are being `deumdify`'d. This version will be removed in the next major version bump.)
-
 ## API
 
 ```js
