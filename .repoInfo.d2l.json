@@ -1,6 +1,6 @@
 {
- "mirrormereProductId": 0,
- "codeType": "service" | "library" | "frapp" | "mobile app" | "infrastructure" | "script" | "prototype" | "not code",
- "deployment": "prod" | "internal only" | "not deployed",
- "isEndOfLife": true | false
+ "mirrormereProductId": 92,
+ "codeType": "library",
+ "deployment": "prod",
+ "isEndOfLife": false
 }
