@@ -38,6 +38,16 @@ function Link(link) {
 	}
 }
 
+Link.prototype.toJSON = function() {
+	return {
+		rel: this.rel,
+		href: this.href,
+		class: this.class,
+		title: this.title,
+		type: this.type
+	};
+};
+
 Link.prototype.hasClass = function(cls) {
 	return this.class instanceof Array && util.contains(this.class, cls);
 };

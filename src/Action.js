@@ -66,10 +66,20 @@ function Action(action) {
 				});
 			}
 		});
-
-		this.fields = action.fields;
 	}
 }
+
+Action.prototype.toJSON = function() {
+	return {
+		name: this.name,
+		href: this.href,
+		class: this.class,
+		method: this.method,
+		title: this.title,
+		type: this.type,
+		fields: this.fields
+	};
+};
 
 Action.prototype.hasClass = function(cls) {
 	return this.class instanceof Array && util.contains(this.class, cls);

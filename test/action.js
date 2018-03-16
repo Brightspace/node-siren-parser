@@ -173,6 +173,45 @@ describe('Action', function() {
 			siren = buildAction();
 			expect(siren.getField('foo')).to.have.property('title', 'bar');
 		});
+
+		it('should be able to use field helper methods', function() {
+			resource.fields = [{
+				class: ['abc'],
+				name: 'foo',
+				title: 'bar'
+			}];
+			siren = buildAction();
+			expect(siren.fields[0].hasClass('abc')).to.be.true;
+		});
+	});
+
+	describe('toJSON', function() {
+		function toJSON() {
+			return JSON.stringify(buildAction());
+		}
+
+		it('should stringify name and href', function() {
+			expect(toJSON()).to.equal(
+				'{"name":"foo","href":"bar","method":"GET","type":"application/x-www-form-urlencoded"}'
+			);
+		});
+
+		it('should stringify class', function() {
+			resource.class = ['abc'];
+			expect(toJSON()).to.equal(
+				'{"name":"foo","href":"bar","class":["abc"],"method":"GET","type":"application/x-www-form-urlencoded"}'
+			);
+		});
+
+		it('should stringify fields', function() {
+			resource.fields = [{
+				name: 'foo',
+				title: 'bar'
+			}];
+			expect(toJSON()).to.equal(
+				'{"name":"foo","href":"bar","method":"GET","type":"application/x-www-form-urlencoded","fields":[{"name":"foo","title":"bar"}]}'
+			);
+		});
 	});
 
 	describe('Helper functions', function() {
