@@ -1,11 +1,8 @@
-'use strict';
+import assert from './assert';
+import {contains, getMatchingValue, getMatchingValuesByAll, hasProperty} from './util.js';
+import Field from './Field';
 
-const
-	assert = require('./assert'),
-	Field = require('./Field'),
-	util = require('./util');
-
-function Action(action) {
+export default function Action(action) {
 	if (action instanceof Action) {
 		return action;
 	}
@@ -82,7 +79,7 @@ Action.prototype.toJSON = function() {
 };
 
 Action.prototype.hasClass = function(cls) {
-	return this.class instanceof Array && util.contains(this.class, cls);
+	return this.class instanceof Array && contains(this.class, cls);
 };
 
 Action.prototype.hasField = function(fieldName) {
@@ -90,15 +87,15 @@ Action.prototype.hasField = function(fieldName) {
 };
 
 Action.prototype.hasFieldByName = function(fieldName) {
-	return util.hasProperty(this._fieldsByName, fieldName);
+	return hasProperty(this._fieldsByName, fieldName);
 };
 
 Action.prototype.hasFieldByClass = function(fieldClass) {
-	return util.hasProperty(this._fieldsByClass, fieldClass);
+	return hasProperty(this._fieldsByClass, fieldClass);
 };
 
 Action.prototype.hasFieldByType = function(fieldType) {
-	return util.hasProperty(this._fieldsByType, fieldType);
+	return hasProperty(this._fieldsByType, fieldType);
 };
 
 Action.prototype.getField = function(fieldName) {
@@ -106,37 +103,35 @@ Action.prototype.getField = function(fieldName) {
 };
 
 Action.prototype.getFieldByName = function(fieldName) {
-	return util.getMatchingValue(this._fieldsByName, fieldName);
+	return getMatchingValue(this._fieldsByName, fieldName);
 };
 
 Action.prototype.getFieldByClass = function(fieldClass) {
-	const vals = util.getMatchingValue(this._fieldsByClass, fieldClass);
+	const vals = getMatchingValue(this._fieldsByClass, fieldClass);
 	return vals ? vals[0] : undefined;
 };
 
 Action.prototype.getFieldsByClass = function(fieldClass) {
-	const vals = util.getMatchingValue(this._fieldsByClass, fieldClass);
+	const vals = getMatchingValue(this._fieldsByClass, fieldClass);
 	return vals ? vals.slice() : [];
 };
 
 Action.prototype.getFieldByClasses = function(fieldClasses) {
-	const vals = util.getMatchingValuesByAll(this.fields, fieldClasses, 'class');
+	const vals = getMatchingValuesByAll(this.fields, fieldClasses, 'class');
 	return vals && vals.length > 0 ? vals[0] : undefined;
 };
 
 Action.prototype.getFieldsByClasses = function(fieldClasses) {
-	const vals = util.getMatchingValuesByAll(this.fields, fieldClasses, 'class');
+	const vals = getMatchingValuesByAll(this.fields, fieldClasses, 'class');
 	return vals && vals.length > 0 ? vals.slice() : [];
 };
 
 Action.prototype.getFieldByType = function(fieldType) {
-	const vals = util.getMatchingValue(this._fieldsByType, fieldType);
+	const vals = getMatchingValue(this._fieldsByType, fieldType);
 	return vals ? vals[0] : undefined;
 };
 
 Action.prototype.getFieldsByType = function(fieldType) {
-	const vals = util.getMatchingValue(this._fieldsByType, fieldType);
+	const vals = getMatchingValue(this._fieldsByType, fieldType);
 	return vals ? vals.slice() : [];
 };
-
-module.exports = Action;

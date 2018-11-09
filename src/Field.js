@@ -1,8 +1,5 @@
-'use strict';
-
-const
-	assert = require('./assert'),
-	util = require('./util');
+import assert from './assert';
+import {contains} from './util';
 
 const VALID_TYPES = [
 	'hidden',
@@ -26,7 +23,7 @@ const VALID_TYPES = [
 	'file'
 ];
 
-function Field(field) {
+export default function Field(field) {
 	if (field instanceof Field) {
 		return field;
 	}
@@ -38,8 +35,7 @@ function Field(field) {
 	assert('string' === typeof field.name, 'field.name must be a string, got ' + JSON.stringify(field.name));
 	assert('undefined' === typeof field.class || Array.isArray(field.class),
 		'field.class must be an array or undefined, got ' + JSON.stringify(field.class));
-	assert('undefined' === typeof field.type
-		|| ('string' === typeof field.type && VALID_TYPES.indexOf(field.type.toLowerCase()) > -1),
+	assert('undefined' === typeof field.type || ('string' === typeof field.type && VALID_TYPES.indexOf(field.type.toLowerCase()) > -1),
 		'field.type must be a valid field type string or undefined, got ' + JSON.stringify(field.type));
 	assert('undefined' === typeof field.title || 'string' === typeof field.title,
 		'field.title must be a string or undefined, got ' + JSON.stringify(field.title));
@@ -74,7 +70,5 @@ Field.prototype.toJSON = function() {
 };
 
 Field.prototype.hasClass = function(cls) {
-	return this.class instanceof Array && util.contains(this.class, cls);
+	return this.class instanceof Array && contains(this.class, cls);
 };
-
-module.exports = Field;

@@ -1,29 +1,15 @@
 {
   "name": "siren-parser",
-  "version": "7.1.0",
+  "version": "8.0.0",
   "description": "Pretty much the opposite of dominicbarnes/node-siren-writer",
-  "main": "src/Entity.js",
+  "main": "dist/index.js",
+  "module": "src/index.js",
   "scripts": {
-    "prebrowserify": "rimraf dist && mkdir dist",
-    "browserify": "browserify -g uglifyify -p deumdify -s 'D2L.Hypermedia.Siren.Parse' src/Entity.js > ./dist/siren-parser.js",
-    "lint": "eslint --ignore-path .gitignore .",
-    "test": "npm run lint && npm run test-no-style",
-    "test-no-style": "cross-env NODE_ENV=test istanbul cover --source-map --dir ./coverage/unit --root src/ node_modules/mocha/bin/_mocha -- --recursive ./test",
-    "posttest": "istanbul report text-summary lcov",
-    "report-cov": "istanbul report lcovonly && coveralls < ./coverage/lcov.info",
-    "publish:cdn": "frau-publisher"
-  },
-  "config": {
-    "frauPublisher": {
-      "files": "./dist/*.js",
-      "moduleType": "lib",
-      "targetDirectory": "siren-parser",
-      "creds": {
-        "key": "AKIAIX7THWM4IO4CULRA",
-        "secretVar": "CDN_SECRET"
-      },
-      "versionVar": "TRAVIS_TAG"
-    }
+    "build": "babel src --out-dir ./dist --source-maps --plugins=add-module-exports",
+    "lint": "eslint src test --ext .js",
+    "test": "npm run lint && npm run test:unit",
+    "test:unit": "cross-env NODE_ENV=test nyc mocha",
+    "report-cov": "istanbul report lcovonly && coveralls < ./coverage/lcov.info"
   },
   "author": "D2L Corporation",
   "license": "Apache-2.0",
@@ -36,43 +22,33 @@
     "url": "https://github.com/Brightspace/node-siren-parser/issues"
   },
   "devDependencies": {
-    "babel-preset-latest": "^6.24.0",
-    "babelify": "^7.3.0",
-    "browserify": "^14.1.0",
-    "chai": "^3.3.0",
-    "coveralls": "^2.11.4",
-    "cross-env": "^5.0.5",
-    "deumdify": "^1.2.4",
-    "eslint": "^3.18.0",
-    "eslint-config-brightspace": "0.2.4",
-    "frau-publisher": "^2.6.2",
-    "istanbul": "0.4.5",
-    "mocha": "^3.2.0",
-    "nock": "^9.0.10",
-    "peanut-gallery": "^1.1.1",
-    "rimraf": "^2.6.1",
-    "sinon": "^2.1.0",
-    "sinon-chai": "^2.8.0",
-    "supertest": "^3.0.0",
-    "uglifyify": "^3.0.4"
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/register": "^7.0.0",
+    "babel-plugin-add-module-exports": "^1.0.0",
+    "babel-plugin-istanbul": "^5.1.0",
+    "chai": "^4.2.0",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.8.0",
+    "eslint-config-brightspace": "^0.4.1",
+    "mocha": "^5.2.0",
+    "nock": "^10.0.2",
+    "nyc": "^13.1.0",
+    "sinon": "^7.1.1",
+    "sinon-chai": "^3.2.0",
+    "supertest": "^3.3.0"
   },
-  "eslintConfig": {
-    "extends": "brightspace",
-    "env": {
-      "es6": true,
-      "node": true
-    }
-  },
-  "browserify": {
-    "transform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            "latest"
-          ]
-        }
-      ]
-    ]
+  "nyc": {
+    "require": [
+      "@babel/register"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
+    ],
+    "sourceMap": false,
+    "instrument": false
   }
 }

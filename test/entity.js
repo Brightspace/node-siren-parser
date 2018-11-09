@@ -1,18 +1,11 @@
-/* global describe, it, beforeEach, afterEach */
+import Action from '../src/Action';
+import Entity from '../src/index';
+import {expect, use} from 'chai';
+import Link from '../src/Link';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
 
-'use strict';
-
-const
-	chai = require('chai'),
-	expect = chai.expect,
-	sinon = require('sinon');
-
-const
-	Action = require('../src/Action'),
-	Entity = require('../'),
-	Link = require('../src/Link');
-
-chai.use(require('sinon-chai'));
+use(sinonChai);
 
 describe('Entity', function() {
 	let
@@ -23,7 +16,7 @@ describe('Entity', function() {
 	beforeEach(function() {
 		resource = {};
 		siren = undefined;
-		sandbox = sinon.sandbox.create();
+		sandbox = sinon.createSandbox();
 		sandbox.stub(console, 'error');
 		sandbox.stub(console, 'warn');
 	});

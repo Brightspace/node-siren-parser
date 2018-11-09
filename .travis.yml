@@ -1,11 +1,7 @@
-sudo: false
 language: node_js
-node_js: stable
+node_js: node
 after_success:
   - npm run report-cov
-  - npm run browserify
-  - '[ "$TRAVIS_SECURE_ENV_VARS" = "true" ] && [ "x$TRAVIS_TAG" != "x" ] && npm
-    run publish:cdn'
 deploy: # Travis will remove the dist/ folder before deploy if we don't include this
   skip_cleanup: true
   provider: npm
@@ -16,15 +12,3 @@ deploy: # Travis will remove the dist/ folder before deploy if we don't include 
   on:
     tags: true
     repo: Brightspace/node-siren-parser
-env:
-  global:
-    - secure: "HIAm5TRiT0dt2bsEQvTzrQ6y91hnCS1LP7T0iSefiw4Bhje+YEPbemSc28N1Cj07oyRc7n\
-        OjAV5bmGr3nyqCUvoy1nYdCVwSiIg77NeuNMcP6Mh3MNrYCp1n6i8ykn1cSJZOJLiNiMZEX\
-        4nLBzy9zWD+oftF7f9DEydIvLfQDvAJcYRSuEB3OSJmIVW75joRmiYax89dkEW/ikowsEUj\
-        MucZjW6tFrhzr8XfYI0fKykqhpD9L1ZU77NgjUn3L7wMqdwmeu/brMyq6FR6w3DW0bDoSKy\
-        ZfFnz4Tl9P6p3iOfM7wK0YxJxKKgjVA6EqvGaq7MFHc3LXbhZvWPYNnTmvRspxCvAYO3Twm\
-        OB4FUZLDX9kylINw/ajw0gng/K+I6z8cYOUbLIpERzENawSmgstcOafiHLtfjp8B5tBlT1q\
-        48K5mgrp05jaXuvmOgz0HdsSMfqOW+bOgn0zCqnHT2xER9Yd7VDSFqP9kcrJsNuYWr7qGJY\
-        9tb3nyLC8d7qUweMug4gcn6By6AyPHD6gCLo8FUqaGYTd+0IKp/aJNsmT8yq4p4K1anuN62\
-        qL+QhFMMX/b/dJ8LjHhqAHaAHO8ZZymG6bn9CWqqMOr0w/+jB2vVNgJaRQYAsI/OoFcZYtm\
-        QLYIhVk7waVg188HvbyVF1l3glkZsm7wrUACt8UAm8xFw="

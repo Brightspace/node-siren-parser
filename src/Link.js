@@ -1,10 +1,7 @@
-'use strict';
+import assert from './assert';
+import {contains} from './util';
 
-const
-	assert = require('./assert'),
-	util = require('./util');
-
-function Link(link) {
+export default function Link(link) {
 	if (link instanceof Link) {
 		return link;
 	}
@@ -49,7 +46,5 @@ Link.prototype.toJSON = function() {
 };
 
 Link.prototype.hasClass = function(cls) {
-	return this.class instanceof Array && util.contains(this.class, cls);
+	return this.class instanceof Array && contains(this.class, cls);
 };
-
-module.exports = Link;

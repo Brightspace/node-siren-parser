@@ -1,19 +1,11 @@
-/* global describe, it, beforeEach */
+import Action from '../src/Action';
+import Entity from '../src/index';
+import {expect, use} from 'chai';
+import Field from '../src/Field';
+import Link from '../src/Link';
+import sirenChai from '../src/chaiPlugin.js';
 
-'use strict';
-
-const
-	chai = require('chai'),
-	expect = chai.expect;
-
-const
-	Action = require('../src/Action'),
-	Entity = require('../'),
-	Field = require('../src/Field'),
-	Link = require('../src/Link'),
-	sirenChai = require('../chai');
-
-chai.use(sirenChai);
+use(sirenChai);
 
 describe('Chai Plugin v2', function() {
 	let

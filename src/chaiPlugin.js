@@ -1,12 +1,9 @@
-'use strict';
+import Action from './Action';
+import Entity from './index';
+import Field from './Field';
+import Link from './Link';
 
-const
-	Action = require('./Action'),
-	Entity = require('./Entity'),
-	Field = require('./Field'),
-	Link = require('./Link');
-
-module.exports = function(chai, utils) {
+export default function(chai, utils) {
 	const Assertion = chai.Assertion;
 
 	// .all.
@@ -135,4 +132,4 @@ module.exports = function(chai, utils) {
 	}
 	objectProperty('sirenProperty', 'properties', Entity);
 	objectProperty('sirenProperties', 'properties', Entity);
-};
+}

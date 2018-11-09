@@ -1,7 +1,5 @@
-'use strict';
-
-module.exports = function(expectation, msg) {
+export default function(expectation, msg) {
 	if (!expectation) {
 		throw new Error(msg);
 	}
-};
+}

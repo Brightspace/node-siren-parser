@@ -1,7 +1,8 @@
 node_modules
 coverage
 dist
-
+.nyc_output
 *.log
 *.swo
 *.swp
+package-lock.json

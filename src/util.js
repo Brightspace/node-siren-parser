@@ -1,6 +1,4 @@
-'use strict';
-
-function contains(arrayLike, stringOrRegex) {
+export function contains(arrayLike, stringOrRegex) {
 	if ('string' === typeof stringOrRegex) {
 		return arrayLike.indexOf(stringOrRegex) > -1;
 	}
@@ -12,7 +10,7 @@ function contains(arrayLike, stringOrRegex) {
 	return (match !== undefined);
 }
 
-function hasProperty(objectLike, stringOrRegex) {
+export function hasProperty(objectLike, stringOrRegex) {
 	if ('string' === typeof stringOrRegex) {
 		return objectLike.hasOwnProperty(stringOrRegex);
 	}
@@ -20,7 +18,7 @@ function hasProperty(objectLike, stringOrRegex) {
 	return contains(Object.keys(objectLike), stringOrRegex);
 }
 
-function getMatchingValue(objectLike, stringOrRegex) {
+export function getMatchingValue(objectLike, stringOrRegex) {
 	if ('string' === typeof stringOrRegex) {
 		return objectLike[stringOrRegex];
 	}
@@ -35,7 +33,7 @@ function getMatchingValue(objectLike, stringOrRegex) {
 	}
 }
 
-function getMatchingValuesByAll(arrayLike, arrayOfStringOrRegex, propertyToMatch) {
+export function getMatchingValuesByAll(arrayLike, arrayOfStringOrRegex, propertyToMatch) {
 	if (!Array.isArray(arrayOfStringOrRegex) || !propertyToMatch) {
 		return [];
 	}
@@ -56,10 +54,3 @@ function getMatchingValuesByAll(arrayLike, arrayOfStringOrRegex, propertyToMatch
 
 	return results;
 }
-
-module.exports = {
-	contains: contains,
-	hasProperty: hasProperty,
-	getMatchingValue: getMatchingValue,
-	getMatchingValuesByAll: getMatchingValuesByAll
-};
