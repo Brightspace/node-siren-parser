@@ -1,11 +1,8 @@
-'use strict';
+import assert from './assert';
+import Action from './Action';
+import Entity from './index';
 
-const
-	assert = require('assert'),
-	Action = require('./Action'),
-	Entity = require('./Entity');
-
-function parseSiren(res, fn) {
+export function parse(res, fn) {
 	if ('string' === typeof res) {
 		return new Entity(res);
 	}
@@ -54,7 +51,7 @@ function submitHelper(req) {
 	};
 }
 
-function performAction(request, action) {
+export function perform(request, action) {
 	assert(request);
 	assert(action instanceof Action);
 	return request[action.method.toLowerCase()](action.href)
@@ -62,8 +59,3 @@ function performAction(request, action) {
 		.type(action.type)
 		.submit(action.fields || []);
 }
-
-module.exports = {
-	parse: parseSiren,
-	perform: performAction
-};

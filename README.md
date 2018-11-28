@@ -4,24 +4,34 @@
 
 Parses a Siren object (or Siren JSON string) into an Entity object that is intended to be easier to work with and test, and prevent having to parse replies from Siren APIs manually. Fully implements the [Siren spec](siren), including all restrictions and requirements on entities, links, fields, etc. Kinda complements [node-siren-writer](node-siren-writer), in that they're intended to sort of be opposites. Also includes a plugin for use with [chai](chai).
 
+## Installation
+
+Install from NPM:
+```shell
+npm install siren-parser
+```
+
 ## Usage
 
-There are three ways to use `node-siren-parser`'s functionality.
+There are three ways to use `siren-parser`'s functionality.
 
-1. You can install it from npm using
-   ```bash
-   npm install siren-parser
+1. In Node.js, `require` it as you would any other NPM package:
+   ```javascript
+   const SirenParse = require('siren-parser');
+   var parsedEntity = SirenParse('{"class":["foo","bar"]}');
    ```
-   and then `require` it as you would any other npm package.
 
-2. An HTML import version of the parser is available via [`siren-parser-import`](https://github.com/Brightspace/siren-parser-import) (recommended approach for client-side usage).
+2. An ES6 module is available as well for import:
+   ```javascript
+   import SirenParse from 'siren-parser';
+   var parsedEntity = SirenParse('{"class":["foo","bar"]}');
+   ```
 
-3. Alternatively, the parser is browserified and stored on the Brightspace CDN for client-side usage
+3. An ES6 module installed on the window as a global:
    ```html
-   <script src="https://s.brightspace.com/lib/siren-parser/{version}/siren-parser.js"></script>
-
+   <script type="module" src="siren-parser/global.js"></script>
    <script>
-   var parsedEntity = window.D2L.Hypermedia.Siren.Parse('{"class":["foo","bar"]}');
+   var parsedEntity = D2L.Hypermedia.Siren.Parse('{"class":["foo","bar"]}');
    </script>
    ```
    Note that this is a `deumdify`'d browser bundle, which should prevent collisions with other modules on the page that are exposed by browserify's standalone UMD bundle.

@@ -1,22 +1,16 @@
-/* global describe, it, beforeEach, afterEach */
-
-'use strict';
+import Action from '../src/Action';
+import Entity from '../src/index';
+import {expect, use} from 'chai';
+import sirenChai from '../src/chaiPlugin';
+import {parse, perform} from '../src/superagent';
+import sinonChai from 'sinon-chai';
 
 const
-	chai = require('chai'),
-	expect = chai.expect,
 	nock = require('nock'),
-	sinonChai = require('sinon-chai'),
 	request = require('supertest');
 
-const
-	Action = require('../src/Action'),
-	Entity = require('../'),
-	sirenChai = require('../chai'),
-	sirenSuperagent = require('../superagent');
-
-chai.use(sinonChai);
-chai.use(sirenChai);
+use(sinonChai);
+use(sirenChai);
 
 describe('Siren Superagent Plugin', function() {
 	let app, src;
@@ -40,7 +34,7 @@ describe('Siren Superagent Plugin', function() {
 
 			request(src)
 				.get('/')
-				.parse(sirenSuperagent.parse)
+				.parse(parse)
 				.expect(200)
 				.expect(function(res) {
 					expect(res.body).to.be.an.instanceof(Entity);
@@ -56,7 +50,7 @@ describe('Siren Superagent Plugin', function() {
 
 			request(src)
 				.get('/')
-				.parse(sirenSuperagent.parse)
+				.parse(parse)
 				.end(function(err, res) {
 					expect(err).to.be.an.instanceof(SyntaxError);
 					expect(res).to.be.undefined;
@@ -65,7 +59,7 @@ describe('Siren Superagent Plugin', function() {
 		});
 
 		it('should parse a string as a siren entity', function() {
-			const entity = sirenSuperagent.parse('{}');
+			const entity = parse('{}');
 			expect(entity).to.be.an.instanceof(Entity);
 		});
 	});
@@ -89,7 +83,7 @@ describe('Siren Superagent Plugin', function() {
 				.reply(200);
 
 			const action = buildAction();
-			sirenSuperagent.perform(request(src), action)
+			perform(request(src), action)
 				.expect(200)
 				.end(done);
 		});
@@ -108,7 +102,7 @@ describe('Siren Superagent Plugin', function() {
 					}
 				];
 				const action = buildAction();
-				sirenSuperagent.perform(request(src), action)
+				perform(request(src), action)
 					.expect(200)
 					.end(done);
 			});
@@ -127,7 +121,7 @@ describe('Siren Superagent Plugin', function() {
 					}
 				];
 				const action = buildAction();
-				sirenSuperagent.perform(request(src), action)
+				perform(request(src), action)
 					.expect(200)
 					.end(done);
 			});
@@ -147,7 +141,7 @@ describe('Siren Superagent Plugin', function() {
 				.reply(200);
 
 			const action = buildAction();
-			sirenSuperagent.perform(request(src), action)
+			perform(request(src), action)
 				.submit([
 					{
 						name: 'query',
@@ -165,7 +159,7 @@ describe('Siren Superagent Plugin', function() {
 				.reply(200);
 
 			const action = buildAction();
-			sirenSuperagent.perform(request(src), action)
+			perform(request(src), action)
 				.submit({query: 'parameter'})
 				.expect(200)
 				.end(done);
@@ -178,7 +172,7 @@ describe('Siren Superagent Plugin', function() {
 				.reply(200);
 
 			const action = buildAction();
-			sirenSuperagent.perform(request(src), action)
+			perform(request(src), action)
 				.submit('query=parameter')
 				.expect(200)
 				.end(done);

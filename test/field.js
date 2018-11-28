@@ -1,15 +1,9 @@
-/* global describe, it, beforeEach, afterEach */
+import {expect, use} from 'chai';
+import Field from '../src/Field';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
 
-'use strict';
-
-const
-	chai = require('chai'),
-	expect = chai.expect,
-	sinon = require('sinon');
-
-const Field = require('../src/Field');
-
-chai.use(require('sinon-chai'));
+use(sinonChai);
 
 describe('Field', function() {
 	let
@@ -20,7 +14,7 @@ describe('Field', function() {
 	beforeEach(function() {
 		resource = {};
 		siren = undefined;
-		sandbox = sinon.sandbox.create();
+		sandbox = sinon.createSandbox();
 		sandbox.stub(console, 'error');
 		sandbox.stub(console, 'warn');
 	});
