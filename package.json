@@ -4,6 +4,7 @@
   "description": "Pretty much the opposite of dominicbarnes/node-siren-writer",
   "main": "dist/index.js",
   "module": "src/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "build": "babel src --out-dir ./dist --source-maps --plugins=add-module-exports",
     "lint": "eslint src test --ext .js",
