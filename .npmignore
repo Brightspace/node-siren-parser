@@ -3,6 +3,7 @@ coverage
 
 .npmignore
 .gitignore
+.nyc_output
 *.tgz
 
 .editorconfig
@@ -11,5 +12,6 @@ coverage
 .travis.yml
 travis-deploy.sh
 .npmrc*
+.eslintrc.json
 
 test
