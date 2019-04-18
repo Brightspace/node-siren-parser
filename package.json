@@ -1,6 +1,6 @@
 {
   "name": "siren-parser",
-  "version": "8.0.0",
+  "version": "8.1.0",
   "description": "Pretty much the opposite of dominicbarnes/node-siren-writer",
   "main": "dist/index.js",
   "module": "src/index.js",
