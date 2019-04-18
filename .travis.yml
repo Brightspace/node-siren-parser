@@ -1,5 +1,8 @@
 language: node_js
 node_js: node
+script:
+- npm run test
+- npm run build
 after_success:
   - npm run report-cov
 deploy: # Travis will remove the dist/ folder before deploy if we don't include this
