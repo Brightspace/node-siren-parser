@@ -3,8 +3,11 @@ export function contains(arrayLike, stringOrRegex) {
 		return arrayLike.indexOf(stringOrRegex) > -1;
 	}
 
-	const match = arrayLike.find(function(item) {
-		return item.match(stringOrRegex);
+	var match;
+	arrayLike.forEach(function(item) {
+		if (item.match(stringOrRegex)) {
+			match = item.match(stringOrRegex);
+		}
 	});
 
 	return (match !== undefined);
