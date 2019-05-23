@@ -6,7 +6,7 @@ export function contains(arrayLike, stringOrRegex) {
 	var match;
 	arrayLike.forEach(function(item) {
 		if (item.match(stringOrRegex)) {
-			match = item.match(stringOrRegex);
+			return match = item.match(stringOrRegex);
 		}
 	});
 
