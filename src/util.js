@@ -3,12 +3,13 @@ export function contains(arrayLike, stringOrRegex) {
 		return arrayLike.indexOf(stringOrRegex) > -1;
 	}
 
-	var match;
-	arrayLike.forEach(function(item) {
-		if (item.match(stringOrRegex)) {
-			return match = item.match(stringOrRegex);
+	let match;
+	for (let i = 0; i < arrayLike.length; i++) {
+		if (arrayLike[i].match(stringOrRegex)) {
+			match = arrayLike[i].match(stringOrRegex);
+			break;
 		}
-	});
+	}
 
 	return (match !== undefined);
 }
