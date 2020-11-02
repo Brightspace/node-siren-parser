@@ -124,6 +124,14 @@ describe('Field', function() {
 		});
 	});
 
+	describe('pass-through', function() {
+		it('should pass unspecified fields through', function() {
+			resource.options = [{ value: 'Foo' }, { value: 'Bar' }];
+			siren = buildField();
+			expect(siren.options[1].value).to.equal('Bar');
+		});
+	});
+
 	describe('toJSON', function() {
 		function toJSON() {
 			return JSON.stringify(buildField());

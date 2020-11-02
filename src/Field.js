@@ -40,33 +40,11 @@ export default function Field(field) {
 	assert('undefined' === typeof field.title || 'string' === typeof field.title,
 		'field.title must be a string or undefined, got ' + JSON.stringify(field.title));
 
-	this.name = field.name;
-
-	if (field.class) {
-		this.class = field.class;
-	}
-
-	if (field.type) {
-		this.type = field.type;
-	}
-
-	if (field.hasOwnProperty('value')) {
-		this.value = field.value;
-	}
-
-	if (field.title) {
-		this.title = field.title;
-	}
+	Object.assign(this, field);
 }
 
 Field.prototype.toJSON = function() {
-	return {
-		name: this.name,
-		class: this.class,
-		type: this.type,
-		value: this.value,
-		title: this.title
-	};
+	return Object.assign({}, this);
 };
 
 Field.prototype.hasClass = function(cls) {
