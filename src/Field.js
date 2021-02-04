@@ -39,6 +39,10 @@ export default function Field(field) {
 		'field.type must be a valid field type string or undefined, got ' + JSON.stringify(field.type));
 	assert('undefined' === typeof field.title || 'string' === typeof field.title,
 		'field.title must be a string or undefined, got ' + JSON.stringify(field.title));
+	assert('undefined' === typeof field.min || 'number' === typeof field.min,
+		'field.min must be a number or undefined, got ' + JSON.stringify(field.min));
+	assert('undefined' === typeof field.max || 'number' === typeof field.max,
+		'field.max must be a number or undefined, got ' + JSON.stringify(field.max));
 
 	this.name = field.name;
 
@@ -57,6 +61,14 @@ export default function Field(field) {
 	if (field.title) {
 		this.title = field.title;
 	}
+
+	if (field.min) {
+		this.min = field.min;
+	}
+
+	if (field.max) {
+		this.max = field.max;
+	}
 }
 
 Field.prototype.toJSON = function() {
@@ -65,7 +77,9 @@ Field.prototype.toJSON = function() {
 		class: this.class,
 		type: this.type,
 		value: this.value,
-		title: this.title
+		title: this.title,
+		min: this.min,
+		max: this.max
 	};
 };
 

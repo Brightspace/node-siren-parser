@@ -124,6 +124,32 @@ describe('Field', function() {
 		});
 	});
 
+	describe('min', function() {
+		it('should parse min', function() {
+			resource.min = 1;
+			siren = buildField();
+			expect(siren.min).to.equal(1);
+		});
+
+		it('should require min be a number, if supplied', function() {
+			resource.min = '1';
+			expect(buildField.bind(undefined, resource)).to.throw('field.min must be a number or undefined, got "1"');
+		});
+	});
+
+	describe('max', function() {
+		it('should parse max', function() {
+			resource.max = 9999;
+			siren = buildField();
+			expect(siren.max).to.equal(9999);
+		});
+
+		it('should require max be a number, if supplied', function() {
+			resource.max = '9999';
+			expect(buildField.bind(undefined, resource)).to.throw('field.max must be a number or undefined, got "9999"');
+		});
+	});
+
 	describe('toJSON', function() {
 		function toJSON() {
 			return JSON.stringify(buildField());
@@ -160,6 +186,20 @@ describe('Field', function() {
 			resource.type = 'text';
 			expect(toJSON()).to.equal(
 				'{"name":"foo","type":"text"}'
+			);
+		});
+
+		it('should stringify min', function() {
+			resource.min = 1;
+			expect(toJSON()).to.equal(
+				'{"name":"foo","min":1}'
+			);
+		});
+
+		it('should stringify max', function() {
+			resource.max = 9999;
+			expect(toJSON()).to.equal(
+				'{"name":"foo","max":9999}'
 			);
 		});
 	});

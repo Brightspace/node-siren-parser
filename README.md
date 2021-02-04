@@ -295,6 +295,8 @@ Attributes:
 * `class` (array of strings)
 * `type` (string) _Must be a [Siren Field type][field types]_
 * `title` (string)
+* `min` (number)
+* `max` (number)
 
 #### `Field.hasClass(String class)`
 
