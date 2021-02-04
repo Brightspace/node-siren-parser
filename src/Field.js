@@ -42,7 +42,7 @@ export default function Field(field) {
 	assert('undefined' === typeof field.min || 'number' === typeof field.min,
 		'field.min must be a number or undefined, got ' + JSON.stringify(field.min));
 	assert('undefined' === typeof field.max || 'number' === typeof field.max,
-		'field.min must be a number or undefined, got ' + JSON.stringify(field.max));
+		'field.max must be a number or undefined, got ' + JSON.stringify(field.max));
 
 	this.name = field.name;
 
