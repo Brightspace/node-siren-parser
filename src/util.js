@@ -16,7 +16,7 @@ export function contains(arrayLike, stringOrRegex) {
 
 export function hasProperty(objectLike, stringOrRegex) {
 	if ('string' === typeof stringOrRegex) {
-		return objectLike.hasOwnProperty(stringOrRegex);
+		return Object.prototype.hasOwnProperty.call(objectLike, stringOrRegex);
 	}
 
 	return contains(Object.keys(objectLike), stringOrRegex);

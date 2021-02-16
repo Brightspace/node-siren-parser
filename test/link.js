@@ -1,4 +1,4 @@
-import {expect, use} from 'chai';
+import { expect, use } from 'chai';
 import Link from '../src/Link';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';

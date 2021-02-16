@@ -1,5 +1,5 @@
 import assert from './assert';
-import {contains} from './util';
+import { contains } from './util';
 
 export default function Link(link) {
 	if (link instanceof Link) {
