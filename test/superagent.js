@@ -1,8 +1,8 @@
 import Action from '../src/Action';
 import Entity from '../src/index';
-import {expect, use} from 'chai';
+import { expect, use } from 'chai';
 import sirenChai from '../src/chaiPlugin';
-import {parse, perform} from '../src/superagent';
+import { parse, perform } from '../src/superagent';
 import sinonChai from 'sinon-chai';
 
 const
@@ -91,7 +91,7 @@ describe('Siren Superagent Plugin', function() {
 		function testMethodWithQuery(method) {
 			it('should perform a ' + method + ' action with fields', function(done) {
 				app = nock(src)[method.toLowerCase()]('/')
-					.query({query: 'parameter'})
+					.query({ query: 'parameter' })
 					.reply(200);
 
 				resource.method = method;
@@ -137,7 +137,7 @@ describe('Siren Superagent Plugin', function() {
 		it('should add list of fields on performed action', function(done) {
 			app = nock(src)
 				.get('/')
-				.query({query: 'parameter'})
+				.query({ query: 'parameter' })
 				.reply(200);
 
 			const action = buildAction();
@@ -155,12 +155,12 @@ describe('Siren Superagent Plugin', function() {
 		it('should add fields on performed action', function(done) {
 			app = nock(src)
 				.get('/')
-				.query({query: 'parameter'})
+				.query({ query: 'parameter' })
 				.reply(200);
 
 			const action = buildAction();
 			perform(request(src), action)
-				.submit({query: 'parameter'})
+				.submit({ query: 'parameter' })
 				.expect(200)
 				.end(done);
 		});
@@ -168,7 +168,7 @@ describe('Siren Superagent Plugin', function() {
 		it('should add fields string on performed action', function(done) {
 			app = nock(src)
 				.get('/')
-				.query({query: 'parameter'})
+				.query({ query: 'parameter' })
 				.reply(200);
 
 			const action = buildAction();

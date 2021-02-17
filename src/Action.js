@@ -1,5 +1,5 @@
 import assert from './assert';
-import {contains, getMatchingValue, getMatchingValuesByAll, hasProperty} from './util.js';
+import { contains, getMatchingValue, getMatchingValuesByAll, hasProperty } from './util.js';
 import Field from './Field';
 
 export default function Action(action) {

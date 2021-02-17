@@ -26,7 +26,7 @@ export function parse(res, fn) {
 function flattenFields(fields) {
 	const fieldsObj = {};
 	fields.forEach(function(field) {
-		if (!fields.hasOwnProperty(field.name)) {
+		if (!Object.prototype.hasOwnProperty.call(fields, field.name)) {
 			fieldsObj[field.name] = field.value;
 		}
 	});

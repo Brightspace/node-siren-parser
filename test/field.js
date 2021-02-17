@@ -1,4 +1,4 @@
-import {expect, use} from 'chai';
+import { expect, use } from 'chai';
 import Field from '../src/Field';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';

@@ -1,5 +1,5 @@
 import assert from './assert';
-import {contains} from './util';
+import { contains } from './util';
 
 const VALID_TYPES = [
 	'hidden',
@@ -54,7 +54,7 @@ export default function Field(field) {
 		this.type = field.type;
 	}
 
-	if (field.hasOwnProperty('value')) {
+	if (Object.prototype.hasOwnProperty.call(field, 'value')) {
 		this.value = field.value;
 	}
 

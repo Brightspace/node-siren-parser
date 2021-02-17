@@ -347,6 +347,10 @@ There are two helper `superagent` methods included with this module, under `./su
 npm test
 ```
 
+## Releasing
+
+This repository uses the [semantic-release GitHub Action](https://github.com/BrightspaceUI/actions/tree/master/semantic-release) to create new versions. See [Triggering a Release](https://github.com/BrightspaceUI/actions/tree/master/semantic-release#triggering-a-release) for more information about automatically creating releases on merge.
+
 ## Contributing
 
 1. **Fork** the repository. Committing directly against this repository is highly discouraged.
