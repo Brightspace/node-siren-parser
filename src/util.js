@@ -1,4 +1,8 @@
 export function contains(arrayLike, stringOrRegex) {
+	if (!stringOrRegex) {
+		return false;
+	}
+
 	if ('string' === typeof stringOrRegex) {
 		return arrayLike.indexOf(stringOrRegex) > -1;
 	}
@@ -23,6 +27,10 @@ export function hasProperty(objectLike, stringOrRegex) {
 }
 
 export function getMatchingValue(objectLike, stringOrRegex) {
+	if (!stringOrRegex) {
+		return;
+	}
+
 	if ('string' === typeof stringOrRegex) {
 		return objectLike[stringOrRegex];
 	}
