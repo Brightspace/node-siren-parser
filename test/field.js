@@ -125,10 +125,22 @@ describe('Field', function() {
 	});
 
 	describe('min', function() {
-		it('should parse min', function() {
+		it('should parse min of 0', function() {
 			resource.min = 0;
 			siren = buildField();
 			expect(siren.min).to.equal(0);
+		});
+
+		it('should parse min of 1', function() {
+			resource.min = 1;
+			siren = buildField();
+			expect(siren.min).to.equal(1);
+		});
+
+		it ('should not have min if undefined', function() {
+			resource.min = undefined;
+			siren = buildField();
+			expect(siren.min).to.be.undefined;
 		});
 
 		it('should require min be a number, if supplied', function() {
@@ -138,10 +150,22 @@ describe('Field', function() {
 	});
 
 	describe('max', function() {
-		it('should parse max', function() {
+		it('should parse max of 0', function() {
+			resource.max = 0;
+			siren = buildField();
+			expect(siren.max).to.equal(0);
+		});
+
+		it('should parse max of 9999', function() {
 			resource.max = 9999;
 			siren = buildField();
 			expect(siren.max).to.equal(9999);
+		});
+
+		it ('should not have max if undefined', function() {
+			resource.max = undefined;
+			siren = buildField();
+			expect(siren.max).to.be.undefined;
 		});
 
 		it('should require max be a number, if supplied', function() {
