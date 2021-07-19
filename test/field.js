@@ -126,9 +126,9 @@ describe('Field', function() {
 
 	describe('min', function() {
 		it('should parse min', function() {
-			resource.min = 1;
+			resource.min = 0;
 			siren = buildField();
-			expect(siren.min).to.equal(1);
+			expect(siren.min).to.equal(0);
 		});
 
 		it('should require min be a number, if supplied', function() {

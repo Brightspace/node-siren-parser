@@ -62,11 +62,11 @@ export default function Field(field) {
 		this.title = field.title;
 	}
 
-	if (field.min) {
+	if (field.min !== undefined) {
 		this.min = field.min;
 	}
 
-	if (field.max) {
+	if (field.max !== undefined) {
 		this.max = field.max;
 	}
 }
