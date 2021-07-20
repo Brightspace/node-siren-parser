@@ -62,11 +62,11 @@ export default function Field(field) {
 		this.title = field.title;
 	}
 
-	if (field.min) {
+	if (typeof field.min === 'number') {
 		this.min = field.min;
 	}
 
-	if (field.max) {
+	if (typeof field.max === 'number') {
 		this.max = field.max;
 	}
 }
