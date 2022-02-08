@@ -46,7 +46,7 @@ export function getMatchingValue(objectLike, stringOrRegex) {
 }
 
 export function getMatchingValuesByAll(arrayLike, arrayOfStringOrRegex, propertyToMatch) {
-	if (!Array.isArray(arrayOfStringOrRegex) || !propertyToMatch) {
+	if (!Array.isArray(arrayLike) || !Array.isArray(arrayOfStringOrRegex) || !propertyToMatch) {
 		return [];
 	}
 
