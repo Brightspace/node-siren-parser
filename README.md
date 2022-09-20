@@ -23,7 +23,7 @@ There are three ways to use `siren-parser`'s functionality.
 
 2. An ES6 module is available as well for import:
    ```javascript
-   import SirenParse from 'siren-parser';
+   import { default as SirenParse } from 'siren-parser';
    var parsedEntity = SirenParse('{"class":["foo","bar"]}');
    ```
    You can also import `Action`, `Entity`, and `Link` by name if you need to add custom functionality to parsed entities.
