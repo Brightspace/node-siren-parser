@@ -399,3 +399,9 @@ Entity.prototype.getSubEntitiesByType = function(entityType) {
 	const vals = getMatchingValue(this._entitiesByType, entityType);
 	return vals ? vals.slice() : [];
 };
+
+export {
+	Entity,
+	Action,
+	Link
+};
