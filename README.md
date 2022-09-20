@@ -26,12 +26,6 @@ There are three ways to use `siren-parser`'s functionality.
    import SirenParse from 'siren-parser';
    var parsedEntity = SirenParse('{"class":["foo","bar"]}');
    ```
-   You can also import `Action`, `Entity`, and `Link` by name if you need to add custom functionality to parsed entities.
-   ```javascript
-   import SirenParse, { Action, Entity, Link } from 'siren-parser';
-   Entity.prototype.printEntity = function() { console.log(this) };
-   var parsedEntity = SirenParse('{"class":["foo","bar"]}'); // parsedEntity will have printEntity()
-   ```
 
 3. An ES6 module installed on the window as a global:
    ```html
