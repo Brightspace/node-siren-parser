@@ -17,7 +17,7 @@ There are three ways to use `siren-parser`'s functionality.
 
 1. In Node.js, `require` it as you would any other NPM package:
    ```javascript
-   const SirenParse = require('siren-parser');
+   const SirenParse = require('siren-parser').default;
    var parsedEntity = SirenParse('{"class":["foo","bar"]}');
    ```
 

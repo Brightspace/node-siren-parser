@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "module": "src/index.js",
   "scripts": {
-    "build": "babel src --out-dir ./dist --source-maps --plugins=add-module-exports",
+    "build": "babel src --out-dir ./dist --source-maps",
     "lint": "eslint src test --ext .js",
     "test": "npm run lint && npm run test:unit",
     "test:unit": "nyc mocha"
@@ -30,7 +30,6 @@
     "@babel/node": "^7.12.16",
     "@babel/preset-env": "^7.12.16",
     "@babel/register": "^7.12.13",
-    "babel-plugin-add-module-exports": "^1.0.4",
     "babel-plugin-istanbul": "^6.0.0",
     "chai": "^4.3.0",
     "eslint": "^7.20.0",
