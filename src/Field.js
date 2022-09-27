@@ -1,5 +1,5 @@
-import assert from './assert';
-import { contains } from './util';
+import assert from './assert.js';
+import { contains } from './util.js';
 
 const VALID_TYPES = [
 	'hidden',
@@ -23,66 +23,68 @@ const VALID_TYPES = [
 	'file'
 ];
 
-export default function Field(field) {
-	if (field instanceof Field) {
-		return field;
+export default class Field {
+	constructor(field) {
+		if (field instanceof Field) {
+			return field;
+		}
+		if (!(this instanceof Field)) {
+			return new Field(field);
+		}
+
+		assert('object' === typeof field, 'field must be an object, got ' + JSON.stringify(field));
+		assert('string' === typeof field.name, 'field.name must be a string, got ' + JSON.stringify(field.name));
+		assert('undefined' === typeof field.class || Array.isArray(field.class),
+			'field.class must be an array or undefined, got ' + JSON.stringify(field.class));
+		assert('undefined' === typeof field.type || ('string' === typeof field.type && VALID_TYPES.indexOf(field.type.toLowerCase()) > -1),
+			'field.type must be a valid field type string or undefined, got ' + JSON.stringify(field.type));
+		assert('undefined' === typeof field.title || 'string' === typeof field.title,
+			'field.title must be a string or undefined, got ' + JSON.stringify(field.title));
+		assert('undefined' === typeof field.min || 'number' === typeof field.min,
+			'field.min must be a number or undefined, got ' + JSON.stringify(field.min));
+		assert('undefined' === typeof field.max || 'number' === typeof field.max,
+			'field.max must be a number or undefined, got ' + JSON.stringify(field.max));
+
+		this.name = field.name;
+
+		if (field.class) {
+			this.class = field.class;
+		}
+
+		if (field.type) {
+			this.type = field.type;
+		}
+
+		if (Object.prototype.hasOwnProperty.call(field, 'value')) {
+			this.value = field.value;
+		}
+
+		if (field.title) {
+			this.title = field.title;
+		}
+
+		if (typeof field.min === 'number') {
+			this.min = field.min;
+		}
+
+		if (typeof field.max === 'number') {
+			this.max = field.max;
+		}
 	}
-	if (!(this instanceof Field)) {
-		return new Field(field);
+
+	toJSON() {
+		return {
+			name: this.name,
+			class: this.class,
+			type: this.type,
+			value: this.value,
+			title: this.title,
+			min: this.min,
+			max: this.max
+		};
 	}
 
-	assert('object' === typeof field, 'field must be an object, got ' + JSON.stringify(field));
-	assert('string' === typeof field.name, 'field.name must be a string, got ' + JSON.stringify(field.name));
-	assert('undefined' === typeof field.class || Array.isArray(field.class),
-		'field.class must be an array or undefined, got ' + JSON.stringify(field.class));
-	assert('undefined' === typeof field.type || ('string' === typeof field.type && VALID_TYPES.indexOf(field.type.toLowerCase()) > -1),
-		'field.type must be a valid field type string or undefined, got ' + JSON.stringify(field.type));
-	assert('undefined' === typeof field.title || 'string' === typeof field.title,
-		'field.title must be a string or undefined, got ' + JSON.stringify(field.title));
-	assert('undefined' === typeof field.min || 'number' === typeof field.min,
-		'field.min must be a number or undefined, got ' + JSON.stringify(field.min));
-	assert('undefined' === typeof field.max || 'number' === typeof field.max,
-		'field.max must be a number or undefined, got ' + JSON.stringify(field.max));
-
-	this.name = field.name;
-
-	if (field.class) {
-		this.class = field.class;
-	}
-
-	if (field.type) {
-		this.type = field.type;
-	}
-
-	if (Object.prototype.hasOwnProperty.call(field, 'value')) {
-		this.value = field.value;
-	}
-
-	if (field.title) {
-		this.title = field.title;
-	}
-
-	if (typeof field.min === 'number') {
-		this.min = field.min;
-	}
-
-	if (typeof field.max === 'number') {
-		this.max = field.max;
+	hasClass(cls) {
+		return this.class instanceof Array && contains(this.class, cls);
 	}
 }
-
-Field.prototype.toJSON = function() {
-	return {
-		name: this.name,
-		class: this.class,
-		type: this.type,
-		value: this.value,
-		title: this.title,
-		min: this.min,
-		max: this.max
-	};
-};
-
-Field.prototype.hasClass = function(cls) {
-	return this.class instanceof Array && contains(this.class, cls);
-};

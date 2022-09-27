@@ -1,7 +1,7 @@
 import { expect, use } from 'chai';
-import Field from '../src/Field';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import Field from '../src/Field.js';
 
 use(sinonChai);
 
@@ -34,7 +34,7 @@ describe('Field', function() {
 	});
 
 	it('should auto-instantiate', function() {
-		expect(Field(resource)).to.be.an.instanceof(Field);
+		expect(buildField(resource)).to.be.an.instanceof(Field);
 	});
 
 	it('should require the field be an object', function() {

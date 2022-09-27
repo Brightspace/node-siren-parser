@@ -1,9 +1,10 @@
-import Action from '../src/Action';
-import Entity from '../src/index';
 import { expect, use } from 'chai';
-import Link from '../src/Link';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import Action from '../src/Action.js';
+import Entity from '../src/Entity.js';
+import Link from '../src/Link.js';
+import SirenParse from '../src/index.js';
 
 use(sinonChai);
 
@@ -26,11 +27,11 @@ describe('Entity', function() {
 	});
 
 	function buildEntity() {
-		return new Entity(resource);
+		return SirenParse(resource);
 	}
 
 	it('should auto-instantiate', function() {
-		expect(Entity(resource)).to.be.an.instanceof(Entity);
+		expect(SirenParse(resource)).to.be.an.instanceof(Entity);
 	});
 
 	it('should work with stringified entity', function() {
@@ -157,7 +158,7 @@ describe('Entity', function() {
 				}]
 			}];
 			siren = buildEntity();
-			expect(siren.getSubEntity('foo').getAction('bar'))
+			expect(siren.getSubEntityByRel('foo').getActionByName('bar'))
 				.to.be.an.instanceof(Action)
 				.with.property('href', 'baz');
 		});
@@ -168,7 +169,7 @@ describe('Entity', function() {
 				title: 'bar'
 			}];
 			siren = buildEntity();
-			expect(siren.getSubEntity('foo')).to.be.an.instanceof(Entity);
+			expect(siren.getSubEntityByRel('foo')).to.be.an.instanceof(Entity);
 		});
 
 		it('should correctly identify link sub-entities', function() {
@@ -177,7 +178,7 @@ describe('Entity', function() {
 				href: 'bar'
 			}];
 			siren = buildEntity();
-			expect(siren.getSubEntity('foo')).to.be.an.instanceof(Link);
+			expect(siren.getSubEntityByRel('foo')).to.be.an.instanceof(Link);
 		});
 
 		it('should not duplicate sub-entities with the same rel', function() {
@@ -185,7 +186,7 @@ describe('Entity', function() {
 				rel: ['foo', 'bar']
 			}];
 			siren = buildEntity();
-			expect(siren.getSubEntity('foo')).to.equal(siren.getSubEntity('bar'));
+			expect(siren.getSubEntityByRel('foo')).to.equal(siren.getSubEntityByRel('bar'));
 		});
 	});
 
@@ -266,23 +267,23 @@ describe('Entity', function() {
 	describe('helper functions', function() {
 		describe('has...', function() {
 			describe('Action', function() {
-				it('hasActionByName (hasAction)', function() {
+				it('hasActionByName', function() {
 					resource.actions = [{
 						name: 'foo',
 						href: 'bar'
 					}];
 					siren = buildEntity();
-					expect(siren.hasAction('foo')).to.be.true;
-					expect(siren.hasAction(undefined)).to.be.false;
-					expect(siren.hasAction('')).to.be.false;
-					expect(siren.hasAction(null)).to.be.false;
+					expect(siren.hasActionByName('foo')).to.be.true;
+					expect(siren.hasActionByName(undefined)).to.be.false;
+					expect(siren.hasActionByName('')).to.be.false;
+					expect(siren.hasActionByName(null)).to.be.false;
 
-					expect(siren.hasAction(/foo/)).to.be.true;
-					expect(siren.hasAction(/bar/)).to.be.false;
+					expect(siren.hasActionByName(/foo/)).to.be.true;
+					expect(siren.hasActionByName(/bar/)).to.be.false;
 
 					resource.actions = undefined;
 					siren = buildEntity();
-					expect(siren.hasAction('foo')).to.be.false;
+					expect(siren.hasActionByName('foo')).to.be.false;
 				});
 
 				it('hasActionByClass', function() {
@@ -365,112 +366,86 @@ describe('Entity', function() {
 			});
 
 			describe('Entity', function() {
-				it('hasSubEntityByRel (hasEntityByRel, hasEntity)', function() {
+				it('hasSubEntityByRel', function() {
 					resource.entities = [{
 						rel: ['foo']
 					}];
 					siren = buildEntity();
-					expect(siren.hasEntity('foo')).to.be.true;
-					expect(siren.hasEntityByRel('foo')).to.be.true;
 					expect(siren.hasSubEntityByRel('foo')).to.be.true;
 
-					expect(siren.hasEntity(/bar/)).to.be.false;
-					expect(siren.hasEntityByRel(/foo/)).to.be.true;
+					expect(siren.hasSubEntityByRel(/bar/)).to.be.false;
 					expect(siren.hasSubEntityByRel(/foo/)).to.be.true;
-					expect(siren.hasEntity(/bar/)).to.be.false;
-					expect(siren.hasEntityByRel(/foo/)).to.be.true;
+					expect(siren.hasSubEntityByRel(/bar/)).to.be.false;
 					expect(siren.hasSubEntityByRel(/foo/)).to.be.true;
 
-					expect(siren.hasEntity(undefined)).to.be.false;
-					expect(siren.hasEntityByRel(undefined)).to.be.false;
 					expect(siren.hasSubEntityByRel(undefined)).to.be.false;
-					expect(siren.hasEntity('')).to.be.false;
-					expect(siren.hasEntityByRel('')).to.be.false;
 					expect(siren.hasSubEntityByRel('')).to.be.false;
-					expect(siren.hasEntity(null)).to.be.false;
-					expect(siren.hasEntityByRel(null)).to.be.false;
 					expect(siren.hasSubEntityByRel(null)).to.be.false;
 
 					resource.entities = undefined;
 					siren = buildEntity();
-					expect(siren.hasEntity('foo')).to.be.false;
-					expect(siren.hasEntityByRel('foo')).to.be.false;
 					expect(siren.hasSubEntityByRel('foo')).to.be.false;
 				});
 
-				it('hasSubEntityByClass (hasEntityByClass)', function() {
+				it('hasSubEntityByClass', function() {
 					resource.entities = [{
 						rel: ['foo'],
 						class: ['bar']
 					}];
 					siren = buildEntity();
-					expect(siren.hasEntityByClass('bar')).to.be.true;
 					expect(siren.hasSubEntityByClass('bar')).to.be.true;
 
-					expect(siren.hasEntityByClass(/bar/)).to.be.true;
 					expect(siren.hasSubEntityByClass(/bar/)).to.be.true;
-					expect(siren.hasEntityByClass(/baz/)).to.be.false;
 					expect(siren.hasSubEntityByClass(/baz/)).to.be.false;
 
-					expect(siren.hasEntityByClass(undefined)).to.be.false;
 					expect(siren.hasSubEntityByClass(undefined)).to.be.false;
-					expect(siren.hasEntityByClass('')).to.be.false;
 					expect(siren.hasSubEntityByClass('')).to.be.false;
-					expect(siren.hasEntityByClass(null)).to.be.false;
 					expect(siren.hasSubEntityByClass(null)).to.be.false;
 
 					resource.entities = undefined;
 					siren = buildEntity();
-					expect(siren.hasEntityByClass('bar')).to.be.false;
 					expect(siren.hasSubEntityByClass('bar')).to.be.false;
 				});
 
-				it('hasSubEntityByType (hasSubEntityByType)', function() {
+				it('hasSubEntityByType', function() {
 					resource.entities = [{
 						rel: ['foo'],
 						type: 'bar'
 					}];
 					siren = buildEntity();
-					expect(siren.hasEntityByType('bar')).to.be.true;
 					expect(siren.hasSubEntityByType('bar')).to.be.true;
 
-					expect(siren.hasEntityByType(/bar/)).to.be.true;
 					expect(siren.hasSubEntityByType(/bar/)).to.be.true;
-					expect(siren.hasEntityByType(/baz/)).to.be.false;
 					expect(siren.hasSubEntityByType(/baz/)).to.be.false;
 
-					expect(siren.hasEntityByType(undefined)).to.be.false;
 					expect(siren.hasSubEntityByType(undefined)).to.be.false;
-					expect(siren.hasEntityByType('')).to.be.false;
 					expect(siren.hasSubEntityByType('')).to.be.false;
-					expect(siren.hasEntityByType(null)).to.be.false;
 					expect(siren.hasSubEntityByType(null)).to.be.false;
 
 					resource.entities = undefined;
 					siren = buildEntity();
-					expect(siren.hasEntityByType('bar')).to.be.false;
 					expect(siren.hasSubEntityByType('bar')).to.be.false;
 				});
 			});
 
 			describe('Link', function() {
-				it('hasLinkByRel (hasLink)', function() {
+				it('hasLinkByRel', function() {
 					resource.links = [{
 						rel: ['foo'],
 						href: 'bar'
 					}];
 					siren = buildEntity();
-					expect(siren.hasLink('foo')).to.be.true;
-					expect(siren.hasLink(undefined)).to.be.false;
-					expect(siren.hasLink('')).to.be.false;
-					expect(siren.hasLink(null)).to.be.false;
+					expect(siren.hasLinkByRel('foo')).to.be.true;
+					expect(siren.hasLinkByRel(undefined)).to.be.false;
+					expect(siren.hasLinkByRel('')).to.be.false;
+					expect(siren.hasLinkByRel(null)).to.be.false;
 
-					expect(siren.hasLink(/foo/)).to.be.true;
-					expect(siren.hasLink(/bar/)).to.be.false;
+					expect(siren.hasLinkByRel(/foo/)).to.be.true;
+					expect(siren.hasLinkByRel(/bar/)).to.be.false;
 
 					resource.links = undefined;
 					siren = buildEntity();
-					expect(siren.hasLink('foo')).to.be.false;
+					expect(siren.hasLinkByRel('foo')).to.be.false;
 				});
 
 				it('hasLinkByClass', function() {
@@ -535,17 +510,17 @@ describe('Entity', function() {
 
 		describe('get...', function() {
 			describe('Action', function() {
-				it('getActionByName (getAction)', function() {
+				it('getActionByName', function() {
 					resource.actions = [{
 						name: 'foo',
 						href: 'bar'
 					}];
 					siren = buildEntity();
-					expect(siren.getAction('foo')).to.have.property('href', 'bar');
-					expect(siren.getAction(/foo/)).to.have.property('href', 'bar');
-					expect(siren.getAction(undefined)).to.be.undefined;
-					expect(siren.getAction('')).to.be.undefined;
-					expect(siren.getAction(null)).to.be.undefined;
+					expect(siren.getActionByName('foo')).to.have.property('href', 'bar');
+					expect(siren.getActionByName(/foo/)).to.have.property('href', 'bar');
+					expect(siren.getActionByName(undefined)).to.be.undefined;
+					expect(siren.getActionByName('')).to.be.undefined;
+					expect(siren.getActionByName(null)).to.be.undefined;
 				});
 
 				it('getActionByClass', function() {
@@ -746,27 +721,27 @@ describe('Entity', function() {
 					siren = buildEntity();
 				});
 
-				it('getLinkByRel (getLink)', function() {
-					expect(siren.getLink('foo')).to.have.property('href', 'bar');
-					expect(siren.getLink(/foo/)).to.have.property('href', 'bar');
-					expect(siren.getLink('nope')).to.be.undefined;
-					expect(siren.getLink(/nope/)).to.be.undefined;
-					expect(siren.getLink(undefined)).to.be.undefined;
-					expect(siren.getLink('')).to.be.undefined;
-					expect(siren.getLink(null)).to.be.undefined;
+				it('getLinkByRel', function() {
+					expect(siren.getLinkByRel('foo')).to.have.property('href', 'bar');
+					expect(siren.getLinkByRel(/foo/)).to.have.property('href', 'bar');
+					expect(siren.getLinkByRel('nope')).to.be.undefined;
+					expect(siren.getLinkByRel(/nope/)).to.be.undefined;
+					expect(siren.getLinkByRel(undefined)).to.be.undefined;
+					expect(siren.getLinkByRel('')).to.be.undefined;
+					expect(siren.getLinkByRel(null)).to.be.undefined;
 				});
 
-				it('getLinksByRel (getLinks)', function() {
-					expect(siren.getLinks('foo')).to.be.an.instanceof(Array).with.lengthOf(2);
-					expect(siren.getLinks(/foo/)).to.be.an.instanceof(Array).with.lengthOf(2);
-					expect(siren.getLinks('nope')).to.be.an.instanceof(Array).and.to.be.empty;
-					expect(siren.getLinks(/nope/)).to.be.an.instanceof(Array).and.to.be.empty;
-					expect(siren.getLinks(undefined)).to.be.an.instanceof(Array).and.to.be.empty;
-					expect(siren.getLinks('')).to.be.an.instanceof(Array).and.to.be.empty;
-					expect(siren.getLinks(null)).to.be.an.instanceof(Array).and.to.be.empty;
+				it('getLinksByRel', function() {
+					expect(siren.getLinksByRel('foo')).to.be.an.instanceof(Array).with.lengthOf(2);
+					expect(siren.getLinksByRel(/foo/)).to.be.an.instanceof(Array).with.lengthOf(2);
+					expect(siren.getLinksByRel('nope')).to.be.an.instanceof(Array).and.to.be.empty;
+					expect(siren.getLinksByRel(/nope/)).to.be.an.instanceof(Array).and.to.be.empty;
+					expect(siren.getLinksByRel(undefined)).to.be.an.instanceof(Array).and.to.be.empty;
+					expect(siren.getLinksByRel('')).to.be.an.instanceof(Array).and.to.be.empty;
+					expect(siren.getLinksByRel(null)).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
-				it('getLinkByRels)', function() {
+				it('getLinkByRels', function() {
 					expect(siren.getLinkByRels(['foo', 'foo2'])).to.have.property('href', 'bar2');
 					expect(siren.getLinkByRels([/foo/, /foo2/])).to.have.property('href', 'bar2');
 					expect(siren.getLinkByRels(['foo', /foo2/])).to.have.property('href', 'bar2');
@@ -788,11 +763,6 @@ describe('Entity', function() {
 					expect(siren.getLinksByRels([undefined])).to.be.an.instanceof(Array).and.to.be.empty;
 					expect(siren.getLinksByRels([''])).to.be.an.instanceof(Array).and.to.be.empty;
 					expect(siren.getLinksByRels([null])).to.be.an.instanceof(Array).and.to.be.empty;
-				});
-
-				it('getLinks should return a new array', function() {
-					expect(siren.getLinks('foo')).to.not.equal(siren.getLinks('foo'));
-					expect(siren.getLinks(/foo/)).to.not.equal(siren.getLinks('foo'));
 				});
 
 				it('getLinkByClass', function() {
@@ -886,24 +856,24 @@ describe('Entity', function() {
 					siren = buildEntity();
 				});
 
-				it('getSubEntityByRel (getSubEntity)', function() {
-					expect(siren.getSubEntity('foo')).to.have.property('title', 'bar');
-					expect(siren.getSubEntity(/foo/)).to.have.property('title', 'bar');
-					expect(siren.getSubEntity('nope')).to.be.undefined;
-					expect(siren.getSubEntity(/nope/)).to.be.undefined;
-					expect(siren.getSubEntity(undefined)).to.be.undefined;
-					expect(siren.getSubEntity('')).to.be.undefined;
-					expect(siren.getSubEntity(null)).to.be.undefined;
+				it('getSubEntityByRel', function() {
+					expect(siren.getSubEntityByRel('foo')).to.have.property('title', 'bar');
+					expect(siren.getSubEntityByRel(/foo/)).to.have.property('title', 'bar');
+					expect(siren.getSubEntityByRel('nope')).to.be.undefined;
+					expect(siren.getSubEntityByRel(/nope/)).to.be.undefined;
+					expect(siren.getSubEntityByRel(undefined)).to.be.undefined;
+					expect(siren.getSubEntityByRel('')).to.be.undefined;
+					expect(siren.getSubEntityByRel(null)).to.be.undefined;
 				});
 
-				it('getSubEntitiesByRel (getSubEntities)', function() {
-					expect(siren.getSubEntities('foo')).to.be.an.instanceof(Array).with.lengthOf(2);
-					expect(siren.getSubEntities(/foo/)).to.be.an.instanceof(Array).with.lengthOf(2);
-					expect(siren.getSubEntities('nope')).to.be.an.instanceof(Array).and.to.be.empty;
-					expect(siren.getSubEntities(/nope/)).to.be.an.instanceof(Array).and.to.be.empty;
-					expect(siren.getSubEntities(undefined)).to.be.an.instanceof(Array).and.to.be.empty;
-					expect(siren.getSubEntities('')).to.be.an.instanceof(Array).and.to.be.empty;
-					expect(siren.getSubEntities(null)).to.be.an.instanceof(Array).and.to.be.empty;
+				it('getSubEntitiesByRel', function() {
+					expect(siren.getSubEntitiesByRel('foo')).to.be.an.instanceof(Array).with.lengthOf(2);
+					expect(siren.getSubEntitiesByRel(/foo/)).to.be.an.instanceof(Array).with.lengthOf(2);
+					expect(siren.getSubEntitiesByRel('nope')).to.be.an.instanceof(Array).and.to.be.empty;
+					expect(siren.getSubEntitiesByRel(/nope/)).to.be.an.instanceof(Array).and.to.be.empty;
+					expect(siren.getSubEntitiesByRel(undefined)).to.be.an.instanceof(Array).and.to.be.empty;
+					expect(siren.getSubEntitiesByRel('')).to.be.an.instanceof(Array).and.to.be.empty;
+					expect(siren.getSubEntitiesByRel(null)).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
 				it('getSubEntityByRels', function() {
@@ -928,11 +898,6 @@ describe('Entity', function() {
 					expect(siren.getSubEntitiesByRels([undefined])).to.be.an.instanceof(Array).and.to.be.empty;
 					expect(siren.getSubEntitiesByRels([''])).to.be.an.instanceof(Array).and.to.be.empty;
 					expect(siren.getSubEntitiesByRels([null])).to.be.an.instanceof(Array).and.to.be.empty;
-				});
-
-				it('getSubEntities should return a new array', function() {
-					expect(siren.getSubEntities('foo')).to.not.equal(siren.getSubEntities('foo'));
-					expect(siren.getSubEntities(/foo/)).to.not.equal(siren.getSubEntities('foo'));
 				});
 
 				it('getSubEntityByClass', function() {

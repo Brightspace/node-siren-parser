@@ -1,7 +1,7 @@
 import { expect, use } from 'chai';
-import Link from '../src/Link';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import Link from '../src/Link.js';
 
 use(sinonChai);
 
@@ -35,7 +35,7 @@ describe('Link', function() {
 	});
 
 	it('should auto-instantiate', function() {
-		expect(Link(resource)).to.be.an.instanceof(Link);
+		expect(buildLink(resource)).to.be.an.instanceof(Link);
 	});
 
 	it('should require the link be an object', function() {

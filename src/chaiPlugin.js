@@ -1,7 +1,7 @@
-import Action from './Action';
-import Entity from './index';
-import Field from './Field';
-import Link from './Link';
+import Action from './Action.js';
+import Entity from './Entity.js';
+import Field from './Field.js';
+import Link from './Link.js';
 
 export default function(chai, utils) {
 	const Assertion = chai.Assertion;

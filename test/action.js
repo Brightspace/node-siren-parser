@@ -1,7 +1,7 @@
-import Action from '../src/Action';
 import { expect, use } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
+import Action from '../src/Action.js';
 
 use(sinonChai);
 
@@ -35,7 +35,7 @@ describe('Action', function() {
 	});
 
 	it('should auto-instantiate', function() {
-		expect(Action(resource)).to.be.an.instanceof(Action);
+		expect(buildAction(resource)).to.be.an.instanceof(Action);
 	});
 
 	it('should require the action be an object', function() {
@@ -156,7 +156,7 @@ describe('Action', function() {
 				name: 'foo'
 			}];
 			siren = buildAction();
-			expect(siren.hasField('foo')).to.be.true;
+			expect(siren.hasFieldByName('foo')).to.be.true;
 		});
 
 		it('should be able to retrieve fields based off their name', function() {
@@ -165,7 +165,7 @@ describe('Action', function() {
 				title: 'bar'
 			}];
 			siren = buildAction();
-			expect(siren.getField('foo')).to.have.property('title', 'bar');
+			expect(siren.getFieldByName('foo')).to.have.property('title', 'bar');
 		});
 
 		it('should be able to use field helper methods', function() {
@@ -229,22 +229,22 @@ describe('Action', function() {
 			});
 
 			describe('Field', function() {
-				it('hasFieldByName (hasField)', function() {
+				it('hasFieldByName', function() {
 					resource.fields = [{
 						name: 'foo'
 					}];
 					siren = buildAction();
-					expect(siren.hasField('foo')).to.be.true;
-					expect(siren.hasField(undefined)).to.be.false;
-					expect(siren.hasField('')).to.be.false;
-					expect(siren.hasField(null)).to.be.false;
+					expect(siren.hasFieldByName('foo')).to.be.true;
+					expect(siren.hasFieldByName(undefined)).to.be.false;
+					expect(siren.hasFieldByName('')).to.be.false;
+					expect(siren.hasFieldByName(null)).to.be.false;
 
-					expect(siren.hasField(/foo/)).to.be.true;
-					expect(siren.hasField(/bar/)).to.be.false;
+					expect(siren.hasFieldByName(/foo/)).to.be.true;
+					expect(siren.hasFieldByName(/bar/)).to.be.false;
 
 					resource.fields = undefined;
 					siren = buildAction();
-					expect(siren.hasField('foo')).to.be.false;
+					expect(siren.hasFieldByName('foo')).to.be.false;
 				});
 
 				it('hasFieldByClass', function() {
@@ -314,15 +314,15 @@ describe('Action', function() {
 					siren = buildAction();
 				});
 
-				it('getFieldByName (getField)', function() {
-					expect(siren.getField('foo')).to.have.property('title', 'bar');
-					expect(siren.getField('nope')).to.be.undefined;
-					expect(siren.getField(undefined)).to.be.undefined;
-					expect(siren.getField('')).to.be.undefined;
-					expect(siren.getField(null)).to.be.undefined;
+				it('getFieldByName', function() {
+					expect(siren.getFieldByName('foo')).to.have.property('title', 'bar');
+					expect(siren.getFieldByName('nope')).to.be.undefined;
+					expect(siren.getFieldByName(undefined)).to.be.undefined;
+					expect(siren.getFieldByName('')).to.be.undefined;
+					expect(siren.getFieldByName(null)).to.be.undefined;
 
-					expect(siren.getField(/foo/)).to.not.be.undefined;
-					expect(siren.getField(/bar/)).to.be.undefined;
+					expect(siren.getFieldByName(/foo/)).to.not.be.undefined;
+					expect(siren.getFieldByName(/bar/)).to.be.undefined;
 				});
 
 				it('getFieldByClass', function() {

@@ -1,6 +1,6 @@
 # node-siren-parser
 
-[![Build Status](https://travis-ci.org/Brightspace/node-siren-parser.svg?branch=master)](https://travis-ci.org/Brightspace/node-siren-parser) [![Coverage Status](https://coveralls.io/repos/Brightspace/node-siren-parser/badge.svg?branch=master&service=github&t=smOGqn)](https://coveralls.io/github/Brightspace/node-siren-parser?branch=master)
+![Build Status](https://github.com/Brightspace/node-siren-parser/actions/workflows/test.yml/badge.svg)[![Coverage Status](https://coveralls.io/repos/Brightspace/node-siren-parser/badge.svg?branch=master&service=github&t=smOGqn)](https://coveralls.io/github/Brightspace/node-siren-parser?branch=master)
 
 Parses a Siren object (or Siren JSON string) into an Entity object that is intended to be easier to work with and test, and prevent having to parse replies from Siren APIs manually. Fully implements the [Siren spec](siren), including all restrictions and requirements on entities, links, fields, etc. Kinda complements [node-siren-writer](node-siren-writer), in that they're intended to sort of be opposites. Also includes a plugin for use with [chai](chai).
 
@@ -13,27 +13,21 @@ npm install siren-parser
 
 ## Usage
 
-There are three ways to use `siren-parser`'s functionality.
+There are two ways to use `siren-parser`'s functionality.
 
-1. In Node.js, `require` it as you would any other NPM package:
-   ```javascript
-   const SirenParse = require('siren-parser').default;
-   var parsedEntity = SirenParse('{"class":["foo","bar"]}');
-   ```
-
-2. An ES6 module is available as well for import:
+1. Import the ES Module:
    ```javascript
    import SirenParse from 'siren-parser';
    var parsedEntity = SirenParse('{"class":["foo","bar"]}');
    ```
-   You can also import `Action`, `Entity`, and `Link` by name if you need to add custom functionality to parsed entities.
+
+   You can also import `Action`, `Entity`, `Field`, and `Link` directly.
    ```javascript
-   import SirenParse, { Action, Entity, Link } from 'siren-parser';
-   Entity.prototype.printEntity = function() { console.log(this) };
-   var parsedEntity = SirenParse('{"class":["foo","bar"]}'); // parsedEntity will have printEntity()
+   import { Action, Entity, Field, Link } from 'siren-parser';
+   var parsedEntity = new Entity('{"class":["foo","bar"]}');
    ```
 
-3. An ES6 module installed on the window as a global:
+2. Use the ES6 module installed on the window as a global:
    ```html
    <script type="module" src="siren-parser/global.js"></script>
    <script>
@@ -47,7 +41,6 @@ There are three ways to use `siren-parser`'s functionality.
 ```js
 const sirenParser = require('siren-parser');
 const sirenParserChai = require('siren-parser/chai');
-const sirenSuperagent = require('siren-parser/superagent');
 const sirenJson = {
 	title: 'My title',
 	class: ['outer'],
@@ -88,18 +81,6 @@ const resource = sirenParser(sirenJson);
 
 // ... assuming you've got all your chai stuff set up
 expect(resource).to.have.sirenAction('fancy-action');
-
-const request = require('superagent');
-sirenSuperagent.perform(request, resource.getAction('fancy-action'))
-	.submit({key: 'value'}) // overrides default field(s) specified in action
-	.parse(sirenSuperagent.parse)
-	.end(function(err, res) {
-		const resource = res.body; // parsed siren resource
-		expect(resource).to.have.sirenProperty('some-field');
-	});
-
-// Alternatively, add the parser to the global superagent parser
-request.parse['application/vnd.siren+json'] = sirenSuperagent.parse;
 ```
 
 ## API
@@ -339,13 +320,6 @@ expect(resource).to.have.sirenLinks.with.classes('foo', 'bar'); // Will pass if 
 expect(resource).to.have.sirenLinks.all.with.classes('foo', 'bar'); // Passes only if all of resource's actions have all given class
 expect(resource).to.have.a.sirenEntity.with.a.sirenEntity.with.title('foo'); // Check a sub-sub-entity's title
 ```
-
-## `superagent` interface
-
-There are two helper `superagent` methods included with this module, under `./superagent`.
-
-* `.parse(sirenSuperagent.parse)` - To be used with `superagent`'s `.parse()` method
-* `sirenSuperagent.perform(request, action)` - Returns unended `superagent` request object
 
 ## Testing
 
