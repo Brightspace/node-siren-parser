@@ -353,21 +353,11 @@ There are two helper `superagent` methods included with this module, under `./su
 npm test
 ```
 
-## Releasing
+## Versioning and Releasing
 
-This repository uses the [semantic-release GitHub Action](https://github.com/BrightspaceUI/actions/tree/master/semantic-release) to create new versions. See [Triggering a Release](https://github.com/BrightspaceUI/actions/tree/master/semantic-release#triggering-a-release) for more information about automatically creating releases on merge.
+This repo is configured to use `semantic-release`. Commits prefixed with `fix:` and `feat:` will trigger patch and minor releases when merged to `main`.
 
-## Contributing
-
-1. **Fork** the repository. Committing directly against this repository is highly discouraged.
-
-2. Make your modifications in a branch, updating and writing new tests as necessary in the `test` directory.
-
-3. Ensure that all tests pass with `npm test`
-
-4. `rebase` your changes against master. *Do not merge*.
-
-5. Submit a pull request to this repository. Wait for tests to run and someone to chime in.
+To learn how to create major releases and release from maintenance branches, refer to the [semantic-release GitHub Action](https://github.com/BrightspaceUI/actions/tree/main/semantic-release) documentation.
 
 ## Code Style
 
