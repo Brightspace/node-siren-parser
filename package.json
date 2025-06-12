@@ -7,7 +7,8 @@
     "build": "babel src --out-dir ./dist --source-maps",
     "lint": "eslint src test --ext .js",
     "test": "npm run lint && npm run test:unit",
-    "test:unit": "nyc mocha"
+    "test:unit": "nyc mocha",
+    "declarations": "npx -p typescript tsc --declaration --allowJs --emitDeclarationOnly --outDir dist --rootDir src"
   },
   "files": [
     "/dist",
