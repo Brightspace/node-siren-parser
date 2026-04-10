@@ -1,5 +1,5 @@
 import { expect, use } from 'chai';
-import Field from '../src/Field';
+import Field from '../src/Field.js';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 

@@ -11,41 +11,31 @@ npm install siren-parser
 
 ## Usage
 
-There are three ways to use `siren-parser`'s functionality.
+```javascript
+import SirenParse from 'siren-parser';
+var parsedEntity = SirenParse('{"class":["foo","bar"]}');
+```
 
-1. In Node.js, `require` it as you would any other NPM package:
-   ```javascript
-   const SirenParse = require('siren-parser').default;
-   var parsedEntity = SirenParse('{"class":["foo","bar"]}');
-   ```
+You can also import `Action`, `Entity`, and `Link` by name if you need to add custom functionality to parsed entities.
+```javascript
+import SirenParse, { Action, Entity, Link } from 'siren-parser';
+Entity.prototype.printEntity = function() { console.log(this) };
+var parsedEntity = SirenParse('{"class":["foo","bar"]}'); // parsedEntity will have printEntity()
+```
 
-2. An ES6 module is available as well for import:
-   ```javascript
-   import SirenParse from 'siren-parser';
-   var parsedEntity = SirenParse('{"class":["foo","bar"]}');
-   ```
-   You can also import `Action`, `Entity`, and `Link` by name if you need to add custom functionality to parsed entities.
-   ```javascript
-   import SirenParse, { Action, Entity, Link } from 'siren-parser';
-   Entity.prototype.printEntity = function() { console.log(this) };
-   var parsedEntity = SirenParse('{"class":["foo","bar"]}'); // parsedEntity will have printEntity()
-   ```
-
-3. An ES6 module installed on the window as a global:
-   ```html
-   <script type="module" src="siren-parser/global.js"></script>
-   <script>
-   var parsedEntity = D2L.Hypermedia.Siren.Parse('{"class":["foo","bar"]}');
-   </script>
-   ```
-   Note that this is a `deumdify`'d browser bundle, which should prevent collisions with other modules on the page that are exposed by browserify's standalone UMD bundle.
+You can also use `global.js` to set it as a global on the window:
+```html
+<script type="module" src="siren-parser/global.js"></script>
+<script>
+var parsedEntity = D2L.Hypermedia.Siren.Parse('{"class":["foo","bar"]}');
+</script>
+```
 
 ## API
 
 ```js
-const sirenParser = require('siren-parser');
-const sirenParserChai = require('siren-parser/chai');
-const sirenSuperagent = require('siren-parser/superagent');
+import sirenParser from 'siren-parser';
+import sirenChai from 'siren-parser/src/chaiPlugin.js';
 const sirenJson = {
 	title: 'My title',
 	class: ['outer'],
@@ -86,18 +76,6 @@ const resource = sirenParser(sirenJson);
 
 // ... assuming you've got all your chai stuff set up
 expect(resource).to.have.sirenAction('fancy-action');
-
-const request = require('superagent');
-sirenSuperagent.perform(request, resource.getAction('fancy-action'))
-	.submit({key: 'value'}) // overrides default field(s) specified in action
-	.parse(sirenSuperagent.parse)
-	.end(function(err, res) {
-		const resource = res.body; // parsed siren resource
-		expect(resource).to.have.sirenProperty('some-field');
-	});
-
-// Alternatively, add the parser to the global superagent parser
-request.parse['application/vnd.siren+json'] = sirenSuperagent.parse;
 ```
 
 ## API
@@ -337,13 +315,6 @@ expect(resource).to.have.sirenLinks.with.classes('foo', 'bar'); // Will pass if 
 expect(resource).to.have.sirenLinks.all.with.classes('foo', 'bar'); // Passes only if all of resource's actions have all given class
 expect(resource).to.have.a.sirenEntity.with.a.sirenEntity.with.title('foo'); // Check a sub-sub-entity's title
 ```
-
-## `superagent` interface
-
-There are two helper `superagent` methods included with this module, under `./superagent`.
-
-* `.parse(sirenSuperagent.parse)` - To be used with `superagent`'s `.parse()` method
-* `sirenSuperagent.perform(request, action)` - Returns unended `superagent` request object
 
 ## Testing
 

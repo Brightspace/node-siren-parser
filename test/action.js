@@ -1,4 +1,4 @@
-import Action from '../src/Action';
+import Action from '../src/Action.js';
 import { expect, use } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
