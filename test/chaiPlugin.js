@@ -1,8 +1,8 @@
-import Action from '../src/Action';
-import Entity from '../src/index';
+import Action from '../src/Action.js';
+import Entity from '../src/index.js';
 import { expect, use } from 'chai';
-import Field from '../src/Field';
-import Link from '../src/Link';
+import Field from '../src/Field.js';
+import Link from '../src/Link.js';
 import sirenChai from '../src/chaiPlugin.js';
 
 use(sirenChai);

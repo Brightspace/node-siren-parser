@@ -1,5 +1,5 @@
-import assert from './assert';
-import { contains } from './util';
+import assert from './assert.js';
+import { contains } from './util.js';
 
 const VALID_TYPES = [
 	'hidden',

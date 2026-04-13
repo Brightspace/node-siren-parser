@@ -1,5 +1,5 @@
 import { expect, use } from 'chai';
-import Link from '../src/Link';
+import Link from '../src/Link.js';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
