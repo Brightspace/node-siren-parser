@@ -16,14 +16,6 @@ import SirenParse from 'siren-parser';
 var parsedEntity = SirenParse('{"class":["foo","bar"]}');
 ```
 
-You can also use `global.js` to set it as a global on the window:
-```html
-<script type="module" src="siren-parser/global.js"></script>
-<script>
-var parsedEntity = D2L.Hypermedia.Siren.Parse('{"class":["foo","bar"]}');
-</script>
-```
-
 ## API
 
 ```js
