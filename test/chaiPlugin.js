@@ -7,7 +7,7 @@ import sirenChai from '../src/chaiPlugin.js';
 
 use(sirenChai);
 
-describe('Chai Plugin v2', function() {
+describe('Chai Plugin v2', () => {
 	let
 		action,
 		entity,
@@ -16,7 +16,7 @@ describe('Chai Plugin v2', function() {
 		subEntity,
 		subEntitySparse;
 
-	beforeEach(function() {
+	beforeEach(() => {
 		field = new Field({
 			name: 'name',
 			class: ['class1', 'class2'],
@@ -69,7 +69,7 @@ describe('Chai Plugin v2', function() {
 		});
 	});
 
-	it('.classes(c1, c2, ...)', function() {
+	it('.classes(c1, c2, ...)', () => {
 		expect(entity).to.have.classes('class1');
 		expect(entity).to.not.have.classes('foo');
 		expect(() => {
@@ -112,7 +112,7 @@ describe('Chai Plugin v2', function() {
 		}).to.throw();
 	});
 
-	it('.rels(r1, r2, ...)', function() {
+	it('.rels(r1, r2, ...)', () => {
 		// Uses same code as .classes(), so don't really need to test extensively
 		expect(entity).to.not.have.rels('rel1');
 		expect(subEntity).to.have.rels('rel1');
@@ -126,7 +126,7 @@ describe('Chai Plugin v2', function() {
 		}).to.throw();
 	});
 
-	it('.title(desiredTitle)', function() {
+	it('.title(desiredTitle)', () => {
 		expect(entity).to.have.title('title');
 		expect(entity).to.not.have.title('foo');
 		expect(() => {
@@ -155,7 +155,7 @@ describe('Chai Plugin v2', function() {
 		}).to.throw();
 	});
 
-	it('.href(desiredHref)', function() {
+	it('.href(desiredHref)', () => {
 		expect(action).to.have.href('http://example.com');
 		expect(link).to.have.href('http://example.com');
 		expect(() => {
@@ -166,7 +166,7 @@ describe('Chai Plugin v2', function() {
 		}).to.throw();
 	});
 
-	it('.name(desiredName)', function() {
+	it('.name(desiredName)', () => {
 		expect(action).to.have.name('name');
 		expect(field).to.have.name('name');
 		expect(() => {
@@ -177,7 +177,7 @@ describe('Chai Plugin v2', function() {
 		}).to.throw();
 	});
 
-	it('.method(desiredMethod)', function() {
+	it('.method(desiredMethod)', () => {
 		expect(action).to.have.method('GET');
 		expect(() => {
 			expect(entity).to.have.method('GET');
@@ -190,7 +190,7 @@ describe('Chai Plugin v2', function() {
 		}).to.throw();
 	});
 
-	it('.type(desiredType)', function() {
+	it('.type(desiredType)', () => {
 		expect(action).to.have.type('application/x-www-form-urlencoded');
 		expect(field).to.have.type('text');
 		expect(link).to.have.type('type');
@@ -199,7 +199,7 @@ describe('Chai Plugin v2', function() {
 		}).to.throw();
 	});
 
-	it('.value(desiredValue)', function() {
+	it('.value(desiredValue)', () => {
 		expect(field).to.have.value('value');
 		expect(() => {
 			expect(action).to.have.value('value');
@@ -212,7 +212,7 @@ describe('Chai Plugin v2', function() {
 		}).to.throw();
 	});
 
-	it('.sirenActions', function() {
+	it('.sirenActions', () => {
 		expect(entity).to.have.sirenAction;
 		expect(entity).to.have.sirenActions;
 		expect(subEntitySparse).to.not.have.sirenActions;
@@ -224,12 +224,12 @@ describe('Chai Plugin v2', function() {
 		}).to.throw();
 	});
 
-	it('.sirenEntities', function() {
+	it('.sirenEntities', () => {
 		expect(entity).to.have.sirenEntity;
 		expect(entity).to.have.sirenEntities;
 	});
 
-	it('.sirenFields', function() {
+	it('.sirenFields', () => {
 		expect(action).to.have.sirenField;
 		expect(action).to.have.sirenFields;
 		expect(() => {
@@ -237,12 +237,12 @@ describe('Chai Plugin v2', function() {
 		}).to.throw();
 	});
 
-	it('.sirenLinks', function() {
+	it('.sirenLinks', () => {
 		expect(entity).to.have.sirenLink;
 		expect(entity).to.have.sirenLinks;
 	});
 
-	it('.sirenProperties', function() {
+	it('.sirenProperties', () => {
 		expect(entity).to.have.sirenProperty;
 		expect(entity).to.have.sirenProperties;
 		expect(subEntitySparse).to.not.have.sirenProperties;

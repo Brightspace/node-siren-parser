@@ -15,9 +15,6 @@ const sirenParserTestingConfig = [
 		languageOptions: {
 			sourceType: 'module',
 		},
-		rules: {
-			'prefer-arrow-callback': 'off',
-		},
 	}
 ]
 
