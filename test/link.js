@@ -1,5 +1,5 @@
 import { expect, use } from 'chai';
-import Link from '../src/Link';
+import Link from '../src/Link.js';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
@@ -12,7 +12,10 @@ describe('Link', function() {
 		siren;
 
 	beforeEach(function() {
-		resource = {};
+		resource = {
+			rel: [],
+			href: 'foo'
+		};
 		siren = undefined;
 		sandbox = sinon.createSandbox();
 		sandbox.stub(console, 'error');
@@ -26,13 +29,6 @@ describe('Link', function() {
 	function buildLink() {
 		return new Link(resource);
 	}
-
-	beforeEach(function() {
-		resource = {
-			rel: [],
-			href: 'foo'
-		};
-	});
 
 	it('should auto-instantiate', function() {
 		expect(Link(resource)).to.be.an.instanceof(Link);

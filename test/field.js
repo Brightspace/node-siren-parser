@@ -1,5 +1,5 @@
 import { expect, use } from 'chai';
-import Field from '../src/Field';
+import Field from '../src/Field.js';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
@@ -12,7 +12,9 @@ describe('Field', function() {
 		siren;
 
 	beforeEach(function() {
-		resource = {};
+		resource = {
+			name: 'foo'
+		};
 		siren = undefined;
 		sandbox = sinon.createSandbox();
 		sandbox.stub(console, 'error');
@@ -26,12 +28,6 @@ describe('Field', function() {
 	function buildField() {
 		return new Field(resource);
 	}
-
-	beforeEach(function() {
-		resource = {
-			name: 'foo'
-		};
-	});
 
 	it('should auto-instantiate', function() {
 		expect(Field(resource)).to.be.an.instanceof(Field);

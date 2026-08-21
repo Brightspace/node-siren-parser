@@ -36,7 +36,7 @@ export function getMatchingValue(objectLike, stringOrRegex) {
 	}
 
 	const keys = Object.keys(objectLike);
-	for (var i = 0; i < keys.length; i++) {
+	for (let i = 0; i < keys.length; i++) {
 		const key = keys[i];
 
 		if (key.match(stringOrRegex)) {
@@ -51,9 +51,9 @@ export function getMatchingValuesByAll(arrayLike, arrayOfStringOrRegex, property
 	}
 
 	const results = [];
-	for (var i = 0; i < arrayLike.length; i++) {
-		var like = arrayLike[i];
-		var val = like[propertyToMatch];
+	for (let i = 0; i < arrayLike.length; i++) {
+		const like = arrayLike[i];
+		const val = like[propertyToMatch];
 
 		if (val && arrayOfStringOrRegex.every(
 			function(y) {
