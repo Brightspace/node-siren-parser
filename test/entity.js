@@ -1,7 +1,7 @@
-import Action from '../src/Action';
-import Entity from '../src/index';
 import { expect, use } from 'chai';
-import Link from '../src/Link';
+import Action from '../src/Action.js';
+import Entity from '../src/index.js';
+import Link from '../src/Link.js';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 

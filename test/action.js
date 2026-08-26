@@ -1,5 +1,5 @@
-import Action from '../src/Action';
 import { expect, use } from 'chai';
+import Action from '../src/Action.js';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
@@ -12,7 +12,10 @@ describe('Action', function() {
 		siren;
 
 	beforeEach(function() {
-		resource = {};
+		resource = {
+			name: 'foo',
+			href: 'bar'
+		};
 		siren = undefined;
 		sandbox = sinon.createSandbox();
 		sandbox.stub(console, 'error');
@@ -26,13 +29,6 @@ describe('Action', function() {
 	function buildAction() {
 		return new Action(resource);
 	}
-
-	beforeEach(function() {
-		resource = {
-			name: 'foo',
-			href: 'bar'
-		};
-	});
 
 	it('should auto-instantiate', function() {
 		expect(Action(resource)).to.be.an.instanceof(Action);

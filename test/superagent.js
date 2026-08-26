@@ -1,13 +1,11 @@
-import Action from '../src/Action';
-import Entity from '../src/index';
 import { expect, use } from 'chai';
-import sirenChai from '../src/chaiPlugin';
-import { parse, perform } from '../src/superagent';
+import { parse, perform } from '../src/superagent.js';
+import Action from '../src/Action.js';
+import Entity from '../src/index.js';
+import nock from 'nock';
+import request from 'supertest';
 import sinonChai from 'sinon-chai';
-
-const
-	nock = require('nock'),
-	request = require('supertest');
+import sirenChai from '../src/chaiPlugin.js';
 
 use(sinonChai);
 use(sirenChai);
@@ -89,7 +87,7 @@ describe('Siren Superagent Plugin', function() {
 		});
 
 		function testMethodWithQuery(method) {
-			it('should perform a ' + method + ' action with fields', function(done) {
+			it(`should perform a ${method} action with fields`, function(done) {
 				app = nock(src)[method.toLowerCase()]('/')
 					.query({ query: 'parameter' })
 					.reply(200);
@@ -109,7 +107,7 @@ describe('Siren Superagent Plugin', function() {
 		}
 
 		function testMethodWithBody(method) {
-			it('should perform a ' + method + ' action with fields', function(done) {
+			it(`should perform a ${method} action with fields`, function(done) {
 				app = nock(src)[method.toLowerCase()]('/', 'query=parameter')
 					.reply(200);
 
