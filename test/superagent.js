@@ -10,22 +10,22 @@ import sirenChai from '../src/chaiPlugin.js';
 use(sinonChai);
 use(sirenChai);
 
-describe('Siren Superagent Plugin', function() {
+describe('Siren Superagent Plugin', () => {
 	let app, src;
 
-	beforeEach(function() {
+	beforeEach(() => {
 		app = undefined;
 		src = 'http://localhost';
 	});
 
-	afterEach(function() {
+	afterEach(() => {
 		if (app) {
 			expect(app.isDone()).to.be.true;
 		}
 	});
 
-	describe('parser', function() {
-		it('should parse a json body', function(done) {
+	describe('parser', () => {
+		it('should parse a json body', done => {
 			app = nock(src)
 				.get('/')
 				.reply(200, {});
@@ -34,14 +34,14 @@ describe('Siren Superagent Plugin', function() {
 				.get('/')
 				.parse(parse)
 				.expect(200)
-				.expect(function(res) {
+				.expect((res) => {
 					expect(res.body).to.be.an.instanceof(Entity);
 				})
 				.end(done);
 		});
 
 		// Emits a "double callback!" warning due to https://github.com/visionmedia/superagent/issues/633
-		it('should throw an error when parsing fails', function(done) {
+		it('should throw an error when parsing fails', done => {
 			app = nock(src)
 				.get('/')
 				.reply(200, 'not json');
@@ -49,33 +49,33 @@ describe('Siren Superagent Plugin', function() {
 			request(src)
 				.get('/')
 				.parse(parse)
-				.end(function(err, res) {
+				.end((err, res) => {
 					expect(err).to.be.an.instanceof(SyntaxError);
 					expect(res).to.be.undefined;
 					done();
 				});
 		});
 
-		it('should parse a string as a siren entity', function() {
+		it('should parse a string as a siren entity', () => {
 			const entity = parse('{}');
 			expect(entity).to.be.an.instanceof(Entity);
 		});
 	});
 
-	describe('perform action', function() {
+	describe('perform action', () => {
 		let resource;
 		function buildAction() {
 			return new Action(resource);
 		}
 
-		beforeEach(function() {
+		beforeEach(() => {
 			resource = {
 				name: 'foo',
 				href: '/'
 			};
 		});
 
-		it('should perform a basic action', function(done) {
+		it('should perform a basic action', done => {
 			app = nock(src)
 				.get('/')
 				.reply(200);
@@ -87,7 +87,7 @@ describe('Siren Superagent Plugin', function() {
 		});
 
 		function testMethodWithQuery(method) {
-			it(`should perform a ${method} action with fields`, function(done) {
+			it(`should perform a ${method} action with fields`, done => {
 				app = nock(src)[method.toLowerCase()]('/')
 					.query({ query: 'parameter' })
 					.reply(200);
@@ -107,7 +107,7 @@ describe('Siren Superagent Plugin', function() {
 		}
 
 		function testMethodWithBody(method) {
-			it(`should perform a ${method} action with fields`, function(done) {
+			it(`should perform a ${method} action with fields`, done => {
 				app = nock(src)[method.toLowerCase()]('/', 'query=parameter')
 					.reply(200);
 
@@ -132,7 +132,7 @@ describe('Siren Superagent Plugin', function() {
 		testMethodWithBody('PATCH');
 		testMethodWithBody('DELETE');
 
-		it('should add list of fields on performed action', function(done) {
+		it('should add list of fields on performed action', done => {
 			app = nock(src)
 				.get('/')
 				.query({ query: 'parameter' })
@@ -150,7 +150,7 @@ describe('Siren Superagent Plugin', function() {
 				.end(done);
 		});
 
-		it('should add fields on performed action', function(done) {
+		it('should add fields on performed action', done => {
 			app = nock(src)
 				.get('/')
 				.query({ query: 'parameter' })
@@ -163,7 +163,7 @@ describe('Siren Superagent Plugin', function() {
 				.end(done);
 		});
 
-		it('should add fields string on performed action', function(done) {
+		it('should add fields string on performed action', done => {
 			app = nock(src)
 				.get('/')
 				.query({ query: 'parameter' })
