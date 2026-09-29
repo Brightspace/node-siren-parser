@@ -1,7 +1,6 @@
 {
   "name": "siren-parser",
   "version": "9.2.5",
-  "main": "src/index.js",
   "type": "module",
   "scripts": {
     "lint": "eslint src test --ext .js",
@@ -11,6 +10,10 @@
   "files": [
     "/src"
   ],
+  "exports": {
+    ".": "./src/index.js",
+    "./chai": "./src/chaiPlugin.js"
+  },
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "homepage": "https://github.com/Brightspace/node-siren-parser",
