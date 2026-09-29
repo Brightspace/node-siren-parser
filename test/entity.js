@@ -1,19 +1,19 @@
+import { expect, use } from 'chai';
 import Action from '../src/Action.js';
 import Entity from '../src/index.js';
-import { expect, use } from 'chai';
 import Link from '../src/Link.js';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
 use(sinonChai);
 
-describe('Entity', function() {
+describe('Entity', () => {
 	let
 		resource,
 		sandbox,
 		siren;
 
-	beforeEach(function() {
+	beforeEach(() => {
 		resource = {};
 		siren = undefined;
 		sandbox = sinon.createSandbox();
@@ -21,7 +21,7 @@ describe('Entity', function() {
 		sandbox.stub(console, 'warn');
 	});
 
-	afterEach(function() {
+	afterEach(() => {
 		sandbox.restore();
 	});
 
@@ -29,59 +29,59 @@ describe('Entity', function() {
 		return new Entity(resource);
 	}
 
-	it('should auto-instantiate', function() {
+	it('should auto-instantiate', () => {
 		expect(Entity(resource)).to.be.an.instanceof(Entity);
 	});
 
-	it('should work with stringified entity', function() {
+	it('should work with stringified entity', () => {
 		resource = '{}';
 		expect(buildEntity()).to.be.an('object');
 	});
 
-	it('should return an empty entity if nothing is passed', function() {
+	it('should return an empty entity if nothing is passed', () => {
 		resource = undefined;
 		expect(buildEntity()).to.be.an('object');
 	});
 
-	describe('title', function() {
-		it('should parse title', function() {
+	describe('title', () => {
+		it('should parse title', () => {
 			resource.title = 'A title!';
 			siren = buildEntity();
 			expect(siren.title).to.equal('A title!');
 		});
 
-		it('should require title be a string, if supplied', function() {
+		it('should require title be a string, if supplied', () => {
 			resource.title = 1;
 			expect(buildEntity.bind()).to.throw('entity.title must be a string or undefined, got 1');
 		});
 	});
 
-	describe('type', function() {
-		it('should parse type', function() {
+	describe('type', () => {
+		it('should parse type', () => {
 			resource.type = 'foo';
 			siren = buildEntity();
 			expect(siren.type).to.equal('foo');
 		});
 
-		it('should require type be a string, if supplied', function() {
+		it('should require type be a string, if supplied', () => {
 			resource.type = 1;
 			expect(buildEntity.bind()).to.throw('entity.type must be a string or undefined, got 1');
 		});
 	});
 
-	describe('properties', function() {
-		it('should parse properties', function() {
+	describe('properties', () => {
+		it('should parse properties', () => {
 			resource.properties = {};
 			siren = buildEntity();
 			expect(siren.properties).to.be.an('object');
 		});
 
-		it('should require properties be an object, if supplied', function() {
+		it('should require properties be an object, if supplied', () => {
 			resource.properties = 1;
 			expect(buildEntity.bind()).to.throw('entity.properties must be an object or undefined, got 1');
 		});
 
-		it('should be able to determine if an entity has a given property', function() {
+		it('should be able to determine if an entity has a given property', () => {
 			resource.properties = {
 				foo: 'bar'
 			};
@@ -90,65 +90,65 @@ describe('Entity', function() {
 		});
 	});
 
-	describe('class', function() {
-		it('should parse class', function() {
+	describe('class', () => {
+		it('should parse class', () => {
 			resource.class = [];
 			siren = buildEntity();
 			expect(siren.class).to.be.an.instanceof(Array);
 		});
 
-		it('should require class be an array, if supplied', function() {
+		it('should require class be an array, if supplied', () => {
 			resource.class = 1;
 			expect(buildEntity.bind()).to.throw('entity.class must be an array or undefined, got 1');
 		});
 	});
 
-	describe('actions', function() {
-		it('should parse actions', function() {
+	describe('actions', () => {
+		it('should parse actions', () => {
 			resource.actions = [],
 			siren = buildEntity();
 			expect(siren.actions).to.be.an.instanceof(Array);
 		});
 
-		it('should require actions be an array, if supplied', function() {
+		it('should require actions be an array, if supplied', () => {
 			resource.actions = 1;
 			expect(buildEntity.bind()).to.throw('entity.actions must be an array or undefined, got 1');
 		});
 	});
 
-	describe('links', function() {
-		it('should parse links', function() {
+	describe('links', () => {
+		it('should parse links', () => {
 			resource.links = [],
 			siren = buildEntity();
 			expect(siren.links).to.be.an.instanceof(Array);
 		});
 
-		it('should require links be an array, if supplied', function() {
+		it('should require links be an array, if supplied', () => {
 			resource.links = 1;
 			expect(buildEntity.bind()).to.throw('entity.links must be an array or undefined, got 1');
 		});
 	});
 
-	describe('(sub)entities', function() {
-		it('should parse (sub)entities', function() {
+	describe('(sub)entities', () => {
+		it('should parse (sub)entities', () => {
 			resource.entities = [];
 			siren = buildEntity();
 			expect(siren.entities).to.be.an.instanceof(Array);
 		});
 
-		it('should require (sub)entities be an array, if supplied', function() {
+		it('should require (sub)entities be an array, if supplied', () => {
 			resource.entities = 1;
 			expect(buildEntity.bind()).to.throw('entity.entities must be an array or undefined, got 1');
 		});
 
-		it('should require (sub)entities have a rel', function() {
+		it('should require (sub)entities have a rel', () => {
 			resource.entities = [{
 				foo: 'bar'
 			}];
 			expect(buildEntity.bind()).to.throw('sub-entities must have a rel array, got undefined');
 		});
 
-		it('should work with chained Entity/Action/Links', function() {
+		it('should work with chained Entity/Action/Links', () => {
 			resource.entities = [{
 				rel: ['foo'],
 				actions: [{
@@ -162,7 +162,7 @@ describe('Entity', function() {
 				.with.property('href', 'baz');
 		});
 
-		it('should correctly identify entity sub-entities', function() {
+		it('should correctly identify entity sub-entities', () => {
 			resource.entities = [{
 				rel: ['foo'],
 				title: 'bar'
@@ -171,7 +171,7 @@ describe('Entity', function() {
 			expect(siren.getSubEntity('foo')).to.be.an.instanceof(Entity);
 		});
 
-		it('should correctly identify link sub-entities', function() {
+		it('should correctly identify link sub-entities', () => {
 			resource.entities = [{
 				rel: ['foo'],
 				href: 'bar'
@@ -180,7 +180,7 @@ describe('Entity', function() {
 			expect(siren.getSubEntity('foo')).to.be.an.instanceof(Link);
 		});
 
-		it('should not duplicate sub-entities with the same rel', function() {
+		it('should not duplicate sub-entities with the same rel', () => {
 			resource.entities = [{
 				rel: ['foo', 'bar']
 			}];
@@ -189,67 +189,67 @@ describe('Entity', function() {
 		});
 	});
 
-	describe('toJSON', function() {
+	describe('toJSON', () => {
 		function toJSON() {
 			return JSON.stringify(buildEntity());
 		}
 
-		it('should stringify (empty)', function() {
+		it('should stringify (empty)', () => {
 			expect(toJSON()).to.equal(
 				'{}'
 			);
 		});
 
-		it('should stringify title', function() {
+		it('should stringify title', () => {
 			resource.title = 'A title!';
 			expect(toJSON()).to.equal(
 				'{"title":"A title!"}'
 			);
 		});
 
-		it('should stringify type', function() {
+		it('should stringify type', () => {
 			resource.type = 'foo';
 			expect(toJSON()).to.equal(
 				'{"type":"foo"}'
 			);
 		});
 
-		it('should stringify properties', function() {
+		it('should stringify properties', () => {
 			resource.properties = {};
 			expect(toJSON()).to.equal(
 				'{"properties":{}}'
 			);
 		});
 
-		it('should stringify class', function() {
+		it('should stringify class', () => {
 			resource.class = [];
 			expect(toJSON()).to.equal(
 				'{"class":[]}'
 			);
 		});
 
-		it('should stringify actions', function() {
+		it('should stringify actions', () => {
 			resource.actions = [],
 			expect(toJSON()).to.equal(
 				'{"actions":[]}'
 			);
 		});
 
-		it('should stringify links', function() {
+		it('should stringify links', () => {
 			resource.links = [],
 			expect(toJSON()).to.equal(
 				'{"links":[]}'
 			);
 		});
 
-		it('should stringify entities', function() {
+		it('should stringify entities', () => {
 			resource.entities = [];
 			expect(toJSON()).to.equal(
 				'{"entities":[]}'
 			);
 		});
 
-		it('should stringify sub entities', function() {
+		it('should stringify sub entities', () => {
 			resource.entities = [{
 				rel: ['foo'],
 				actions: [{
@@ -263,10 +263,10 @@ describe('Entity', function() {
 		});
 	});
 
-	describe('helper functions', function() {
-		describe('has...', function() {
-			describe('Action', function() {
-				it('hasActionByName (hasAction)', function() {
+	describe('helper functions', () => {
+		describe('has...', () => {
+			describe('Action', () => {
+				it('hasActionByName (hasAction)', () => {
 					resource.actions = [{
 						name: 'foo',
 						href: 'bar'
@@ -285,7 +285,7 @@ describe('Entity', function() {
 					expect(siren.hasAction('foo')).to.be.false;
 				});
 
-				it('hasActionByClass', function() {
+				it('hasActionByClass', () => {
 					resource.actions = [{
 						name: 'foo',
 						href: 'bar',
@@ -305,7 +305,7 @@ describe('Entity', function() {
 					expect(siren.hasActionByClass('baz')).to.be.false;
 				});
 
-				it('hasActionByMethod', function() {
+				it('hasActionByMethod', () => {
 					resource.actions = [{
 						name: 'foo',
 						href: 'bar',
@@ -325,7 +325,7 @@ describe('Entity', function() {
 					expect(siren.hasActionByMethod('GET')).to.be.false;
 				});
 
-				it('hasActionByType', function() {
+				it('hasActionByType', () => {
 					resource.actions = [{
 						name: 'foo',
 						href: 'bar',
@@ -346,8 +346,8 @@ describe('Entity', function() {
 				});
 			});
 
-			describe('Class', function() {
-				it('hasClass', function() {
+			describe('Class', () => {
+				it('hasClass', () => {
 					resource.class = ['foo'];
 					siren = buildEntity();
 					expect(siren.hasClass('foo')).to.be.true;
@@ -364,8 +364,8 @@ describe('Entity', function() {
 				});
 			});
 
-			describe('Entity', function() {
-				it('hasSubEntityByRel (hasEntityByRel, hasEntity)', function() {
+			describe('Entity', () => {
+				it('hasSubEntityByRel (hasEntityByRel, hasEntity)', () => {
 					resource.entities = [{
 						rel: ['foo']
 					}];
@@ -398,7 +398,7 @@ describe('Entity', function() {
 					expect(siren.hasSubEntityByRel('foo')).to.be.false;
 				});
 
-				it('hasSubEntityByClass (hasEntityByClass)', function() {
+				it('hasSubEntityByClass (hasEntityByClass)', () => {
 					resource.entities = [{
 						rel: ['foo'],
 						class: ['bar']
@@ -425,7 +425,7 @@ describe('Entity', function() {
 					expect(siren.hasSubEntityByClass('bar')).to.be.false;
 				});
 
-				it('hasSubEntityByType (hasSubEntityByType)', function() {
+				it('hasSubEntityByType (hasSubEntityByType)', () => {
 					resource.entities = [{
 						rel: ['foo'],
 						type: 'bar'
@@ -453,8 +453,8 @@ describe('Entity', function() {
 				});
 			});
 
-			describe('Link', function() {
-				it('hasLinkByRel (hasLink)', function() {
+			describe('Link', () => {
+				it('hasLinkByRel (hasLink)', () => {
 					resource.links = [{
 						rel: ['foo'],
 						href: 'bar'
@@ -473,7 +473,7 @@ describe('Entity', function() {
 					expect(siren.hasLink('foo')).to.be.false;
 				});
 
-				it('hasLinkByClass', function() {
+				it('hasLinkByClass', () => {
 					resource.links = [{
 						rel: ['foo'],
 						href: 'bar',
@@ -493,7 +493,7 @@ describe('Entity', function() {
 					expect(siren.hasLinkByClass('baz')).to.be.false;
 				});
 
-				it('hasLinkByType', function() {
+				it('hasLinkByType', () => {
 					resource.links = [{
 						rel: ['foo'],
 						href: 'bar',
@@ -514,8 +514,8 @@ describe('Entity', function() {
 				});
 			});
 
-			describe('Property', function() {
-				it('hasProperty', function() {
+			describe('Property', () => {
+				it('hasProperty', () => {
 					resource.properties = { foo: 'bar' };
 					siren = buildEntity();
 					expect(siren.hasProperty('foo')).to.be.true;
@@ -533,9 +533,9 @@ describe('Entity', function() {
 			});
 		});
 
-		describe('get...', function() {
-			describe('Action', function() {
-				it('getActionByName (getAction)', function() {
+		describe('get...', () => {
+			describe('Action', () => {
+				it('getActionByName (getAction)', () => {
 					resource.actions = [{
 						name: 'foo',
 						href: 'bar'
@@ -548,7 +548,7 @@ describe('Entity', function() {
 					expect(siren.getAction(null)).to.be.undefined;
 				});
 
-				it('getActionByClass', function() {
+				it('getActionByClass', () => {
 					resource.actions = [{
 						name: 'foo',
 						href: 'bar',
@@ -564,7 +564,7 @@ describe('Entity', function() {
 					expect(siren.getActionByClass(null)).to.be.undefined;
 				});
 
-				it('getActionsByClass', function() {
+				it('getActionsByClass', () => {
 					resource.actions = [{
 						name: 'foo',
 						href: 'bar',
@@ -584,7 +584,7 @@ describe('Entity', function() {
 					expect(siren.getActionsByClass(null)).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
-				it('getActionByClasses', function() {
+				it('getActionByClasses', () => {
 					resource.actions = [{
 						name: 'foo',
 						href: 'bar',
@@ -614,7 +614,7 @@ describe('Entity', function() {
 					expect(siren.getActionByClasses([null])).to.be.undefined;
 				});
 
-				it('getActionsByClasses', function() {
+				it('getActionsByClasses', () => {
 					resource.actions = [{
 						name: 'foo',
 						href: 'bar',
@@ -644,7 +644,7 @@ describe('Entity', function() {
 					expect(siren.getActionsByClasses([null])).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
-				it('getActionByMethod', function() {
+				it('getActionByMethod', () => {
 					resource.actions = [{
 						name: 'foo',
 						href: 'bar',
@@ -660,7 +660,7 @@ describe('Entity', function() {
 					expect(siren.getActionByMethod(null)).to.be.undefined;
 				});
 
-				it('getActionsByMethod', function() {
+				it('getActionsByMethod', () => {
 					resource.actions = [{
 						name: 'foo',
 						href: 'bar',
@@ -680,7 +680,7 @@ describe('Entity', function() {
 					expect(siren.getActionsByMethod(null)).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
-				it('getActionByType', function() {
+				it('getActionByType', () => {
 					resource.actions = [{
 						name: 'foo',
 						href: 'bar',
@@ -696,7 +696,7 @@ describe('Entity', function() {
 					expect(siren.getActionByType(null)).to.be.undefined;
 				});
 
-				it('getActionsByType', function() {
+				it('getActionsByType', () => {
 					resource.actions = [{
 						name: 'foo',
 						href: 'bar',
@@ -717,8 +717,8 @@ describe('Entity', function() {
 				});
 			});
 
-			describe('Link', function() {
-				beforeEach(function() {
+			describe('Link', () => {
+				beforeEach(() => {
 					resource.links = [{
 						rel: ['foo'],
 						href: 'bar',
@@ -746,7 +746,7 @@ describe('Entity', function() {
 					siren = buildEntity();
 				});
 
-				it('getLinkByRel (getLink)', function() {
+				it('getLinkByRel (getLink)', () => {
 					expect(siren.getLink('foo')).to.have.property('href', 'bar');
 					expect(siren.getLink(/foo/)).to.have.property('href', 'bar');
 					expect(siren.getLink('nope')).to.be.undefined;
@@ -756,7 +756,7 @@ describe('Entity', function() {
 					expect(siren.getLink(null)).to.be.undefined;
 				});
 
-				it('getLinksByRel (getLinks)', function() {
+				it('getLinksByRel (getLinks)', () => {
 					expect(siren.getLinks('foo')).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getLinks(/foo/)).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getLinks('nope')).to.be.an.instanceof(Array).and.to.be.empty;
@@ -766,7 +766,7 @@ describe('Entity', function() {
 					expect(siren.getLinks(null)).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
-				it('getLinkByRels)', function() {
+				it('getLinkByRels)', () => {
 					expect(siren.getLinkByRels(['foo', 'foo2'])).to.have.property('href', 'bar2');
 					expect(siren.getLinkByRels([/foo/, /foo2/])).to.have.property('href', 'bar2');
 					expect(siren.getLinkByRels(['foo', /foo2/])).to.have.property('href', 'bar2');
@@ -778,7 +778,7 @@ describe('Entity', function() {
 					expect(siren.getLinkByRels([null])).to.be.undefined;
 				});
 
-				it('getLinksByRels', function() {
+				it('getLinksByRels', () => {
 					expect(siren.getLinksByRels(['foo', 'foo2'])).to.be.an.instanceof(Array).with.lengthOf(1);
 					expect(siren.getLinksByRels([/foo/, /foo2/])).to.be.an.instanceof(Array).with.lengthOf(1);
 					expect(siren.getLinksByRels(['foo', /foo2/])).to.be.an.instanceof(Array).with.lengthOf(1);
@@ -790,12 +790,12 @@ describe('Entity', function() {
 					expect(siren.getLinksByRels([null])).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
-				it('getLinks should return a new array', function() {
+				it('getLinks should return a new array', () => {
 					expect(siren.getLinks('foo')).to.not.equal(siren.getLinks('foo'));
 					expect(siren.getLinks(/foo/)).to.not.equal(siren.getLinks('foo'));
 				});
 
-				it('getLinkByClass', function() {
+				it('getLinkByClass', () => {
 					expect(siren.getLinkByClass('baz')).to.have.property('href', 'bar');
 					expect(siren.getLinkByClass(/baz/)).to.have.property('href', 'bar');
 					expect(siren.getLinkByClass('nope')).to.be.undefined;
@@ -805,7 +805,7 @@ describe('Entity', function() {
 					expect(siren.getLinkByClass(null)).to.be.undefined;
 				});
 
-				it('getLinksByClass', function() {
+				it('getLinksByClass', () => {
 					expect(siren.getLinksByClass('baz')).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getLinksByClass(/baz/)).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getLinksByClass('nope')).to.be.an.instanceof(Array).and.to.be.empty;
@@ -815,7 +815,7 @@ describe('Entity', function() {
 					expect(siren.getLinksByClass(null)).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
-				it('getLinkByClasses', function() {
+				it('getLinkByClasses', () => {
 					expect(siren.getLinkByClasses(['bonk', 'bork'])).to.have.property('href', 'bar3');
 					expect(siren.getLinkByClasses([/bonk/, /bork/])).to.have.property('href', 'bar3');
 					expect(siren.getLinkByClasses(['bonk', /bork/])).to.have.property('href', 'bar3');
@@ -827,7 +827,7 @@ describe('Entity', function() {
 					expect(siren.getLinkByClasses([null])).to.be.undefined;
 				});
 
-				it('getLinksByClasses', function() {
+				it('getLinksByClasses', () => {
 					expect(siren.getLinksByClasses(['bonk', 'bork'])).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getLinksByClasses([/bonk/, /bork/])).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getLinksByClasses(['bonk', /bork/])).to.be.an.instanceof(Array).with.lengthOf(2);
@@ -839,7 +839,7 @@ describe('Entity', function() {
 					expect(siren.getLinksByClasses([null])).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
-				it('getLinkByType', function() {
+				it('getLinkByType', () => {
 					expect(siren.getLinkByType('quux')).to.have.property('href', 'bar');
 					expect(siren.getLinkByType(/quux/)).to.have.property('href', 'bar');
 					expect(siren.getLinkByType('nope')).to.be.undefined;
@@ -849,7 +849,7 @@ describe('Entity', function() {
 					expect(siren.getLinkByType(null)).to.be.undefined;
 				});
 
-				it('getLinksByType', function() {
+				it('getLinksByType', () => {
 					expect(siren.getLinksByType('quux')).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getLinksByType(/quux/)).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getLinksByType('nope')).to.be.an.instanceof(Array).and.to.be.empty;
@@ -860,8 +860,8 @@ describe('Entity', function() {
 				});
 			});
 
-			describe('Entity', function() {
-				beforeEach(function() {
+			describe('Entity', () => {
+				beforeEach(() => {
 					resource.entities = [{
 						rel: ['foo'],
 						title: 'bar',
@@ -886,7 +886,7 @@ describe('Entity', function() {
 					siren = buildEntity();
 				});
 
-				it('getSubEntityByRel (getSubEntity)', function() {
+				it('getSubEntityByRel (getSubEntity)', () => {
 					expect(siren.getSubEntity('foo')).to.have.property('title', 'bar');
 					expect(siren.getSubEntity(/foo/)).to.have.property('title', 'bar');
 					expect(siren.getSubEntity('nope')).to.be.undefined;
@@ -896,7 +896,7 @@ describe('Entity', function() {
 					expect(siren.getSubEntity(null)).to.be.undefined;
 				});
 
-				it('getSubEntitiesByRel (getSubEntities)', function() {
+				it('getSubEntitiesByRel (getSubEntities)', () => {
 					expect(siren.getSubEntities('foo')).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getSubEntities(/foo/)).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getSubEntities('nope')).to.be.an.instanceof(Array).and.to.be.empty;
@@ -906,7 +906,7 @@ describe('Entity', function() {
 					expect(siren.getSubEntities(null)).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
-				it('getSubEntityByRels', function() {
+				it('getSubEntityByRels', () => {
 					expect(siren.getSubEntityByRels(['foo', 'foo2'])).to.have.property('title', 'bar2');
 					expect(siren.getSubEntityByRels([/foo/, /foo2/])).to.have.property('title', 'bar2');
 					expect(siren.getSubEntityByRels(['foo', /foo2/])).to.have.property('title', 'bar2');
@@ -918,7 +918,7 @@ describe('Entity', function() {
 					expect(siren.getSubEntityByRels([null])).to.be.undefined;
 				});
 
-				it('getSubEntitiesByRels', function() {
+				it('getSubEntitiesByRels', () => {
 					expect(siren.getSubEntitiesByRels(['foo', 'foo2'])).to.be.an.instanceof(Array).with.lengthOf(1);
 					expect(siren.getSubEntitiesByRels([/foo/, /foo2/])).to.be.an.instanceof(Array).with.lengthOf(1);
 					expect(siren.getSubEntitiesByRels(['foo', /foo2/])).to.be.an.instanceof(Array).with.lengthOf(1);
@@ -930,12 +930,12 @@ describe('Entity', function() {
 					expect(siren.getSubEntitiesByRels([null])).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
-				it('getSubEntities should return a new array', function() {
+				it('getSubEntities should return a new array', () => {
 					expect(siren.getSubEntities('foo')).to.not.equal(siren.getSubEntities('foo'));
 					expect(siren.getSubEntities(/foo/)).to.not.equal(siren.getSubEntities('foo'));
 				});
 
-				it('getSubEntityByClass', function() {
+				it('getSubEntityByClass', () => {
 					expect(siren.getSubEntityByClass('baz')).to.have.property('title', 'bar');
 					expect(siren.getSubEntityByClass(/baz/)).to.have.property('title', 'bar');
 					expect(siren.getSubEntityByClass('nope')).to.be.undefined;
@@ -945,7 +945,7 @@ describe('Entity', function() {
 					expect(siren.getSubEntityByClass(null)).to.be.undefined;
 				});
 
-				it('getSubEntitiesByClass', function() {
+				it('getSubEntitiesByClass', () => {
 					expect(siren.getSubEntitiesByClass('baz')).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getSubEntitiesByClass(/baz/)).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getSubEntitiesByClass('nope')).to.be.an.instanceof(Array).and.to.be.empty;
@@ -955,7 +955,7 @@ describe('Entity', function() {
 					expect(siren.getSubEntitiesByClass(null)).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
-				it('getSubEntityByClasses', function() {
+				it('getSubEntityByClasses', () => {
 					expect(siren.getSubEntityByClasses(['bonk', 'bork'])).to.have.property('title', 'bar3');
 					expect(siren.getSubEntityByClasses([/bonk/, /bork/])).to.have.property('title', 'bar3');
 					expect(siren.getSubEntityByClasses(['bonk', /bork/])).to.have.property('title', 'bar3');
@@ -967,7 +967,7 @@ describe('Entity', function() {
 					expect(siren.getSubEntityByClasses([null])).to.be.undefined;
 				});
 
-				it('getSubEntitiesByClasses', function() {
+				it('getSubEntitiesByClasses', () => {
 					expect(siren.getSubEntitiesByClasses(['bonk', 'bork'])).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getSubEntitiesByClasses([/bonk/, /bork/])).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getSubEntitiesByClasses(['bonk', /bork/])).to.be.an.instanceof(Array).with.lengthOf(2);
@@ -979,7 +979,7 @@ describe('Entity', function() {
 					expect(siren.getSubEntitiesByClasses([null])).to.be.an.instanceof(Array).and.to.be.empty;
 				});
 
-				it('getSubEntityByType', function() {
+				it('getSubEntityByType', () => {
 					expect(siren.getSubEntityByType('quux')).to.have.property('title', 'bar');
 					expect(siren.getSubEntityByType(/quux/)).to.have.property('title', 'bar');
 					expect(siren.getSubEntityByType('nope')).to.be.undefined;
@@ -989,7 +989,7 @@ describe('Entity', function() {
 					expect(siren.getSubEntityByType(null)).to.be.undefined;
 				});
 
-				it('getSubEntitiesByType', function() {
+				it('getSubEntitiesByType', () => {
 					expect(siren.getSubEntitiesByType('quux')).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getSubEntitiesByType(/quux/)).to.be.an.instanceof(Array).with.lengthOf(2);
 					expect(siren.getSubEntitiesByType('nope')).to.be.an.instanceof(Array).and.to.be.empty;

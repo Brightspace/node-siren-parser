@@ -1,8 +1,8 @@
 {
   "name": "siren-parser",
-  "version": "9.2.3",
-  "type": "module",
+  "version": "9.2.5",
   "main": "src/index.js",
+  "type": "module",
   "scripts": {
     "lint": "eslint src test --ext .js",
     "test": "npm run lint && npm run test:unit",
@@ -21,12 +21,15 @@
   "bugs": {
     "url": "https://github.com/Brightspace/node-siren-parser/issues"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "devDependencies": {
-    "chai": "^4.3.0",
-    "eslint": "^7.20.0",
-    "eslint-config-brightspace": "^0.12.0",
-    "mocha": "^10.8.2",
-    "sinon": "^9.2.4",
-    "sinon-chai": "^3.5.0"
+    "chai": "^6",
+    "eslint": "^9",
+    "eslint-config-brightspace": "^4",
+    "mocha": "^12",
+    "sinon": "^22",
+    "sinon-chai": "^4"
   }
 }

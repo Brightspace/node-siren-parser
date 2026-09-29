@@ -5,21 +5,24 @@ import sinonChai from 'sinon-chai';
 
 use(sinonChai);
 
-describe('Link', function() {
+describe('Link', () => {
 	let
 		resource,
 		sandbox,
 		siren;
 
-	beforeEach(function() {
-		resource = {};
+	beforeEach(() => {
+		resource = {
+			rel: [],
+			href: 'foo'
+		};
 		siren = undefined;
 		sandbox = sinon.createSandbox();
 		sandbox.stub(console, 'error');
 		sandbox.stub(console, 'warn');
 	});
 
-	afterEach(function() {
+	afterEach(() => {
 		sandbox.restore();
 	});
 
@@ -27,69 +30,62 @@ describe('Link', function() {
 		return new Link(resource);
 	}
 
-	beforeEach(function() {
-		resource = {
-			rel: [],
-			href: 'foo'
-		};
-	});
-
-	it('should auto-instantiate', function() {
+	it('should auto-instantiate', () => {
 		expect(Link(resource)).to.be.an.instanceof(Link);
 	});
 
-	it('should require the link be an object', function() {
+	it('should require the link be an object', () => {
 		resource = 1;
 		expect(buildLink.bind()).to.throw('link must be an object, got 1');
 	});
 
-	describe('rel', function() {
-		it('should require a rel', function() {
+	describe('rel', () => {
+		it('should require a rel', () => {
 			resource.rel = undefined;
 			expect(buildLink.bind()).to.throw('link.rel must be an array, got undefined');
 		});
 
-		it('should require rel be an array', function() {
+		it('should require rel be an array', () => {
 			resource.rel = 1;
 			expect(buildLink.bind()).to.throw('link.rel must be an array, got 1');
 		});
 
-		it('should parse rel', function() {
+		it('should parse rel', () => {
 			siren = buildLink();
 			expect(siren.rel).to.be.an.instanceof(Array);
 		});
 	});
 
-	describe('href', function() {
-		it('should require a href', function() {
+	describe('href', () => {
+		it('should require a href', () => {
 			resource.href = undefined;
 			expect(buildLink.bind()).to.throw('link.href must be a string, got undefined');
 		});
 
-		it('should require href be a string', function() {
+		it('should require href be a string', () => {
 			resource.href = 1;
 			expect(buildLink.bind()).to.throw('link.href must be a string, got 1');
 		});
 
-		it('should parse href', function() {
+		it('should parse href', () => {
 			siren = buildLink();
 			expect(siren.href).to.equal('foo');
 		});
 	});
 
-	describe('class', function() {
-		it('should parse class', function() {
+	describe('class', () => {
+		it('should parse class', () => {
 			resource.class = [];
 			siren = buildLink();
 			expect(siren.class).to.be.an.instanceof(Array);
 		});
 
-		it('should require class be an array, if supplied', function() {
+		it('should require class be an array, if supplied', () => {
 			resource.class = 1;
 			expect(buildLink.bind()).to.throw('link.class must be an array or undefined, got 1');
 		});
 
-		it('should be able to determine if a link has a given class', function() {
+		it('should be able to determine if a link has a given class', () => {
 			resource.class = ['foo'];
 			siren = buildLink();
 			expect(siren.hasClass('foo')).to.be.true;
@@ -103,58 +99,58 @@ describe('Link', function() {
 		});
 	});
 
-	describe('title', function() {
-		it('should parse title', function() {
+	describe('title', () => {
+		it('should parse title', () => {
 			resource.title = 'baz';
 			siren = buildLink();
 			expect(siren.title).to.equal('baz');
 		});
 
-		it('should require title be a string, if supplied', function() {
+		it('should require title be a string, if supplied', () => {
 			resource.title = 1;
 			expect(buildLink.bind(undefined, resource)).to.throw('link.title must be a string or undefined, got 1');
 		});
 	});
 
-	describe('type', function() {
-		it('should parse type', function() {
+	describe('type', () => {
+		it('should parse type', () => {
 			resource.type = 'baz';
 			siren = buildLink();
 			expect(siren.type).to.equal('baz');
 		});
 
-		it('should require type be a string, if supplied', function() {
+		it('should require type be a string, if supplied', () => {
 			resource.type = 1;
 			expect(buildLink.bind(undefined, resource)).to.throw('link.type must be a string or undefined, got 1');
 		});
 	});
 
-	describe('toJSON', function() {
+	describe('toJSON', () => {
 		function toJSON() {
 			return JSON.stringify(buildLink());
 		}
 
-		it('should stringify rel and href', function() {
+		it('should stringify rel and href', () => {
 			expect(toJSON()).to.equal(
 				'{"rel":[],"href":"foo"}'
 			);
 		});
 
-		it('should stringify class', function() {
+		it('should stringify class', () => {
 			resource.class = ['abc'];
 			expect(toJSON()).to.equal(
 				'{"rel":[],"href":"foo","class":["abc"]}'
 			);
 		});
 
-		it('should stringify title', function() {
+		it('should stringify title', () => {
 			resource.title = 'bar';
 			expect(toJSON()).to.equal(
 				'{"rel":[],"href":"foo","title":"bar"}'
 			);
 		});
 
-		it('should stringify type', function() {
+		it('should stringify type', () => {
 			resource.type = 'text/html';
 			expect(toJSON()).to.equal(
 				'{"rel":[],"href":"foo","type":"text/html"}'
