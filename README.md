@@ -20,7 +20,7 @@ var parsedEntity = SirenParse('{"class":["foo","bar"]}');
 
 ```js
 import sirenParser from 'siren-parser';
-import sirenChai from 'siren-parser/src/chaiPlugin.js';
+import sirenChai from 'siren-parser/chai';
 const sirenJson = {
 	title: 'My title',
 	class: ['outer'],
