@@ -1,6 +1,6 @@
-import assert from './assert';
+import assert from './assert.js';
 import { contains, getMatchingValue, getMatchingValuesByAll, hasProperty } from './util.js';
-import Field from './Field';
+import Field from './Field.js';
 
 export default function Action(action) {
 	if (action instanceof Action) {

@@ -1,6 +1,6 @@
-import Action from './Action';
-import assert from './assert';
-import Link from './Link';
+import Action from './Action.js';
+import assert from './assert.js';
+import Link from './Link.js';
 import { contains, getMatchingValue, getMatchingValuesByAll, hasProperty } from './util.js';
 
 export default function Entity(entity) {
