@@ -1,6 +1,6 @@
 {
   "name": "siren-parser",
-  "version": "9.2.5",
+  "version": "10.0.0",
   "type": "module",
   "scripts": {
     "lint": "eslint src test --ext .js",
